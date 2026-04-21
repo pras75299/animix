@@ -1,0 +1,102 @@
+/* ============================================================
+   animix — Image & media motion (.animix-img-*)
+   Hover zoom, shimmer placeholder, mask reveal, light parallax.
+   ============================================================ */
+
+@keyframes animix-img-mask-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes animix-img-parallax-lite {
+  from {
+    transform: translateY(6px) scale(1.02);
+  }
+  to {
+    transform: translateY(-6px) scale(1.04);
+  }
+}
+
+.animix-img-zoom-wrap {
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.animix-img-zoom-wrap > img,
+.animix-img-zoom-wrap > picture > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform var(--animix-duration-slow, 500ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1));
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.animix-img-zoom-wrap:hover > img,
+.animix-img-zoom-wrap:hover > picture > img,
+.animix-img-zoom-wrap:focus-within > img,
+.animix-img-zoom-wrap:focus-within > picture > img {
+  transform: scale(var(--animix-image-zoom, 1.04));
+}
+
+.animix-img-shimmer {
+  background: linear-gradient(
+    110deg,
+    var(--animix-skeleton-base, hsl(0, 0%, 88%)) 0%,
+    var(--animix-skeleton-highlight, hsl(0, 0%, 96%)) 45%,
+    var(--animix-skeleton-base, hsl(0, 0%, 88%)) 90%
+  );
+  background-size: 200% 100%;
+  animation: animix-skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.animix-img-mask-reveal {
+  animation: animix-img-mask-reveal var(--animix-duration-slow, 500ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1)) both;
+}
+
+.animix-img-parallax-lite {
+  will-change: transform;
+}
+
+@supports (animation-timeline: view()) {
+  .animix-img-parallax-lite {
+    animation-name: animix-img-parallax-lite;
+    animation-duration: 1ms;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 60%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animix-img-zoom-wrap > img,
+  .animix-img-zoom-wrap > picture > img {
+    transition-duration: 0ms;
+  }
+
+  .animix-img-zoom-wrap:hover > img,
+  .animix-img-zoom-wrap:hover > picture > img,
+  .animix-img-zoom-wrap:focus-within > img,
+  .animix-img-zoom-wrap:focus-within > picture > img {
+    transform: none;
+  }
+
+  .animix-img-shimmer {
+    animation: none;
+  }
+
+  .animix-img-mask-reveal {
+    animation: none;
+    clip-path: none;
+  }
+
+  .animix-img-parallax-lite {
+    animation: none;
+    transform: none;
+  }
+}

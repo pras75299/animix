@@ -254,6 +254,53 @@
   --animix-stagger-delay: 150ms;
 }
 
+/* ── Transform origin (for scaled / rotated micro-motion) ──────── */
+
+.animix-origin-center {
+  transform-origin: center center;
+}
+.animix-origin-top {
+  transform-origin: top center;
+}
+.animix-origin-bottom {
+  transform-origin: bottom center;
+}
+.animix-origin-left {
+  transform-origin: left center;
+}
+.animix-origin-right {
+  transform-origin: right center;
+}
+
+/* ── Motion intensity presets (override tokens on a subtree) ───── */
+
+.animix-intensity-quiet {
+  --animix-hover-lift: -1px;
+  --animix-active-pop-scale: 1.01;
+  --animix-image-zoom: 1.02;
+}
+
+.animix-intensity-bold {
+  --animix-hover-lift: -4px;
+  --animix-active-pop-scale: 1.05;
+  --animix-image-zoom: 1.08;
+}
+
+/* ── Transition delay (for chained micro-interactions) ─────────── */
+
+.animix-tx-delay-0 {
+  transition-delay: 0ms;
+}
+.animix-tx-delay-50 {
+  transition-delay: 50ms;
+}
+.animix-tx-delay-100 {
+  transition-delay: 100ms;
+}
+.animix-tx-delay-150 {
+  transition-delay: 150ms;
+}
+
 /* ── Global disable ────────────────────────────────────────────── */
 
 .animix-no-motion,

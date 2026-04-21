@@ -1,6 +1,6 @@
 {
   "name": "animix",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Production-ready CSS animation library for Tailwind CSS v3/v4 and shadcn/ui",
   "author": "animix contributors",
   "license": "MIT",
@@ -49,6 +49,9 @@
     "./css/exit": "./src/animations/exit.css",
     "./css/attention": "./src/animations/attention.css",
     "./css/loaders": "./src/animations/loaders.css",
+    "./css/icons": "./src/animations/icons.css",
+    "./css/text": "./src/animations/text.css",
+    "./css/images": "./src/animations/images.css",
     "./css/transitions": "./src/animations/transitions.css",
     "./css/modern": "./src/animations/modern.css",
     "./css/view-transitions": "./src/animations/view-transitions.css",

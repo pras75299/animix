@@ -6,10 +6,22 @@
 
 :root {
   /* ── Duration ──────────────────────────────────────────────── */
+  --animix-duration-micro: 180ms;
   --animix-duration-fast: 150ms;
   --animix-duration-base: 300ms;
   --animix-duration-slow: 500ms;
   --animix-duration-slower: 800ms;
+
+  /* ── Micro-interaction scale (transform/opacity only) ───────── */
+  --animix-hover-lift: -2px;
+  --animix-press-scale: 0.97;
+  --animix-active-pop-scale: 1.02;
+  --animix-focus-ring-width: 2px;
+  --animix-focus-ring-offset: 2px;
+  --animix-icon-duration: 160ms;
+  --animix-text-stagger-step: 40ms;
+  --animix-image-zoom: 1.04;
+  --animix-motion-intensity: 1;
 
   /* ── Easing ────────────────────────────────────────────────── */
   --animix-ease-default: cubic-bezier(0.4, 0, 0.2, 1);
@@ -42,10 +54,12 @@
    but complete instantly (preserves fill-mode end state). */
 @media (prefers-reduced-motion: reduce) {
   :root {
+    --animix-duration-micro: 0ms;
     --animix-duration-fast: 0ms;
     --animix-duration-base: 0ms;
     --animix-duration-slow: 0ms;
     --animix-duration-slower: 0ms;
+    --animix-motion-intensity: 0;
   }
 }
 

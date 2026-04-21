@@ -1,0 +1,101 @@
+/* ============================================================
+   animix — Text motion (.animix-text-*)
+   Headline reveals, stagger helpers, underline sweep.
+   ============================================================ */
+
+@keyframes animix-text-headline-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes animix-counter-tick {
+  from {
+    opacity: 0;
+    transform: translateY(0.15em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animix-text-headline-rise {
+  animation: animix-text-headline-rise var(--animix-duration-slow, 500ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1)) both;
+}
+
+/* Wrap each word/chunk in a span; delays scale with --animix-text-stagger-step */
+.animix-text-stagger > * {
+  display: inline-block;
+  opacity: 0;
+  animation: animix-text-headline-rise var(--animix-duration-base, 300ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1)) both;
+}
+
+.animix-text-stagger > *:nth-child(1) {
+  animation-delay: calc(var(--animix-text-stagger-step, 40ms) * 0);
+}
+.animix-text-stagger > *:nth-child(2) {
+  animation-delay: calc(var(--animix-text-stagger-step, 40ms) * 1);
+}
+.animix-text-stagger > *:nth-child(3) {
+  animation-delay: calc(var(--animix-text-stagger-step, 40ms) * 2);
+}
+.animix-text-stagger > *:nth-child(4) {
+  animation-delay: calc(var(--animix-text-stagger-step, 40ms) * 3);
+}
+.animix-text-stagger > *:nth-child(5) {
+  animation-delay: calc(var(--animix-text-stagger-step, 40ms) * 4);
+}
+.animix-text-stagger > *:nth-child(6) {
+  animation-delay: calc(var(--animix-text-stagger-step, 40ms) * 5);
+}
+.animix-text-stagger > *:nth-child(7) {
+  animation-delay: calc(var(--animix-text-stagger-step, 40ms) * 6);
+}
+.animix-text-stagger > *:nth-child(8) {
+  animation-delay: calc(var(--animix-text-stagger-step, 40ms) * 7);
+}
+
+.animix-text-underline-sweep {
+  position: relative;
+  display: inline;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  transition: background-size var(--animix-duration-slow, 500ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1));
+}
+
+.animix-text-underline-sweep:hover,
+.animix-text-underline-sweep:focus-visible {
+  background-size: 100% 2px;
+}
+
+.animix-text-underline-sweep.animix-text-underline-active {
+  background-size: 100% 2px;
+}
+
+.animix-counter-tick {
+  display: inline-block;
+  animation: animix-counter-tick var(--animix-duration-micro, 180ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1)) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animix-text-headline-rise,
+  .animix-text-stagger > *,
+  .animix-counter-tick {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .animix-text-underline-sweep {
+    transition-duration: 0ms;
+    background-size: 100% 2px;
+  }
+}

@@ -334,3 +334,91 @@
 .animix-overlay-out {
   animation: animix-overlay-out var(--animix-duration-base, 300ms) var(--animix-ease-in) both;
 }
+
+/* ── State patterns: tabs, accordion, inline status ─────────────── */
+
+.animix-tab-underline {
+  position: relative;
+  display: inline-block;
+  transition: color var(--animix-duration-micro, 180ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1));
+}
+
+.animix-tab-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: currentColor;
+  opacity: 0.85;
+  transition: transform var(--animix-duration-micro, 180ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1));
+}
+
+.animix-tab-underline:hover::after,
+.animix-tab-underline[aria-selected="true"]::after,
+.animix-tab-underline[data-state="active"]::after {
+  transform: scaleX(1);
+}
+
+.animix-accordion {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--animix-duration-base, 300ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1));
+}
+
+.animix-accordion[data-open="true"],
+.animix-accordion[open] {
+  grid-template-rows: 1fr;
+}
+
+.animix-accordion > .animix-accordion-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.animix-inline-swap {
+  position: relative;
+  display: inline-grid;
+  grid-template-areas: "slot";
+  align-items: center;
+  justify-items: start;
+}
+
+.animix-inline-swap > * {
+  grid-area: slot;
+  transition:
+    opacity var(--animix-duration-micro, 180ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1)),
+    transform var(--animix-duration-micro, 180ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1));
+}
+
+.animix-inline-swap > .animix-inline-swap-hidden {
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+}
+
+.animix-inline-swap > .animix-inline-swap-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animix-tab-underline::after {
+    transition-duration: 0ms;
+  }
+
+  .animix-accordion {
+    transition-duration: 0ms;
+  }
+
+  .animix-inline-swap > * {
+    transition-duration: 0ms;
+  }
+
+  .animix-inline-swap > .animix-inline-swap-hidden {
+    transform: none;
+  }
+}
