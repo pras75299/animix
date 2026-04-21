@@ -15,6 +15,14 @@ const tailwindSamples = [
   'animate-animix-pulse',
 ] as const;
 
+const modernCssSamples = [
+  'animix-scroll-reveal-up',
+  'animix-scroll-reveal-scale',
+  'animix-enter-fade',
+  'animix-enter-up',
+  'animix-enter-scale',
+] as const;
+
 function DemoCard({ label, className }: { label: string; className: string }) {
   return (
     <div
@@ -107,6 +115,47 @@ export function App() {
                 trigger=&quot;inView&quot; · slide-up
               </div>
             </Animate>
+          </div>
+        </section>
+
+        <section className="space-y-4">
+          <h2 className="text-lg font-semibold">Modern CSS layer</h2>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+            Progressive enhancement utilities from{' '}
+            <code className="rounded bg-zinc-200 px-1 dark:bg-zinc-800">animix/css/modern</code>.
+          </p>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {modernCssSamples.map((cls) => (
+              <DemoCard key={cls} label={cls.replace(/^animix-/, '')} className={cls} />
+            ))}
+          </div>
+          <div className="h-8" />
+          <div className="h-40 rounded-lg border border-dashed border-zinc-300 bg-zinc-100 p-3 text-xs text-zinc-600 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400">
+            Scroll down - cards animate as they enter view when timeline support is available.
+          </div>
+          <div className="space-y-3 pt-8">
+            <div className="animix-scroll-reveal-up rounded-lg bg-sky-600 px-4 py-3 text-sm font-medium text-white shadow-md">
+              scroll-reveal-up
+            </div>
+            <div className="animix-scroll-reveal-scale rounded-lg bg-fuchsia-600 px-4 py-3 text-sm font-medium text-white shadow-md">
+              scroll-reveal-scale
+            </div>
+            <div className="animix-scroll-progress h-1 rounded bg-emerald-500" />
+          </div>
+        </section>
+
+        <section className="space-y-4">
+          <h2 className="text-lg font-semibold">View transitions</h2>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+            Import{' '}
+            <code className="rounded bg-zinc-200 px-1 dark:bg-zinc-800">
+              animix/css/view-transitions
+            </code>{' '}
+            in multi-page apps for same-origin page transitions.
+          </p>
+          <div className="rounded-lg border border-zinc-200 bg-white p-4 text-sm dark:border-zinc-700 dark:bg-zinc-900">
+            In this SPA playground, cross-document navigation is not triggered, but the stylesheet is ready
+            for MPA usage.
           </div>
         </section>
 
