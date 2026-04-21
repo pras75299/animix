@@ -323,6 +323,45 @@ const keyframes = {
     from: { opacity: '1', transform: 'scale(1)' },
     to: { opacity: '0', transform: 'scale(0.9)' },
   },
+
+  /* Micro + icon + text + image packs */
+  'animix-badge-pulse-soft': {
+    '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+    '50%': { opacity: '0.88', transform: 'scale(1.03)' },
+  },
+  'animix-icon-success-pop': {
+    '0%': { opacity: '0', transform: 'scale(0.85)' },
+    '70%': { opacity: '1', transform: 'scale(1.06)' },
+    '100%': { opacity: '1', transform: 'scale(1)' },
+  },
+  'animix-shake-soft': {
+    '0%, 100%': { transform: 'translateX(0)' },
+    '25%': { transform: 'translateX(-3px)' },
+    '75%': { transform: 'translateX(3px)' },
+  },
+  'animix-icon-bell-ring': {
+    '0%, 100%': { transform: 'rotate(0deg)' },
+    '15%': { transform: 'rotate(10deg)' },
+    '30%': { transform: 'rotate(-10deg)' },
+    '45%': { transform: 'rotate(6deg)' },
+    '60%': { transform: 'rotate(-6deg)' },
+  },
+  'animix-text-headline-rise': {
+    from: { opacity: '0', transform: 'translateY(0.35em)' },
+    to: { opacity: '1', transform: 'translateY(0)' },
+  },
+  'animix-counter-tick': {
+    from: { opacity: '0', transform: 'translateY(0.15em)' },
+    to: { opacity: '1', transform: 'translateY(0)' },
+  },
+  'animix-img-mask-reveal': {
+    from: { clipPath: 'inset(0 100% 0 0)' },
+    to: { clipPath: 'inset(0 0 0 0)' },
+  },
+  'animix-img-parallax-lite': {
+    from: { transform: 'translateY(6px) scale(1.02)' },
+    to: { transform: 'translateY(-6px) scale(1.04)' },
+  },
 } as const;
 
 /* ── animation shorthand values ────────────────────────────────── */
@@ -445,6 +484,24 @@ const animations = {
     'animix-tooltip-in var(--animix-duration-fast,150ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) both',
   'tooltip-out':
     'animix-tooltip-out var(--animix-duration-fast,150ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) both',
+  /* Packs: micro / icon / text / image */
+  'badge-pulse-soft':
+    'animix-badge-pulse-soft 1.8s var(--animix-ease-default,cubic-bezier(0.4,0,0.2,1)) var(--animix-delay,0ms) both infinite',
+  'icon-spin': 'animix-spin 850ms linear var(--animix-delay,0ms) infinite',
+  'icon-success-pop':
+    'animix-icon-success-pop var(--animix-duration-base,300ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) var(--animix-delay,0ms) both',
+  'icon-shake-soft':
+    'animix-shake-soft 280ms var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+  'icon-bell-ring':
+    'animix-icon-bell-ring 600ms var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+  'text-headline-rise':
+    'animix-text-headline-rise var(--animix-duration-slow,500ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+  'counter-tick':
+    'animix-counter-tick var(--animix-duration-micro,180ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+  'img-mask-reveal':
+    'animix-img-mask-reveal var(--animix-duration-slow,500ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+  'img-parallax-lite':
+    'animix-img-parallax-lite 1ms linear var(--animix-delay,0ms) both',
 } as const;
 
 /* ── Custom easing values ───────────────────────────────────────── */
@@ -466,6 +523,7 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
       /* 1. CSS custom property tokens */
       addBase({
         ':root': {
+          '--animix-duration-micro': '180ms',
           '--animix-duration-fast': '150ms',
           '--animix-duration-base': '300ms',
           '--animix-duration-slow': '500ms',
@@ -477,6 +535,15 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
           '--animix-ease-bounce': 'cubic-bezier(0.68, -0.55, 0.27, 1.55)',
           '--animix-slide-distance': '16px',
           '--animix-scale-start': '0.95',
+          '--animix-hover-lift': '-2px',
+          '--animix-press-scale': '0.97',
+          '--animix-active-pop-scale': '1.02',
+          '--animix-focus-ring-width': '2px',
+          '--animix-focus-ring-offset': '2px',
+          '--animix-icon-duration': '160ms',
+          '--animix-text-stagger-step': '40ms',
+          '--animix-image-zoom': '1.04',
+          '--animix-motion-intensity': '1',
           '--animix-delay': '0ms',
           '--animix-stagger-delay': '75ms',
           '--animix-stagger-index': '0',
@@ -487,10 +554,12 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
         },
         '@media (prefers-reduced-motion: reduce)': {
           ':root': {
+            '--animix-duration-micro': '0ms',
             '--animix-duration-fast': '0ms',
             '--animix-duration-base': '0ms',
             '--animix-duration-slow': '0ms',
             '--animix-duration-slower': '0ms',
+            '--animix-motion-intensity': '0',
           },
         },
         '.dark, [data-theme="dark"]': {
@@ -619,6 +688,116 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
             {
               'transition-duration': '0ms !important',
             },
+        },
+      });
+
+      /* 8. Micro interactions + icon/text/image + state patterns (parity) */
+      addUtilities({
+        '.animix-hover-lift, .animate-animix-hover-lift': {
+          transition:
+            'transform var(--animix-duration-micro,180ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1))',
+          'will-change': 'transform',
+        },
+        '.animix-hover-lift:hover, .animate-animix-hover-lift:hover': {
+          transform: 'translateY(calc(var(--animix-hover-lift,-2px) * var(--animix-motion-intensity,1)))',
+        },
+        '.animix-hover-lift:active, .animate-animix-hover-lift:active': {
+          transform: 'translateY(0) scale(var(--animix-press-scale,0.97))',
+        },
+        '.animix-press-in, .animate-animix-press-in': {
+          transition:
+            'transform var(--animix-duration-micro,180ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1))',
+        },
+        '.animix-press-in:active, .animate-animix-press-in:active': {
+          transform: 'scale(var(--animix-press-scale,0.97))',
+        },
+        '.animix-focus-soft, .animate-animix-focus-soft': {
+          transition:
+            'outline-color var(--animix-duration-micro,180ms) ease, outline-offset var(--animix-duration-micro,180ms) ease, box-shadow var(--animix-duration-micro,180ms) ease',
+          outline: 'var(--animix-focus-ring-width,2px) solid transparent',
+          'outline-offset': 'var(--animix-focus-ring-offset,2px)',
+        },
+        '.animix-focus-soft:focus-visible, .animate-animix-focus-soft:focus-visible': {
+          'outline-style': 'solid',
+          'outline-width': 'var(--animix-focus-ring-width,2px)',
+          'outline-color': 'currentColor',
+          'outline-offset': 'var(--animix-focus-ring-offset,2px)',
+        },
+        '.animix-active-pop, .animate-animix-active-pop': {
+          transition:
+            'transform var(--animix-duration-micro,180ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1))',
+        },
+        '.animix-active-pop:hover, .animate-animix-active-pop:hover': {
+          transform: 'scale(var(--animix-active-pop-scale,1.02))',
+        },
+        '.animix-active-pop:active, .animate-animix-active-pop:active': {
+          transform: 'scale(var(--animix-press-scale,0.97))',
+        },
+        '.animix-icon-chevron, .animate-animix-icon-chevron': {
+          display: 'inline-block',
+          transition:
+            'transform var(--animix-icon-duration,160ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1))',
+          'transform-origin': 'center center',
+        },
+        '.animix-icon-chevron[aria-expanded="true"], .animix-icon-chevron[data-state="open"], [aria-expanded="true"] .animix-icon-chevron, [data-state="open"] .animix-icon-chevron, .animate-animix-icon-chevron[aria-expanded="true"], .animate-animix-icon-chevron[data-state="open"], [aria-expanded="true"] .animate-animix-icon-chevron':
+          {
+            transform: 'rotate(180deg)',
+          },
+        '.animix-img-zoom-wrap, .animate-animix-img-zoom-wrap': { overflow: 'hidden', 'border-radius': 'inherit' },
+        '.animix-img-zoom-wrap > img, .animix-img-zoom-wrap > picture > img, .animate-animix-img-zoom-wrap > img, .animate-animix-img-zoom-wrap > picture > img':
+          {
+            display: 'block',
+            width: '100%',
+            height: 'auto',
+            transition:
+              'transform var(--animix-duration-slow,500ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1))',
+            'transform-origin': 'center center',
+            'will-change': 'transform',
+          },
+        '.animix-img-zoom-wrap:hover > img, .animix-img-zoom-wrap:hover > picture > img, .animix-img-zoom-wrap:focus-within > img, .animix-img-zoom-wrap:focus-within > picture > img, .animate-animix-img-zoom-wrap:hover > img, .animate-animix-img-zoom-wrap:hover > picture > img, .animate-animix-img-zoom-wrap:focus-within > img, .animate-animix-img-zoom-wrap:focus-within > picture > img':
+          {
+            transform: 'scale(var(--animix-image-zoom,1.04))',
+          },
+        '.animix-img-shimmer, .animate-animix-img-shimmer': {
+          background:
+            'linear-gradient(110deg, var(--animix-skeleton-base,hsl(0,0%,88%)) 0%, var(--animix-skeleton-highlight,hsl(0,0%,96%)) 45%, var(--animix-skeleton-base,hsl(0,0%,88%)) 90%)',
+          'background-size': '200% 100%',
+          animation: 'animix-skeleton-shimmer 1.4s ease-in-out infinite',
+        },
+        '@supports (animation-timeline: view())': {
+          '.animix-img-parallax-lite, .animate-animix-img-parallax-lite': {
+            'will-change': 'transform',
+            'animation-timeline': 'view()',
+            'animation-range': 'entry 0% cover 60%',
+          },
+        },
+        '@media (prefers-reduced-motion: reduce)': {
+          '.animix-badge-pulse-soft, .animate-animix-badge-pulse-soft': {
+            animation: 'none',
+            opacity: '1',
+            transform: 'none',
+          },
+          '.animix-hover-lift:hover, .animix-hover-lift:active, .animate-animix-hover-lift:hover, .animate-animix-hover-lift:active, .animix-press-in:active, .animate-animix-press-in:active, .animix-active-pop:hover, .animix-active-pop:active, .animate-animix-active-pop:hover, .animate-animix-active-pop:active':
+            {
+              transform: 'none',
+            },
+          '.animix-icon-chevron[aria-expanded="true"], .animix-icon-chevron[data-state="open"], [aria-expanded="true"] .animix-icon-chevron, [data-state="open"] .animix-icon-chevron, .animate-animix-icon-chevron[aria-expanded="true"], .animate-animix-icon-chevron[data-state="open"], [aria-expanded="true"] .animate-animix-icon-chevron':
+            {
+              transform: 'none',
+            },
+          '.animix-img-zoom-wrap > img, .animix-img-zoom-wrap > picture > img, .animate-animix-img-zoom-wrap > img, .animate-animix-img-zoom-wrap > picture > img':
+            {
+              'transition-duration': '0ms',
+            },
+          '.animix-img-zoom-wrap:hover > img, .animix-img-zoom-wrap:hover > picture > img, .animix-img-zoom-wrap:focus-within > img, .animix-img-zoom-wrap:focus-within > picture > img, .animate-animix-img-zoom-wrap:hover > img, .animate-animix-img-zoom-wrap:hover > picture > img, .animate-animix-img-zoom-wrap:focus-within > img, .animate-animix-img-zoom-wrap:focus-within > picture > img':
+            {
+              transform: 'none',
+            },
+          '.animix-img-shimmer, .animate-animix-img-shimmer': { animation: 'none' },
+          '.animix-img-parallax-lite, .animate-animix-img-parallax-lite': {
+            animation: 'none',
+            transform: 'none',
+          },
         },
       });
     },

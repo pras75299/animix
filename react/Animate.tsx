@@ -85,6 +85,16 @@ export type TransitionAnimation =
 
 export type AnimationName = EntranceAnimation | AttentionAnimation | TransitionAnimation;
 
+/** Optional intent presets append subtle interaction utility classes. */
+export type MotionIntent = 'button' | 'icon' | 'text' | 'image';
+
+const INTENT_UTILITY_CLASSES: Record<MotionIntent, string> = {
+  button: 'animix-hover-lift animix-focus-soft animix-press-in',
+  icon: 'animix-origin-center',
+  text: 'animix-intensity-quiet',
+  image: 'animix-intensity-quiet animix-origin-center',
+};
+
 /* ── Class name helpers ─────────────────────────────────────────── */
 
 function getAnimationClass(
@@ -151,6 +161,11 @@ export interface AnimateProps {
   children: ReactNode;
   /** The animation to apply on entrance / play */
   animation: AnimationName;
+  /**
+   * Appends subtle utility classes for common UI roles (hover lift, focus ring,
+   * intensity). Does not replace `animation`.
+   */
+  intent?: MotionIntent;
   /** When to trigger the animation. Default: 'mount' */
   trigger?: 'mount' | 'hover' | 'focus' | 'inView' | 'manual';
   /** Duration preset or explicit millisecond value. Default: 'base' (300ms) */
@@ -191,6 +206,7 @@ export const Animate = forwardRef<HTMLElement, AnimateProps>(function Animate(
   {
     children,
     animation,
+    intent,
     trigger = 'mount',
     duration = 'base',
     delay = 0,
@@ -231,7 +247,9 @@ export const Animate = forwardRef<HTMLElement, AnimateProps>(function Animate(
   const durationClass = getDurationClass(duration);
   const easingClass = getEasingClass(easing);
 
-  const composedClass = [animClass, durationClass, easingClass, className]
+  const intentClass = intent ? INTENT_UTILITY_CLASSES[intent] : '';
+
+  const composedClass = [animClass, durationClass, easingClass, intentClass, className]
     .filter(Boolean)
     .join(' ');
 

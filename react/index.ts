@@ -7,13 +7,14 @@ export type {
   AnimateProps,
   AnimateStaggerProps,
   AnimationName,
+  MotionIntent,
   EntranceAnimation,
   ExitAnimation,
   AttentionAnimation,
   TransitionAnimation,
 } from './Animate';
 
-export { useAnimation, useInView } from './useAnimation';
+export { useAnimation, useInView, usePrefersReducedMotion } from './useAnimation';
 export type {
   UseAnimationOptions,
   UseAnimationControls,
