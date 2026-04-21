@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# animix pre-commit hook
+# Runs lint-staged on all staged files.
+# Blocked files will prevent the commit with an actionable error.
+
+npx lint-staged

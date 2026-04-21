@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# animix commit-msg hook
+# Validates commit message against Conventional Commits spec.
+# See commitlint.config.js for allowed types and scopes.
+
+npx --no -- commitlint --edit "$1"

@@ -1,0 +1,148 @@
+{
+  "name": "animix",
+  "version": "0.1.0",
+  "description": "Production-ready CSS animation library for Tailwind CSS v3/v4 and shadcn/ui",
+  "author": "animix contributors",
+  "license": "MIT",
+  "keywords": [
+    "animation",
+    "css",
+    "tailwind",
+    "shadcn",
+    "react",
+    "radix-ui",
+    "keyframes",
+    "motion",
+    "transitions"
+  ],
+  "homepage": "https://github.com/animix-js/animix#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/animix-js/animix.git"
+  },
+  "bugs": {
+    "url": "https://github.com/animix-js/animix/issues"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./tailwind": {
+      "types": "./dist/tailwind/plugin.d.ts",
+      "import": "./dist/tailwind/plugin.js",
+      "require": "./dist/tailwind/plugin.cjs"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js",
+      "require": "./dist/react/index.cjs"
+    },
+    "./css": "./src/index.css",
+    "./css/tokens": "./src/tokens.css",
+    "./css/entrance": "./src/animations/entrance.css",
+    "./css/exit": "./src/animations/exit.css",
+    "./css/attention": "./src/animations/attention.css",
+    "./css/loaders": "./src/animations/loaders.css",
+    "./css/transitions": "./src/animations/transitions.css",
+    "./css/utilities": "./src/utilities.css",
+    "./shadcn": "./shadcn-presets.css"
+  },
+  "files": [
+    "dist",
+    "src",
+    "shadcn-presets.css",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "dev": "cd playground && vite",
+    "build:playground": "cd playground && vite build",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p playground/tsconfig.json",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,css,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,css,json,md}\"",
+    "test": "node scripts/check-tailwind-keyframes.mjs",
+    "prepare": "husky",
+    "prepublishOnly": "npm run build && npm run typecheck && npm run lint && npm test"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "tailwindcss": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "tailwindcss": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "autoprefixer": "^10.4.19",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.7",
+    "postcss": "^8.4.38",
+    "prettier": "^3.3.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "tailwindcss": "^3.4.0",
+    "vite": "^5.4.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css}": [
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
+  },
+  "tsup": {
+    "entry": {
+      "index": "src/index.ts",
+      "tailwind/plugin": "tailwind/plugin.ts",
+      "react/index": "react/index.ts"
+    },
+    "format": [
+      "cjs",
+      "esm"
+    ],
+    "dts": true,
+    "sourcemap": true,
+    "clean": true,
+    "treeshake": true,
+    "external": [
+      "react",
+      "react-dom",
+      "tailwindcss"
+    ]
+  }
+}

@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+    branches: [main, next]
+  pull_request:
+    branches: [main, next]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Lint, Typecheck & Build
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify exports exist
+        run: |
+          test -f dist/index.js         || (echo "❌ dist/index.js missing" && exit 1)
+          test -f dist/index.cjs        || (echo "❌ dist/index.cjs missing" && exit 1)
+          test -f dist/index.d.ts       || (echo "❌ dist/index.d.ts missing" && exit 1)
+          test -f dist/tailwind/plugin.js  || (echo "❌ dist/tailwind/plugin.js missing" && exit 1)
+          test -f dist/react/index.js   || (echo "❌ dist/react/index.js missing" && exit 1)
+          test -f src/index.css         || (echo "❌ src/index.css missing" && exit 1)
+          test -f shadcn-presets.css    || (echo "❌ shadcn-presets.css missing" && exit 1)
+          echo "✅ All exports verified"
+
+  commit-lint:
+    name: Commit Message Lint
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate PR commits
+        run: |
+          npx commitlint \
+            --from ${{ github.event.pull_request.base.sha }} \
+            --to ${{ github.event.pull_request.head.sha }} \
+            --verbose

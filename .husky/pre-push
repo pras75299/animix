@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+# animix pre-push hook
+# Runs typecheck before any push to catch type errors early.
+# Use `git push --no-verify` only in genuine emergencies.
+
+echo "Running typecheck before push..."
+npm run typecheck
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "TypeScript errors found. Fix them before pushing."
+  echo "Run: npm run typecheck"
+  exit 1
+fi
+
+echo "Typecheck passed."
