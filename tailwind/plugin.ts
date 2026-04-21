@@ -211,6 +211,26 @@ const keyframes = {
     '0%': { backgroundPosition: '-200% 0' },
     '100%': { backgroundPosition: '200% 0' },
   },
+  'animix-reveal-up': {
+    from: { opacity: '0', transform: 'translateY(var(--animix-slide-distance,16px))' },
+    to: { opacity: '1', transform: 'translateY(0)' },
+  },
+  'animix-reveal-scale': {
+    from: { opacity: '0', transform: 'scale(var(--animix-scale-start,0.95))' },
+    to: { opacity: '1', transform: 'scale(1)' },
+  },
+  'animix-scroll-progress': {
+    from: { transform: 'scaleX(0)' },
+    to: { transform: 'scaleX(1)' },
+  },
+  'animix-vt-old': {
+    from: { opacity: '1', transform: 'translateX(0)' },
+    to: { opacity: '0', transform: 'translateX(calc(-1 * var(--animix-slide-distance,16px)))' },
+  },
+  'animix-vt-new': {
+    from: { opacity: '0', transform: 'translateX(var(--animix-slide-distance,16px))' },
+    to: { opacity: '1', transform: 'translateX(0)' },
+  },
 
   /* Page + overlay (parity with transitions.css / shadcn-presets) */
   'animix-page-fade-in': {
@@ -536,6 +556,70 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
           {
             'animation-play-state': 'running',
           },
+      });
+
+      /* 7. Modern CSS animation utilities */
+      addUtilities({
+        '.animix-scroll-reveal-up, .animate-animix-scroll-reveal-up': {
+          opacity: '1',
+          transform: 'none',
+        },
+        '.animix-scroll-reveal-scale, .animate-animix-scroll-reveal-scale': {
+          opacity: '1',
+          transform: 'none',
+        },
+        '.animix-enter-fade, .animate-animix-enter-fade': {
+          opacity: '1',
+          'transition-property': 'opacity',
+          'transition-duration': 'var(--animix-duration-base,300ms)',
+          'transition-delay': 'var(--animix-delay,0ms)',
+          'transition-timing-function': 'var(--animix-ease-out,cubic-bezier(0,0,0.2,1))',
+        },
+        '.animix-enter-up, .animate-animix-enter-up': {
+          opacity: '1',
+          transform: 'translateY(0)',
+          'transition-property': 'opacity, transform',
+          'transition-duration': 'var(--animix-duration-base,300ms)',
+          'transition-delay': 'var(--animix-delay,0ms)',
+          'transition-timing-function': 'var(--animix-ease-out,cubic-bezier(0,0,0.2,1))',
+        },
+        '.animix-enter-scale, .animate-animix-enter-scale': {
+          opacity: '1',
+          transform: 'scale(1)',
+          'transition-property': 'opacity, transform',
+          'transition-duration': 'var(--animix-duration-base,300ms)',
+          'transition-delay': 'var(--animix-delay,0ms)',
+          'transition-timing-function': 'var(--animix-ease-out,cubic-bezier(0,0,0.2,1))',
+        },
+        '@supports (animation-timeline: view())': {
+          '.animix-scroll-reveal-up, .animate-animix-scroll-reveal-up': {
+            animation: 'animix-reveal-up 1ms linear both',
+            'animation-timeline': 'view()',
+            'animation-range': 'entry 10% cover 35%',
+            'will-change': 'transform, opacity',
+          },
+          '.animix-scroll-reveal-scale, .animate-animix-scroll-reveal-scale': {
+            animation: 'animix-reveal-scale 1ms linear both',
+            'animation-timeline': 'view()',
+            'animation-range': 'entry 15% cover 45%',
+            'will-change': 'transform, opacity',
+          },
+          '.animix-scroll-progress, .animate-animix-scroll-progress': {
+            'transform-origin': '0 50%',
+            animation: 'animix-scroll-progress 1ms linear both',
+            'animation-timeline': 'scroll(block)',
+          },
+        },
+        '@media (prefers-reduced-motion: reduce)': {
+          '.animix-scroll-reveal-up, .animate-animix-scroll-reveal-up, .animix-scroll-reveal-scale, .animate-animix-scroll-reveal-scale, .animix-scroll-progress, .animate-animix-scroll-progress':
+            {
+              animation: 'none !important',
+            },
+          '.animix-enter-fade, .animate-animix-enter-fade, .animix-enter-up, .animate-animix-enter-up, .animix-enter-scale, .animate-animix-enter-scale':
+            {
+              'transition-duration': '0ms !important',
+            },
+        },
       });
     },
 
