@@ -1,0 +1,47 @@
+/* ============================================================
+   animix — View Transition Recipes
+   Cross-document transitions are opt-in and same-origin only.
+   ============================================================ */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: animix-vt-old var(--animix-duration-base, 300ms)
+    var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1)) both;
+}
+
+::view-transition-new(root) {
+  animation: animix-vt-new var(--animix-duration-base, 300ms)
+    var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1)) both;
+}
+
+@keyframes animix-vt-old {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(calc(-1 * var(--animix-slide-distance, 16px)));
+  }
+}
+
+@keyframes animix-vt-new {
+  from {
+    opacity: 0;
+    transform: translateX(var(--animix-slide-distance, 16px));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Disable transitions for users who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}

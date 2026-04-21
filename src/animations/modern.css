@@ -1,0 +1,134 @@
+/* ============================================================
+   animix — Modern CSS Animations (Progressive Enhancement)
+   Uses latest CSS features with safe fallbacks:
+   - Scroll-driven timelines
+   - @starting-style enter transitions
+   ============================================================ */
+
+/* ── Scroll-driven keyframes ─────────────────────────────────── */
+@keyframes animix-reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(var(--animix-slide-distance, 16px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes animix-reveal-scale {
+  from {
+    opacity: 0;
+    transform: scale(var(--animix-scale-start, 0.95));
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes animix-scroll-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ── Fallback: visible content without timeline support ──────── */
+.animix-scroll-reveal-up,
+.animix-scroll-reveal-scale {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Scroll-driven animations (modern browsers) ──────────────── */
+@supports (animation-timeline: view()) {
+  .animix-scroll-reveal-up {
+    animation-name: animix-reveal-up;
+    animation-duration: 1ms;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-timeline: view();
+    animation-range: entry 10% cover 35%;
+    will-change: transform, opacity;
+  }
+
+  .animix-scroll-reveal-scale {
+    animation-name: animix-reveal-scale;
+    animation-duration: 1ms;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-timeline: view();
+    animation-range: entry 15% cover 45%;
+    will-change: transform, opacity;
+  }
+
+  .animix-scroll-progress {
+    transform-origin: 0 50%;
+    animation-name: animix-scroll-progress;
+    animation-duration: 1ms;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-timeline: scroll(block);
+  }
+}
+
+/* ── @starting-style entry transitions ───────────────────────── */
+.animix-enter-fade,
+.animix-enter-up,
+.animix-enter-scale {
+  transition-duration: var(--animix-duration-base, 300ms);
+  transition-delay: var(--animix-delay, 0ms);
+  transition-timing-function: var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1));
+}
+
+.animix-enter-fade {
+  opacity: 1;
+  transition-property: opacity;
+}
+
+.animix-enter-up {
+  opacity: 1;
+  transform: translateY(0);
+  transition-property: opacity, transform;
+}
+
+.animix-enter-scale {
+  opacity: 1;
+  transform: scale(1);
+  transition-property: opacity, transform;
+}
+
+@starting-style {
+  .animix-enter-fade {
+    opacity: 0;
+  }
+
+  .animix-enter-up {
+    opacity: 0;
+    transform: translateY(var(--animix-slide-distance, 16px));
+  }
+
+  .animix-enter-scale {
+    opacity: 0;
+    transform: scale(var(--animix-scale-start, 0.95));
+  }
+}
+
+/* ── Reduced motion safety ────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .animix-scroll-reveal-up,
+  .animix-scroll-reveal-scale,
+  .animix-scroll-progress {
+    animation: none !important;
+  }
+
+  .animix-enter-fade,
+  .animix-enter-up,
+  .animix-enter-scale {
+    transition-duration: 0ms !important;
+  }
+}

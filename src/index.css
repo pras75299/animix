@@ -15,4 +15,6 @@
 @import "./animations/attention.css";
 @import "./animations/loaders.css";
 @import "./animations/transitions.css";
+@import "./animations/modern.css";
+@import "./animations/view-transitions.css";
 @import "./utilities.css";
