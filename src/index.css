@@ -1,0 +1,18 @@
+/* ============================================================
+   animix — Full Bundle Entry
+   Import this single file to get every token, keyframe,
+   animation class, and utility class in one shot.
+
+   Tree-shakable: for smaller bundles, import individual files:
+     import 'animix/css/tokens'
+     import 'animix/css/entrance'
+     import 'animix/css/utilities'
+   ============================================================ */
+
+@import "./tokens.css";
+@import "./animations/entrance.css";
+@import "./animations/exit.css";
+@import "./animations/attention.css";
+@import "./animations/loaders.css";
+@import "./animations/transitions.css";
+@import "./utilities.css";

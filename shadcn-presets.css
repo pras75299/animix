@@ -1,0 +1,266 @@
+/* ============================================================
+   animix — shadcn/ui Presets
+   Drop-in animation overrides for shadcn/ui components.
+   Uses Radix UI's data-state and data-side attributes.
+   Import AFTER animix's main CSS and AFTER shadcn's styles.
+
+   All keyframes are defined in animix's animation files.
+   These rules ONLY set animation properties — they never
+   touch shadcn CSS variables (--background, --foreground,
+   --primary, --radius, --ring, etc.).
+   ============================================================ */
+
+/* ── Dialog / AlertDialog (modal-scale) ───────────────────────── */
+
+/* Backdrop overlay */
+[data-radix-dialog-overlay][data-state="open"],
+[data-radix-alert-dialog-overlay][data-state="open"] {
+  animation: animix-overlay-in var(--animix-duration-base, 300ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1))
+    both;
+}
+
+[data-radix-dialog-overlay][data-state="closed"],
+[data-radix-alert-dialog-overlay][data-state="closed"] {
+  animation: animix-overlay-out var(--animix-duration-base, 300ms) var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1))
+    both;
+}
+
+/* Dialog content */
+[data-radix-dialog-content][data-state="open"],
+[data-radix-alert-dialog-content][data-state="open"] {
+  animation: animix-modal-in var(--animix-duration-base, 300ms)
+    var(--animix-ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) both;
+}
+
+[data-radix-dialog-content][data-state="closed"],
+[data-radix-alert-dialog-content][data-state="closed"] {
+  animation: animix-modal-out var(--animix-duration-base, 300ms) var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1)) both;
+}
+
+/* ── Sheet / Drawer (drawer-slide from all 4 sides) ───────────── */
+
+/* Right (default shadcn sheet side) */
+[data-radix-dialog-content][data-state="open"][data-side="right"] {
+  animation: animix-drawer-in-right var(--animix-duration-slow, 500ms)
+    var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1)) both;
+}
+
+[data-radix-dialog-content][data-state="closed"][data-side="right"] {
+  animation: animix-drawer-out-right var(--animix-duration-slow, 500ms)
+    var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1)) both;
+}
+
+/* Left */
+[data-radix-dialog-content][data-state="open"][data-side="left"] {
+  animation: animix-drawer-in-left var(--animix-duration-slow, 500ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1))
+    both;
+}
+
+[data-radix-dialog-content][data-state="closed"][data-side="left"] {
+  animation: animix-drawer-out-left var(--animix-duration-slow, 500ms) var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1))
+    both;
+}
+
+/* Top */
+[data-radix-dialog-content][data-state="open"][data-side="top"] {
+  animation: animix-drawer-in-top var(--animix-duration-slow, 500ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1))
+    both;
+}
+
+[data-radix-dialog-content][data-state="closed"][data-side="top"] {
+  animation: animix-drawer-out-top var(--animix-duration-slow, 500ms) var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1))
+    both;
+}
+
+/* Bottom */
+[data-radix-dialog-content][data-state="open"][data-side="bottom"] {
+  animation: animix-drawer-in-bottom var(--animix-duration-slow, 500ms)
+    var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1)) both;
+}
+
+[data-radix-dialog-content][data-state="closed"][data-side="bottom"] {
+  animation: animix-drawer-out-bottom var(--animix-duration-slow, 500ms)
+    var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1)) both;
+}
+
+/* ── DropdownMenu / ContextMenu / Select / Popover ────────────── */
+/* Uses data-side to slide in from the correct direction */
+
+[data-radix-dropdown-menu-content][data-state="open"],
+[data-radix-context-menu-content][data-state="open"],
+[data-radix-select-content][data-state="open"],
+[data-radix-popover-content][data-state="open"],
+[data-radix-menubar-content][data-state="open"] {
+  animation: animix-scale-up-in var(--animix-duration-fast, 150ms)
+    var(--animix-ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) both;
+}
+
+[data-radix-dropdown-menu-content][data-state="closed"],
+[data-radix-context-menu-content][data-state="closed"],
+[data-radix-select-content][data-state="closed"],
+[data-radix-popover-content][data-state="closed"],
+[data-radix-menubar-content][data-state="closed"] {
+  animation: animix-scale-down-out var(--animix-duration-fast, 150ms) var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1))
+    both;
+}
+
+/* Directional slide-in for menus opening from specific sides */
+[data-radix-dropdown-menu-content][data-side="top"][data-state="open"],
+[data-radix-context-menu-content][data-side="top"][data-state="open"],
+[data-radix-popover-content][data-side="top"][data-state="open"] {
+  animation: animix-slide-down-in var(--animix-duration-fast, 150ms)
+    var(--animix-ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) both;
+}
+
+[data-radix-dropdown-menu-content][data-side="bottom"][data-state="open"],
+[data-radix-context-menu-content][data-side="bottom"][data-state="open"],
+[data-radix-popover-content][data-side="bottom"][data-state="open"] {
+  animation: animix-slide-up-in var(--animix-duration-fast, 150ms)
+    var(--animix-ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) both;
+}
+
+[data-radix-dropdown-menu-content][data-side="left"][data-state="open"],
+[data-radix-context-menu-content][data-side="left"][data-state="open"],
+[data-radix-popover-content][data-side="left"][data-state="open"] {
+  animation: animix-slide-right-in var(--animix-duration-fast, 150ms)
+    var(--animix-ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) both;
+}
+
+[data-radix-dropdown-menu-content][data-side="right"][data-state="open"],
+[data-radix-context-menu-content][data-side="right"][data-state="open"],
+[data-radix-popover-content][data-side="right"][data-state="open"] {
+  animation: animix-slide-left-in var(--animix-duration-fast, 150ms)
+    var(--animix-ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) both;
+}
+
+/* ── Tooltip ───────────────────────────────────────────────────── */
+
+[data-radix-tooltip-content][data-state="delayed-open"],
+[data-radix-tooltip-content][data-state="instant-open"] {
+  animation: animix-tooltip-in var(--animix-duration-fast, 150ms)
+    var(--animix-ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) both;
+}
+
+[data-radix-tooltip-content][data-state="closed"] {
+  animation: animix-tooltip-out var(--animix-duration-fast, 150ms) var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1))
+    both;
+}
+
+/* ── Accordion ─────────────────────────────────────────────────── */
+
+/* Accordion content expand / collapse using max-height transition.
+   Radix animates height via CSS variables it sets on the element. */
+[data-radix-accordion-content] {
+  overflow: hidden;
+}
+
+[data-radix-accordion-content][data-state="open"] {
+  animation: animix-accordion-down var(--animix-duration-base, 300ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1));
+}
+
+[data-radix-accordion-content][data-state="closed"] {
+  animation: animix-accordion-up var(--animix-duration-base, 300ms) var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+}
+
+@keyframes animix-accordion-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes animix-accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+/* ── Collapsible (same pattern as Accordion) ───────────────────── */
+
+[data-radix-collapsible-content][data-state="open"] {
+  animation: animix-accordion-down var(--animix-duration-base, 300ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1));
+}
+
+[data-radix-collapsible-content][data-state="closed"] {
+  animation: animix-accordion-up var(--animix-duration-base, 300ms) var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+}
+
+/* ── Toast / Sonner ────────────────────────────────────────────── */
+
+/* Sonner toasts use [data-sonner-toast] attributes */
+[data-sonner-toast][data-state="open"] {
+  animation: animix-toast-in-right var(--animix-duration-base, 300ms)
+    var(--animix-ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) both;
+}
+
+[data-sonner-toast][data-state="removed"] {
+  animation: animix-toast-out-right var(--animix-duration-base, 300ms) var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1))
+    both;
+}
+
+/* shadcn native Toast (radix) */
+[data-radix-toast-viewport] [data-state="open"] {
+  animation: animix-toast-in-right var(--animix-duration-base, 300ms)
+    var(--animix-ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) both;
+}
+
+[data-radix-toast-viewport] [data-state="closed"] {
+  animation: animix-toast-out-right var(--animix-duration-base, 300ms) var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1))
+    both;
+}
+
+/* Bottom-positioned toasts */
+[data-radix-toast-viewport][data-position="bottom"] [data-state="open"],
+[data-sonner-toaster][data-position*="bottom"] [data-sonner-toast][data-state="open"] {
+  animation: animix-toast-in-bottom var(--animix-duration-base, 300ms)
+    var(--animix-ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) both;
+}
+
+/* ── Command / Combobox (CMDk) ─────────────────────────────────── */
+
+[cmdk-dialog][data-state="open"],
+[data-radix-dialog-content][data-cmdk-overlay] {
+  animation: animix-scale-up-in var(--animix-duration-fast, 150ms)
+    var(--animix-ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) both;
+}
+
+/* ── NavigationMenu ────────────────────────────────────────────── */
+
+[data-radix-navigation-menu-content][data-state="open"] {
+  animation: animix-fade-in var(--animix-duration-fast, 150ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1)) both;
+}
+
+[data-radix-navigation-menu-content][data-state="closed"] {
+  animation: animix-fade-out var(--animix-duration-fast, 150ms) var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1)) both;
+}
+
+/* ── Reduced motion: strip all animations on these components ─── */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-radix-dialog-overlay],
+  [data-radix-dialog-content],
+  [data-radix-alert-dialog-overlay],
+  [data-radix-alert-dialog-content],
+  [data-radix-dropdown-menu-content],
+  [data-radix-context-menu-content],
+  [data-radix-select-content],
+  [data-radix-popover-content],
+  [data-radix-tooltip-content],
+  [data-radix-accordion-content],
+  [data-radix-collapsible-content],
+  [data-radix-toast-viewport] *,
+  [data-sonner-toast],
+  [data-radix-navigation-menu-content] {
+    animation: none !important;
+    transition: none !important;
+  }
+}

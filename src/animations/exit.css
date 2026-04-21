@@ -1,0 +1,230 @@
+/* ============================================================
+   animix — Exit Animations (.animix-out-*)
+   Mirror of entrance.css: exits use ease-in timing (objects
+   accelerate as they leave) and finish at opacity 0 so
+   animation-fill-mode: both keeps the element invisible.
+   ============================================================ */
+
+/* ── Keyframes ─────────────────────────────────────────────────── */
+
+@keyframes animix-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes animix-slide-up-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(calc(-1 * var(--animix-slide-distance, 16px)));
+  }
+}
+
+@keyframes animix-slide-down-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(var(--animix-slide-distance, 16px));
+  }
+}
+
+@keyframes animix-slide-left-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(calc(-1 * var(--animix-slide-distance, 16px)));
+  }
+}
+
+@keyframes animix-slide-right-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(var(--animix-slide-distance, 16px));
+  }
+}
+
+@keyframes animix-scale-up-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes animix-scale-down-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(var(--animix-scale-start, 0.95));
+  }
+}
+
+@keyframes animix-flip-x-out {
+  from {
+    opacity: 1;
+    transform: perspective(400px) rotateX(0deg);
+  }
+  to {
+    opacity: 0;
+    transform: perspective(400px) rotateX(90deg);
+  }
+}
+
+@keyframes animix-flip-y-out {
+  from {
+    opacity: 1;
+    transform: perspective(400px) rotateY(0deg);
+  }
+  to {
+    opacity: 0;
+    transform: perspective(400px) rotateY(90deg);
+  }
+}
+
+@keyframes animix-rotate-out {
+  from {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: rotate(180deg) scale(0.8);
+  }
+}
+
+@keyframes animix-blur-out {
+  from {
+    opacity: 1;
+    filter: blur(0px);
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    filter: blur(8px);
+    transform: scale(0.98);
+  }
+}
+
+/* ── Classes ───────────────────────────────────────────────────── */
+
+.animix-out-fade {
+  animation-name: animix-fade-out;
+  animation-duration: var(--animix-duration-base, 300ms);
+  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+}
+
+.animix-out-slide-up {
+  animation-name: animix-slide-up-out;
+  animation-duration: var(--animix-duration-base, 300ms);
+  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+}
+
+.animix-out-slide-down {
+  animation-name: animix-slide-down-out;
+  animation-duration: var(--animix-duration-base, 300ms);
+  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+}
+
+.animix-out-slide-left {
+  animation-name: animix-slide-left-out;
+  animation-duration: var(--animix-duration-base, 300ms);
+  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+}
+
+.animix-out-slide-right {
+  animation-name: animix-slide-right-out;
+  animation-duration: var(--animix-duration-base, 300ms);
+  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+}
+
+.animix-out-scale-up {
+  animation-name: animix-scale-up-out;
+  animation-duration: var(--animix-duration-base, 300ms);
+  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+}
+
+.animix-out-scale-down {
+  animation-name: animix-scale-down-out;
+  animation-duration: var(--animix-duration-base, 300ms);
+  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+}
+
+.animix-out-flip-x {
+  animation-name: animix-flip-x-out;
+  animation-duration: var(--animix-duration-slow, 500ms);
+  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+}
+
+.animix-out-flip-y {
+  animation-name: animix-flip-y-out;
+  animation-duration: var(--animix-duration-slow, 500ms);
+  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+}
+
+.animix-out-rotate {
+  animation-name: animix-rotate-out;
+  animation-duration: var(--animix-duration-slow, 500ms);
+  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+}
+
+.animix-out-blur {
+  animation-name: animix-blur-out;
+  animation-duration: var(--animix-duration-base, 300ms);
+  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+}

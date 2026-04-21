@@ -1,0 +1,238 @@
+/* ============================================================
+   animix — Loaders (.animix-loader-*)
+   Pure CSS loading indicators. All use aria-hidden="true"
+   when purely decorative; add an aria-label when the loader
+   represents meaningful state ("Loading…").
+   ============================================================ */
+
+/* ── Keyframes ─────────────────────────────────────────────────── */
+
+@keyframes animix-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes animix-dots-bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes animix-bars-stretch {
+  0%,
+  40%,
+  100% {
+    transform: scaleY(0.4);
+  }
+  20% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes animix-pulse-ring-outer {
+  0% {
+    transform: scale(0.4);
+    opacity: 1;
+  }
+  80%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes animix-pulse-ring-inner {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+@keyframes animix-skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes animix-typing-dot {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.75);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ── Spin ──────────────────────────────────────────────────────── */
+
+.animix-loader-spin {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: animix-spin 600ms linear infinite;
+}
+
+/* ── Dots ──────────────────────────────────────────────────────── */
+
+.animix-loader-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.animix-loader-dots > span {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: currentColor;
+  animation: animix-dots-bounce 1.4s ease-in-out infinite both;
+}
+
+.animix-loader-dots > span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.animix-loader-dots > span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+.animix-loader-dots > span:nth-child(3) {
+  animation-delay: 0s;
+}
+
+/* ── Bars ──────────────────────────────────────────────────────── */
+
+.animix-loader-bars {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  height: 1.5rem;
+}
+
+.animix-loader-bars > span {
+  display: inline-block;
+  width: 0.25rem;
+  height: 100%;
+  border-radius: 9999px;
+  background-color: currentColor;
+  animation: animix-bars-stretch 1.2s ease-in-out infinite;
+}
+
+.animix-loader-bars > span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.animix-loader-bars > span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+.animix-loader-bars > span:nth-child(3) {
+  animation-delay: 0s;
+}
+.animix-loader-bars > span:nth-child(4) {
+  animation-delay: 0.16s;
+}
+.animix-loader-bars > span:nth-child(5) {
+  animation-delay: 0.32s;
+}
+
+/* ── Pulse Ring ────────────────────────────────────────────────── */
+
+.animix-loader-pulse-ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.animix-loader-pulse-ring::before,
+.animix-loader-pulse-ring::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+}
+
+.animix-loader-pulse-ring::before {
+  animation: animix-pulse-ring-outer 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+.animix-loader-pulse-ring::after {
+  animation: animix-pulse-ring-inner 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  animation-delay: -0.4s;
+}
+
+/* ── Skeleton ──────────────────────────────────────────────────── */
+
+.animix-loader-skeleton {
+  display: block;
+  background: linear-gradient(
+    90deg,
+    var(--animix-skeleton-base, hsl(0, 0%, 88%)) 25%,
+    var(--animix-skeleton-highlight, hsl(0, 0%, 96%)) 50%,
+    var(--animix-skeleton-base, hsl(0, 0%, 88%)) 75%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--radius, 0.375rem);
+  animation: animix-skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+/* Convenience size helpers */
+.animix-loader-skeleton-text {
+  height: 1em;
+  border-radius: 0.25rem;
+}
+
+.animix-loader-skeleton-circle {
+  border-radius: 50%;
+}
+
+/* ── Typing Dots ───────────────────────────────────────────────── */
+
+.animix-loader-typing-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.animix-loader-typing-dots > span {
+  display: inline-block;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background-color: currentColor;
+  animation: animix-typing-dot 1.4s ease-in-out infinite;
+}
+
+.animix-loader-typing-dots > span:nth-child(1) {
+  animation-delay: 0ms;
+}
+.animix-loader-typing-dots > span:nth-child(2) {
+  animation-delay: 160ms;
+}
+.animix-loader-typing-dots > span:nth-child(3) {
+  animation-delay: 320ms;
+}

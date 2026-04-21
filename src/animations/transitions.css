@@ -1,0 +1,336 @@
+/* ============================================================
+   animix — UI Transitions
+   Higher-level animation patterns for page changes, modals,
+   drawers, toasts, and tooltips. Designed to map directly
+   onto shadcn/ui component lifecycle hooks.
+   ============================================================ */
+
+/* ── Keyframes: Page ───────────────────────────────────────────── */
+
+@keyframes animix-page-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes animix-page-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes animix-page-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(var(--animix-slide-distance, 16px));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes animix-page-slide-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(calc(-1 * var(--animix-slide-distance, 16px)));
+  }
+}
+
+/* ── Keyframes: Drawer (all four sides) ───────────────────────── */
+
+@keyframes animix-drawer-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes animix-drawer-out-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes animix-drawer-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes animix-drawer-out-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes animix-drawer-in-top {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes animix-drawer-out-top {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes animix-drawer-in-bottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes animix-drawer-out-bottom {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+/* ── Keyframes: Modal ──────────────────────────────────────────── */
+
+@keyframes animix-modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes animix-modal-out {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(-8px);
+  }
+}
+
+/* ── Keyframes: Toast ──────────────────────────────────────────── */
+
+@keyframes animix-toast-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(calc(100% + 1.5rem));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes animix-toast-out-right {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(calc(100% + 1.5rem));
+  }
+}
+
+@keyframes animix-toast-in-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(calc(100% + 1.5rem));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes animix-toast-out-bottom {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(calc(100% + 1.5rem));
+  }
+}
+
+/* ── Keyframes: Tooltip / Popover ─────────────────────────────── */
+
+@keyframes animix-tooltip-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes animix-tooltip-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+/* ── Keyframes: Overlay / Backdrop ────────────────────────────── */
+
+@keyframes animix-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes animix-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* ── Classes: Page ─────────────────────────────────────────────── */
+
+.animix-page-fade-in {
+  animation: animix-page-fade-in var(--animix-duration-slow, 500ms) var(--animix-ease-out) both;
+}
+
+.animix-page-fade-out {
+  animation: animix-page-fade-out var(--animix-duration-slow, 500ms) var(--animix-ease-in) both;
+}
+
+.animix-page-slide-in {
+  animation: animix-page-slide-in var(--animix-duration-slow, 500ms) var(--animix-ease-out) both;
+}
+
+.animix-page-slide-out {
+  animation: animix-page-slide-out var(--animix-duration-slow, 500ms) var(--animix-ease-in) both;
+}
+
+/* ── Classes: Drawer ───────────────────────────────────────────── */
+
+.animix-drawer-in-right {
+  animation: animix-drawer-in-right var(--animix-duration-slow, 500ms) var(--animix-ease-out) both;
+}
+
+.animix-drawer-out-right {
+  animation: animix-drawer-out-right var(--animix-duration-slow, 500ms) var(--animix-ease-in) both;
+}
+
+.animix-drawer-in-left {
+  animation: animix-drawer-in-left var(--animix-duration-slow, 500ms) var(--animix-ease-out) both;
+}
+
+.animix-drawer-out-left {
+  animation: animix-drawer-out-left var(--animix-duration-slow, 500ms) var(--animix-ease-in) both;
+}
+
+.animix-drawer-in-top {
+  animation: animix-drawer-in-top var(--animix-duration-slow, 500ms) var(--animix-ease-out) both;
+}
+
+.animix-drawer-out-top {
+  animation: animix-drawer-out-top var(--animix-duration-slow, 500ms) var(--animix-ease-in) both;
+}
+
+.animix-drawer-in-bottom {
+  animation: animix-drawer-in-bottom var(--animix-duration-slow, 500ms) var(--animix-ease-out) both;
+}
+
+.animix-drawer-out-bottom {
+  animation: animix-drawer-out-bottom var(--animix-duration-slow, 500ms) var(--animix-ease-in) both;
+}
+
+/* ── Classes: Modal ────────────────────────────────────────────── */
+
+.animix-modal-in {
+  animation: animix-modal-in var(--animix-duration-base, 300ms) var(--animix-ease-spring) both;
+}
+
+.animix-modal-out {
+  animation: animix-modal-out var(--animix-duration-base, 300ms) var(--animix-ease-in) both;
+}
+
+/* ── Classes: Toast ────────────────────────────────────────────── */
+
+.animix-toast-in-right {
+  animation: animix-toast-in-right var(--animix-duration-base, 300ms) var(--animix-ease-spring) both;
+}
+
+.animix-toast-out-right {
+  animation: animix-toast-out-right var(--animix-duration-base, 300ms) var(--animix-ease-in) both;
+}
+
+.animix-toast-in-bottom {
+  animation: animix-toast-in-bottom var(--animix-duration-base, 300ms) var(--animix-ease-spring) both;
+}
+
+.animix-toast-out-bottom {
+  animation: animix-toast-out-bottom var(--animix-duration-base, 300ms) var(--animix-ease-in) both;
+}
+
+/* ── Classes: Tooltip / Popover ────────────────────────────────── */
+
+.animix-tooltip-in {
+  animation: animix-tooltip-in var(--animix-duration-fast, 150ms) var(--animix-ease-spring) both;
+}
+
+.animix-tooltip-out {
+  animation: animix-tooltip-out var(--animix-duration-fast, 150ms) var(--animix-ease-in) both;
+}
+
+/* ── Classes: Overlay ──────────────────────────────────────────── */
+
+.animix-overlay-in {
+  animation: animix-overlay-in var(--animix-duration-base, 300ms) var(--animix-ease-out) both;
+}
+
+.animix-overlay-out {
+  animation: animix-overlay-out var(--animix-duration-base, 300ms) var(--animix-ease-in) both;
+}

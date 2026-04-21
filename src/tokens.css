@@ -1,0 +1,71 @@
+/* ============================================================
+   animix — Design Tokens
+   All CSS custom properties. Override per-component by setting
+   these vars on the element itself or a parent container.
+   ============================================================ */
+
+:root {
+  /* ── Duration ──────────────────────────────────────────────── */
+  --animix-duration-fast: 150ms;
+  --animix-duration-base: 300ms;
+  --animix-duration-slow: 500ms;
+  --animix-duration-slower: 800ms;
+
+  /* ── Easing ────────────────────────────────────────────────── */
+  --animix-ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --animix-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --animix-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --animix-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --animix-ease-bounce: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
+  /* ── Distance / Scale ──────────────────────────────────────── */
+  --animix-slide-distance: 16px;
+  --animix-scale-start: 0.95;
+
+  /* ── Delay ─────────────────────────────────────────────────── */
+  --animix-delay: 0ms;
+
+  /* ── Stagger ───────────────────────────────────────────────── */
+  --animix-stagger-delay: 75ms;
+  --animix-stagger-index: 0;
+
+  /* ── Fill / Iteration ──────────────────────────────────────── */
+  --animix-fill-mode: both;
+  --animix-iteration: 1;
+
+  /* ── Skeleton shimmer colors ───────────────────────────────── */
+  --animix-skeleton-base: hsl(0, 0%, 88%);
+  --animix-skeleton-highlight: hsl(0, 0%, 96%);
+}
+
+/* Reduced motion: zero out all durations so keyframes still run
+   but complete instantly (preserves fill-mode end state). */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --animix-duration-fast: 0ms;
+    --animix-duration-base: 0ms;
+    --animix-duration-slow: 0ms;
+    --animix-duration-slower: 0ms;
+  }
+}
+
+/* Dark-mode skeleton tokens (works with shadcn .dark class and
+   data-theme attribute). */
+.dark,
+[data-theme="dark"] {
+  --animix-skeleton-base: hsl(0, 0%, 18%);
+  --animix-skeleton-highlight: hsl(0, 0%, 26%);
+}
+
+/* ── Global disable class ──────────────────────────────────────
+   Add .animix-no-motion to <html> or any container to kill
+   every animation beneath it (user preference toggle). */
+.animix-no-motion,
+.animix-no-motion *,
+.animix-no-motion *::before,
+.animix-no-motion *::after {
+  animation-duration: 0ms !important;
+  animation-delay: 0ms !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+}
