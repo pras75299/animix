@@ -1,7 +1,7 @@
 /* ============================================================
    animix — Exit Animations (.animix-out-*)
-   Mirror of entrance.css: exits use ease-in timing (objects
-   accelerate as they leave) and finish at opacity 0 so
+   Mirror of entrance.css: exits use faster ease-out timing so
+   the UI responds immediately and finish at opacity 0 so
    animation-fill-mode: both keeps the element invisible.
    ============================================================ */
 
@@ -111,7 +111,7 @@
   }
   to {
     opacity: 0;
-    transform: rotate(180deg) scale(0.8);
+    transform: rotate(12deg) scale(0.96);
   }
 }
 
@@ -123,7 +123,7 @@
   }
   to {
     opacity: 0;
-    filter: blur(8px);
+    filter: blur(4px);
     transform: scale(0.98);
   }
 }
@@ -132,8 +132,8 @@
 
 .animix-out-fade {
   animation-name: animix-fade-out;
-  animation-duration: var(--animix-duration-base, 300ms);
-  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-duration: var(--animix-duration-fast, 180ms);
+  animation-timing-function: var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
@@ -141,8 +141,8 @@
 
 .animix-out-slide-up {
   animation-name: animix-slide-up-out;
-  animation-duration: var(--animix-duration-base, 300ms);
-  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-duration: var(--animix-duration-fast, 180ms);
+  animation-timing-function: var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
@@ -150,8 +150,8 @@
 
 .animix-out-slide-down {
   animation-name: animix-slide-down-out;
-  animation-duration: var(--animix-duration-base, 300ms);
-  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-duration: var(--animix-duration-fast, 180ms);
+  animation-timing-function: var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
@@ -159,8 +159,8 @@
 
 .animix-out-slide-left {
   animation-name: animix-slide-left-out;
-  animation-duration: var(--animix-duration-base, 300ms);
-  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-duration: var(--animix-duration-fast, 180ms);
+  animation-timing-function: var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
@@ -168,8 +168,8 @@
 
 .animix-out-slide-right {
   animation-name: animix-slide-right-out;
-  animation-duration: var(--animix-duration-base, 300ms);
-  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-duration: var(--animix-duration-fast, 180ms);
+  animation-timing-function: var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
@@ -177,8 +177,8 @@
 
 .animix-out-scale-up {
   animation-name: animix-scale-up-out;
-  animation-duration: var(--animix-duration-base, 300ms);
-  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-duration: var(--animix-duration-fast, 180ms);
+  animation-timing-function: var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
@@ -186,8 +186,8 @@
 
 .animix-out-scale-down {
   animation-name: animix-scale-down-out;
-  animation-duration: var(--animix-duration-base, 300ms);
-  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-duration: var(--animix-duration-fast, 180ms);
+  animation-timing-function: var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
@@ -195,8 +195,8 @@
 
 .animix-out-flip-x {
   animation-name: animix-flip-x-out;
-  animation-duration: var(--animix-duration-slow, 500ms);
-  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-duration: var(--animix-duration-fast, 180ms);
+  animation-timing-function: var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
@@ -204,8 +204,8 @@
 
 .animix-out-flip-y {
   animation-name: animix-flip-y-out;
-  animation-duration: var(--animix-duration-slow, 500ms);
-  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-duration: var(--animix-duration-fast, 180ms);
+  animation-timing-function: var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
@@ -213,8 +213,8 @@
 
 .animix-out-rotate {
   animation-name: animix-rotate-out;
-  animation-duration: var(--animix-duration-slow, 500ms);
-  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-duration: var(--animix-duration-fast, 180ms);
+  animation-timing-function: var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
@@ -222,8 +222,8 @@
 
 .animix-out-blur {
   animation-name: animix-blur-out;
-  animation-duration: var(--animix-duration-base, 300ms);
-  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.4, 0, 1, 1));
+  animation-duration: var(--animix-duration-fast, 180ms);
+  animation-timing-function: var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);

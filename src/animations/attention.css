@@ -367,12 +367,6 @@
   will-change: transform;
 }
 
-.animix-hover-lift:hover {
-  transform: translateY(
-    calc(var(--animix-hover-lift, -2px) * var(--animix-motion-intensity, 1))
-  );
-}
-
 .animix-hover-lift:active {
   transform: translateY(0) scale(var(--animix-press-scale, 0.97));
 }
@@ -405,12 +399,20 @@
   transition: transform var(--animix-duration-micro, 180ms) var(--animix-ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1));
 }
 
-.animix-active-pop:hover {
-  transform: scale(var(--animix-active-pop-scale, 1.02));
-}
-
 .animix-active-pop:active {
   transform: scale(var(--animix-press-scale, 0.97));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .animix-hover-lift:hover {
+    transform: translateY(
+      calc(var(--animix-hover-lift, -2px) * var(--animix-motion-intensity, 1))
+    );
+  }
+
+  .animix-active-pop:hover {
+    transform: scale(var(--animix-active-pop-scale, 1.02));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -196,7 +196,7 @@
 @keyframes animix-tooltip-in {
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.96);
   }
   to {
     opacity: 1;
@@ -211,7 +211,7 @@
   }
   to {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.96);
   }
 }
 
@@ -238,19 +238,19 @@
 /* ── Classes: Page ─────────────────────────────────────────────── */
 
 .animix-page-fade-in {
-  animation: animix-page-fade-in var(--animix-duration-slow, 500ms) var(--animix-ease-out) both;
+  animation: animix-page-fade-in var(--animix-duration-base, 240ms) var(--animix-ease-out) both;
 }
 
 .animix-page-fade-out {
-  animation: animix-page-fade-out var(--animix-duration-slow, 500ms) var(--animix-ease-in) both;
+  animation: animix-page-fade-out var(--animix-duration-fast, 180ms) var(--animix-ease-out) both;
 }
 
 .animix-page-slide-in {
-  animation: animix-page-slide-in var(--animix-duration-slow, 500ms) var(--animix-ease-out) both;
+  animation: animix-page-slide-in var(--animix-duration-base, 240ms) var(--animix-ease-out) both;
 }
 
 .animix-page-slide-out {
-  animation: animix-page-slide-out var(--animix-duration-slow, 500ms) var(--animix-ease-in) both;
+  animation: animix-page-slide-out var(--animix-duration-fast, 180ms) var(--animix-ease-out) both;
 }
 
 /* ── Classes: Drawer ───────────────────────────────────────────── */
@@ -260,7 +260,7 @@
 }
 
 .animix-drawer-out-right {
-  animation: animix-drawer-out-right var(--animix-duration-slow, 500ms) var(--animix-ease-in) both;
+  animation: animix-drawer-out-right var(--animix-duration-base, 240ms) var(--animix-ease-out) both;
 }
 
 .animix-drawer-in-left {
@@ -268,7 +268,7 @@
 }
 
 .animix-drawer-out-left {
-  animation: animix-drawer-out-left var(--animix-duration-slow, 500ms) var(--animix-ease-in) both;
+  animation: animix-drawer-out-left var(--animix-duration-base, 240ms) var(--animix-ease-out) both;
 }
 
 .animix-drawer-in-top {
@@ -276,7 +276,7 @@
 }
 
 .animix-drawer-out-top {
-  animation: animix-drawer-out-top var(--animix-duration-slow, 500ms) var(--animix-ease-in) both;
+  animation: animix-drawer-out-top var(--animix-duration-base, 240ms) var(--animix-ease-out) both;
 }
 
 .animix-drawer-in-bottom {
@@ -284,55 +284,65 @@
 }
 
 .animix-drawer-out-bottom {
-  animation: animix-drawer-out-bottom var(--animix-duration-slow, 500ms) var(--animix-ease-in) both;
+  animation: animix-drawer-out-bottom var(--animix-duration-base, 240ms) var(--animix-ease-out) both;
 }
 
 /* ── Classes: Modal ────────────────────────────────────────────── */
 
 .animix-modal-in {
-  animation: animix-modal-in var(--animix-duration-base, 300ms) var(--animix-ease-spring) both;
+  animation: animix-modal-in var(--animix-duration-base, 240ms) var(--animix-ease-out) both;
+  transform-origin: center center;
 }
 
 .animix-modal-out {
-  animation: animix-modal-out var(--animix-duration-base, 300ms) var(--animix-ease-in) both;
+  animation: animix-modal-out var(--animix-duration-fast, 180ms) var(--animix-ease-out) both;
+  transform-origin: center center;
 }
 
 /* ── Classes: Toast ────────────────────────────────────────────── */
 
 .animix-toast-in-right {
-  animation: animix-toast-in-right var(--animix-duration-base, 300ms) var(--animix-ease-spring) both;
+  animation: animix-toast-in-right var(--animix-duration-base, 240ms) var(--animix-ease-out) both;
 }
 
 .animix-toast-out-right {
-  animation: animix-toast-out-right var(--animix-duration-base, 300ms) var(--animix-ease-in) both;
+  animation: animix-toast-out-right var(--animix-duration-fast, 180ms) var(--animix-ease-out) both;
 }
 
 .animix-toast-in-bottom {
-  animation: animix-toast-in-bottom var(--animix-duration-base, 300ms) var(--animix-ease-spring) both;
+  animation: animix-toast-in-bottom var(--animix-duration-base, 240ms) var(--animix-ease-out) both;
 }
 
 .animix-toast-out-bottom {
-  animation: animix-toast-out-bottom var(--animix-duration-base, 300ms) var(--animix-ease-in) both;
+  animation: animix-toast-out-bottom var(--animix-duration-fast, 180ms) var(--animix-ease-out) both;
 }
 
 /* ── Classes: Tooltip / Popover ────────────────────────────────── */
 
 .animix-tooltip-in {
-  animation: animix-tooltip-in var(--animix-duration-fast, 150ms) var(--animix-ease-spring) both;
+  animation: animix-tooltip-in var(--animix-duration-fast, 180ms) var(--animix-ease-out) both;
+  transform-origin: var(
+    --radix-popover-content-transform-origin,
+    var(--transform-origin, var(--animix-transform-origin, center center))
+  );
 }
 
 .animix-tooltip-out {
-  animation: animix-tooltip-out var(--animix-duration-fast, 150ms) var(--animix-ease-in) both;
+  animation: animix-tooltip-out var(--animix-duration-micro, 140ms) var(--animix-ease-out) both;
+  transform-origin: var(
+    --radix-popover-content-transform-origin,
+    var(--transform-origin, var(--animix-transform-origin, center center))
+  );
 }
 
 /* ── Classes: Overlay ──────────────────────────────────────────── */
 
 .animix-overlay-in {
-  animation: animix-overlay-in var(--animix-duration-base, 300ms) var(--animix-ease-out) both;
+  animation: animix-overlay-in var(--animix-duration-fast, 180ms) var(--animix-ease-out) both;
 }
 
 .animix-overlay-out {
-  animation: animix-overlay-out var(--animix-duration-base, 300ms) var(--animix-ease-in) both;
+  animation: animix-overlay-out var(--animix-duration-micro, 140ms) var(--animix-ease-out) both;
 }
 
 /* ── State patterns: tabs, accordion, inline status ─────────────── */
@@ -357,10 +367,15 @@
   transition: transform var(--animix-duration-micro, 180ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1));
 }
 
-.animix-tab-underline:hover::after,
 .animix-tab-underline[aria-selected="true"]::after,
 .animix-tab-underline[data-state="active"]::after {
   transform: scaleX(1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .animix-tab-underline:hover::after {
+    transform: scaleX(1);
+  }
 }
 
 .animix-accordion {

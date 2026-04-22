@@ -211,7 +211,7 @@ export function App() {
           <section className="space-y-4">
             <h2 className="text-lg font-semibold">Recipe: Command palette</h2>
             <p className="text-sm text-zinc-600 dark:text-zinc-400">
-              Modal-in + staggered rows. Open state is mocked for the demo.
+              Button-triggered demo with a fast overlay and staggered rows. Skip panel motion when this is keyboard-invoked in production.
             </p>
             <button
               type="button"
@@ -222,7 +222,7 @@ export function App() {
             </button>
             {paletteOpen ? (
               <div className="animate-animix-overlay-in rounded-xl border border-zinc-200 bg-zinc-950/40 p-4 dark:border-zinc-700">
-                <div className="animate-animix-modal-in mx-auto max-w-md rounded-xl border border-zinc-200 bg-white p-4 shadow-xl dark:border-zinc-700 dark:bg-zinc-900">
+                <div className="mx-auto max-w-md rounded-xl border border-zinc-200 bg-white p-4 shadow-xl dark:border-zinc-700 dark:bg-zinc-900">
                   <input
                     type="search"
                     placeholder="Search commands…"

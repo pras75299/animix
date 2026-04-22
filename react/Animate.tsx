@@ -143,7 +143,9 @@ function getDurationClass(duration: 'fast' | 'base' | 'slow' | 'slower' | number
   return `animix-${duration}`;
 }
 
-function getEasingClass(easing: 'default' | 'spring' | 'bounce' | 'in' | 'out'): string {
+function getEasingClass(
+  easing: 'default' | 'spring' | 'bounce' | 'in' | 'out' | 'in-out',
+): string {
   if (easing === 'default') {
     return '';
   }
@@ -168,12 +170,12 @@ export interface AnimateProps {
   intent?: MotionIntent;
   /** When to trigger the animation. Default: 'mount' */
   trigger?: 'mount' | 'hover' | 'focus' | 'inView' | 'manual';
-  /** Duration preset or explicit millisecond value. Default: 'base' (300ms) */
+  /** Duration preset or explicit millisecond value. Default: 'base' (240ms) */
   duration?: 'fast' | 'base' | 'slow' | 'slower' | number;
   /** Delay in milliseconds. Default: 0 */
   delay?: number;
   /** Easing function. Default: 'default' */
-  easing?: 'default' | 'spring' | 'bounce' | 'in' | 'out';
+  easing?: 'default' | 'spring' | 'bounce' | 'in' | 'out' | 'in-out';
   /** Repeat count or 'infinite'. Default: 1 */
   repeat?: number | 'infinite';
   /** Animation to play while `exiting` is true (parent-driven exit phase) */

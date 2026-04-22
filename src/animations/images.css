@@ -36,11 +36,16 @@
   will-change: transform;
 }
 
-.animix-img-zoom-wrap:hover > img,
-.animix-img-zoom-wrap:hover > picture > img,
 .animix-img-zoom-wrap:focus-within > img,
 .animix-img-zoom-wrap:focus-within > picture > img {
   transform: scale(var(--animix-image-zoom, 1.04));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .animix-img-zoom-wrap:hover > img,
+  .animix-img-zoom-wrap:hover > picture > img {
+    transform: scale(var(--animix-image-zoom, 1.04));
+  }
 }
 
 .animix-img-shimmer {
@@ -51,7 +56,7 @@
     var(--animix-skeleton-base, hsl(0, 0%, 88%)) 90%
   );
   background-size: 200% 100%;
-  animation: animix-skeleton-shimmer 1.4s ease-in-out infinite;
+  animation: animix-skeleton-shimmer 1.4s linear infinite;
 }
 
 .animix-img-mask-reveal {
@@ -79,8 +84,6 @@
     transition-duration: 0ms;
   }
 
-  .animix-img-zoom-wrap:hover > img,
-  .animix-img-zoom-wrap:hover > picture > img,
   .animix-img-zoom-wrap:focus-within > img,
   .animix-img-zoom-wrap:focus-within > picture > img {
     transform: none;

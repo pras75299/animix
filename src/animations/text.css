@@ -71,9 +71,14 @@
   transition: background-size var(--animix-duration-slow, 500ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1));
 }
 
-.animix-text-underline-sweep:hover,
 .animix-text-underline-sweep:focus-visible {
   background-size: 100% 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .animix-text-underline-sweep:hover {
+    background-size: 100% 2px;
+  }
 }
 
 .animix-text-underline-sweep.animix-text-underline-active {
