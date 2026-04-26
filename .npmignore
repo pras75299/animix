@@ -1,0 +1,29 @@
+# Source maps — useful locally, not needed in published tarball
+*.map
+dist/**/*.map
+
+# Dev / build / repo housekeeping (only consulted within paths the
+# `files` allowlist already permits — listed here so they cannot leak
+# in if `files` is ever broadened)
+.github/
+.husky/
+.claude/
+.vscode/
+.idea/
+node_modules/
+
+# Test, lint, format config artifacts
+coverage/
+.nyc_output/
+
+# Local-only docs and planning
+plan.md
+CODE_REVIEW.md
+CLAUDE.md
+docs/
+playground/
+
+# Editor / OS noise
+.DS_Store
+*.log
+*.tsbuildinfo

@@ -1,28 +1,50 @@
 {
-  "name": "animix",
+  "name": "@animix-js/animix",
   "version": "0.2.0",
-  "description": "Production-ready CSS animation library for Tailwind CSS v3/v4 and shadcn/ui",
+  "description": "Production-ready CSS animation library for Tailwind CSS v3/v4, React, and shadcn/ui — zero runtime by default, reduced-motion safe.",
   "author": "animix contributors",
   "license": "MIT",
   "keywords": [
     "animation",
     "css",
     "tailwind",
+    "tailwindcss",
     "shadcn",
+    "shadcn-ui",
     "react",
     "radix-ui",
     "keyframes",
     "motion",
-    "transitions"
+    "transitions",
+    "css-animation",
+    "framer-motion-alternative",
+    "reduced-motion",
+    "ui",
+    "design-system"
   ],
   "homepage": "https://github.com/animix-js/animix#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/animix-js/animix.git"
+    "url": "git+https://github.com/animix-js/animix.git"
   },
   "bugs": {
     "url": "https://github.com/animix-js/animix/issues"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": [
+    "*.css",
+    "./src/index.css",
+    "./src/tokens.css",
+    "./src/utilities.css",
+    "./src/animations/*.css",
+    "./shadcn-presets.css"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -144,9 +166,10 @@
       "esm"
     ],
     "dts": true,
-    "sourcemap": true,
+    "sourcemap": false,
     "clean": true,
     "treeshake": true,
+    "minify": false,
     "external": [
       "react",
       "react-dom",

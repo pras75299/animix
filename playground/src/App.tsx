@@ -1,5 +1,5 @@
 import { useState, type CSSProperties } from 'react';
-import { Animate, AnimateStagger, usePrefersReducedMotion } from 'animix/react';
+import { Animate, AnimateStagger, usePrefersReducedMotion } from '@animix-js/animix/react';
 
 const cssEntranceSamples = [
   'animix-in-fade',
@@ -136,11 +136,17 @@ export function App() {
               </Animate>
               <Animate animation="fade" trigger="mount" className="mt-4 block">
                 <p className="max-w-2xl text-sm text-white/85">
-                  The demo now mirrors the latest motion defaults: quicker UI timings, gentler scale starts, and hover behavior reserved for fine pointers.
+                  The demo now mirrors the latest motion defaults: quicker UI timings, gentler scale
+                  starts, and hover behavior reserved for fine pointers.
                 </p>
               </Animate>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Animate animation="bounce" trigger="mount" intent="button" className="inline-block">
+                <Animate
+                  animation="bounce"
+                  trigger="mount"
+                  intent="button"
+                  className="inline-block"
+                >
                   <button
                     type="button"
                     className="animix-press-in animix-focus-soft rounded-md bg-white px-4 py-2 text-sm font-semibold text-violet-700 shadow-sm"
@@ -164,12 +170,16 @@ export function App() {
             <h2 className="text-lg font-semibold">Recipe: Auth field + inline status</h2>
             <div className="grid gap-6 rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900 md:grid-cols-2">
               <div className="space-y-3">
-                <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Email</label>
+                <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                  Email
+                </label>
                 <input
                   type="email"
                   defaultValue="hello@"
                   className={`animix-focus-soft w-full rounded-md border px-3 py-2 text-sm outline-none dark:bg-zinc-950 ${
-                    formError ? 'animate-animix-icon-shake-soft border-red-400' : 'border-zinc-200 dark:border-zinc-600'
+                    formError
+                      ? 'animate-animix-icon-shake-soft border-red-400'
+                      : 'border-zinc-200 dark:border-zinc-600'
                   }`}
                 />
                 <button
@@ -216,7 +226,8 @@ export function App() {
           <section className="space-y-4">
             <h2 className="text-lg font-semibold">Recipe: Command palette</h2>
             <p className="text-sm text-zinc-600 dark:text-zinc-400">
-              Button-triggered demo with a fast overlay and staggered rows. Skip panel motion when this is keyboard-invoked in production.
+              Button-triggered demo with a fast overlay and staggered rows. Skip panel motion when
+              this is keyboard-invoked in production.
             </p>
             <button
               type="button"
@@ -234,7 +245,11 @@ export function App() {
                     className="animix-focus-soft w-full rounded-md border border-zinc-200 px-3 py-2 text-sm dark:border-zinc-600 dark:bg-zinc-950"
                     autoFocus
                   />
-                  <AnimateStagger animation="slide-up" delay={50} className="mt-3 flex flex-col gap-1">
+                  <AnimateStagger
+                    animation="slide-up"
+                    delay={50}
+                    className="mt-3 flex flex-col gap-1"
+                  >
                     <button
                       type="button"
                       className="animix-focus-soft animix-press-in rounded-md bg-zinc-100 px-2 py-2 text-left text-sm font-medium text-zinc-900 dark:bg-zinc-800 dark:text-zinc-50"
@@ -375,11 +390,19 @@ export function App() {
             >
               {accordionOpen ? 'Collapse' : 'Expand'} panel
             </button>
-            <div className="animix-accordion rounded-lg border border-zinc-200 dark:border-zinc-700" data-open={accordionOpen ? 'true' : 'false'}>
+            <div
+              className="animix-accordion rounded-lg border border-zinc-200 dark:border-zinc-700"
+              data-open={accordionOpen ? 'true' : 'false'}
+            >
               <div className="animix-accordion-inner">
                 <div className="p-4 text-sm text-zinc-600 dark:text-zinc-400">
-                  Accordion body using <code className="rounded bg-zinc-100 px-1 dark:bg-zinc-800">grid-template-rows</code> transition.
-                  Pair with <code className="rounded bg-zinc-100 px-1 dark:bg-zinc-800">data-open</code> from your framework state.
+                  Accordion body using{' '}
+                  <code className="rounded bg-zinc-100 px-1 dark:bg-zinc-800">
+                    grid-template-rows
+                  </code>{' '}
+                  transition. Pair with{' '}
+                  <code className="rounded bg-zinc-100 px-1 dark:bg-zinc-800">data-open</code> from
+                  your framework state.
                 </div>
               </div>
             </div>
@@ -387,7 +410,12 @@ export function App() {
 
           <section className="space-y-4">
             <h2 className="text-lg font-semibold">Real example: KPI cards</h2>
-            <AnimateStagger animation="slide-up" delay={60} inView className="grid gap-4 sm:grid-cols-3">
+            <AnimateStagger
+              animation="slide-up"
+              delay={60}
+              inView
+              className="grid gap-4 sm:grid-cols-3"
+            >
               {launchStats.map((stat) => (
                 <div
                   key={stat.label}
@@ -408,7 +436,13 @@ export function App() {
             <h2 className="text-lg font-semibold">Real example: Feature grid</h2>
             <div className="grid gap-4 md:grid-cols-3">
               {featureCards.map((card) => (
-                <Animate key={card.title} animation="slide-up" trigger="inView" intent="image" className="block">
+                <Animate
+                  key={card.title}
+                  animation="slide-up"
+                  trigger="inView"
+                  intent="image"
+                  className="block"
+                >
                   <article className="animix-hover-lift animix-active-pop rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
                     <span
                       className={`mb-4 inline-flex rounded-full bg-violet-100 px-2.5 py-1 text-xs font-semibold text-violet-700 dark:bg-violet-900/50 dark:text-violet-200 ${card.badgeClass}`}
@@ -460,7 +494,12 @@ export function App() {
               </Animate>
             </div>
             <div className="pt-16">
-              <Animate animation="slide-up" trigger="inView" inViewThreshold={0.2} className="inline-block">
+              <Animate
+                animation="slide-up"
+                trigger="inView"
+                inViewThreshold={0.2}
+                className="inline-block"
+              >
                 <div className="rounded-lg bg-emerald-600 px-6 py-4 text-sm font-medium text-white shadow-md">
                   inView · slide-up
                 </div>
@@ -516,8 +555,11 @@ export function App() {
           <section className="space-y-4">
             <h2 className="text-lg font-semibold">View transitions (MPA)</h2>
             <p className="text-sm text-zinc-600 dark:text-zinc-400">
-              Import <code className="rounded bg-zinc-200 px-1 dark:bg-zinc-800">animix/css/view-transitions</code> for
-              same-origin cross-document transitions with the updated fast-out timing pair.
+              Import{' '}
+              <code className="rounded bg-zinc-200 px-1 dark:bg-zinc-800">
+                animix/css/view-transitions
+              </code>{' '}
+              for same-origin cross-document transitions with the updated fast-out timing pair.
             </p>
           </section>
 
@@ -525,7 +567,9 @@ export function App() {
             <h2 className="text-lg font-semibold">AnimateStagger</h2>
             <AnimateStagger animation="slide-up" delay={60} inView className="flex flex-col gap-3">
               <div className="rounded-md bg-zinc-200 px-4 py-3 text-sm dark:bg-zinc-800">First</div>
-              <div className="rounded-md bg-zinc-200 px-4 py-3 text-sm dark:bg-zinc-800">Second</div>
+              <div className="rounded-md bg-zinc-200 px-4 py-3 text-sm dark:bg-zinc-800">
+                Second
+              </div>
               <div className="rounded-md bg-zinc-200 px-4 py-3 text-sm dark:bg-zinc-800">Third</div>
             </AnimateStagger>
           </section>

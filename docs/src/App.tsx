@@ -1,5 +1,5 @@
 import { type CSSProperties, useEffect, useMemo, useState } from 'react';
-import { Animate, AnimateStagger } from 'animix/react';
+import { Animate, AnimateStagger } from '@animix-js/animix/react';
 import {
   CodeBlock,
   CommandPalette,
@@ -55,7 +55,7 @@ const pathwayCards = [
     title: 'Pure CSS',
     href: '#css',
     body: 'Fastest adoption. Drop the bundle in, ship classes immediately.',
-    snippet: "import 'animix/css';",
+    snippet: "import '@animix-js/animix/css';",
     stats: [
       { label: 'Runtime', value: '0 kB' },
       { label: 'CSS gzip', value: '8.8 kB' },
@@ -66,7 +66,7 @@ const pathwayCards = [
     title: 'Tailwind plugin',
     href: '#tailwind',
     body: 'Alias layer for utility-driven teams. Build-time only — nothing extra ships.',
-    snippet: "plugins: [animix()],",
+    snippet: 'plugins: [animix()],',
     stats: [
       { label: 'Runtime', value: '0 kB' },
       { label: 'Plugin', value: 'build-time' },
@@ -77,7 +77,7 @@ const pathwayCards = [
     title: 'React bindings',
     href: '#react',
     body: 'Composition, stagger orchestration, hooks — no separate animation runtime.',
-    snippet: "import { Animate } from 'animix/react';",
+    snippet: "import { Animate } from '@animix-js/animix/react';",
     stats: [
       { label: 'JS gzip', value: '3.0 kB' },
       { label: 'Deps', value: 'react only' },
@@ -229,9 +229,8 @@ function Hero({ metrics }: { metrics: RepoMetrics }) {
 
       <Animate animation="fade" trigger="mount">
         <p className="docs-hero-lede">
-          animix is a CSS-first animation system spanning Tailwind, React, and
-          shadcn/ui. Tune the motion below — every token here flows through to
-          every consumption mode.
+          animix is a CSS-first animation system spanning Tailwind, React, and shadcn/ui. Tune the
+          motion below — every token here flows through to every consumption mode.
         </p>
       </Animate>
 
@@ -246,48 +245,23 @@ function Hero({ metrics }: { metrics: RepoMetrics }) {
       </div>
 
       <AnimateStagger animation="fade" delay={50} className="docs-metrics">
-        <a
-          className="docs-metric"
-          href={repoLinks.github}
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a className="docs-metric" href={repoLinks.github} target="_blank" rel="noreferrer">
           <span className="docs-metric-label">Stars</span>
           <span className="docs-metric-value">{metrics.stars}</span>
         </a>
-        <a
-          className="docs-metric"
-          href={repoLinks.github}
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a className="docs-metric" href={repoLinks.github} target="_blank" rel="noreferrer">
           <span className="docs-metric-label">Forks</span>
           <span className="docs-metric-value">{metrics.forks}</span>
         </a>
-        <a
-          className="docs-metric"
-          href={repoLinks.issues}
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a className="docs-metric" href={repoLinks.issues} target="_blank" rel="noreferrer">
           <span className="docs-metric-label">Issues</span>
           <span className="docs-metric-value">{metrics.issues}</span>
         </a>
-        <a
-          className="docs-metric"
-          href={repoLinks.npm}
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a className="docs-metric" href={repoLinks.npm} target="_blank" rel="noreferrer">
           <span className="docs-metric-label">Version</span>
           <span className="docs-metric-value">{metrics.version}</span>
         </a>
-        <a
-          className="docs-metric"
-          href={repoLinks.npm}
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a className="docs-metric" href={repoLinks.npm} target="_blank" rel="noreferrer">
           <span className="docs-metric-label">Downloads</span>
           <span className="docs-metric-value">{metrics.downloads}</span>
         </a>
@@ -363,11 +337,7 @@ function Hero({ metrics }: { metrics: RepoMetrics }) {
               </label>
             </div>
 
-            <button
-              type="button"
-              className="docs-playground-replay"
-              onClick={replay}
-            >
+            <button type="button" className="docs-playground-replay" onClick={replay}>
               <Icon name="play" size={11} /> Replay
             </button>
           </div>
@@ -420,21 +390,12 @@ function Hero({ metrics }: { metrics: RepoMetrics }) {
 /* Catalog gallery                                                             */
 /* -------------------------------------------------------------------------- */
 
-const catalogCategories = [
-  'All',
-  'Entrance',
-  'Exit',
-  'Attention',
-  'Loader / Transition',
-] as const;
+const catalogCategories = ['All', 'Entrance', 'Exit', 'Attention', 'Loader / Transition'] as const;
 
 function CatalogTile({ item }: { item: CatalogItem }) {
   const [pulse, setPulse] = useState(0);
   const [copied, setCopied] = useState(false);
-  const shapeClass = useMemo(
-    () => `${item.className} docs-tile-shape`,
-    [item.className],
-  );
+  const shapeClass = useMemo(() => `${item.className} docs-tile-shape`, [item.className]);
 
   useEffect(() => {
     if (!copied) return;
@@ -500,9 +461,7 @@ function Catalog() {
   const [active, setActive] = useState<(typeof catalogCategories)[number]>('All');
   const items = useMemo(
     () =>
-      active === 'All'
-        ? catalogItems
-        : catalogItems.filter((item) => item.category === active),
+      active === 'All' ? catalogItems : catalogItems.filter((item) => item.category === active),
     [active],
   );
 
@@ -562,9 +521,7 @@ export function App() {
     function onKey(e: KeyboardEvent) {
       const target = e.target as HTMLElement | null;
       const isEditable =
-        target?.tagName === 'INPUT' ||
-        target?.tagName === 'TEXTAREA' ||
-        target?.isContentEditable;
+        target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable;
 
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
@@ -622,12 +579,7 @@ export function App() {
           >
             <Icon name="github" />
           </a>
-          <a
-            href={repoLinks.npm}
-            className="docs-link-btn"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href={repoLinks.npm} className="docs-link-btn" target="_blank" rel="noreferrer">
             npm
             <Icon name="arrow-up-right" size={12} />
           </a>
@@ -640,13 +592,8 @@ export function App() {
           <ol className="docs-sidebar-list">
             {navItems.map((item, idx) => (
               <li key={item.id}>
-                <a
-                  href={`#${item.id}`}
-                  className={activeId === item.id ? 'is-active' : ''}
-                >
-                  <span className="num">
-                    {String(idx + 1).padStart(2, '0')}
-                  </span>
+                <a href={`#${item.id}`} className={activeId === item.id ? 'is-active' : ''}>
+                  <span className="num">{String(idx + 1).padStart(2, '0')}</span>
                   <span>{item.label}</span>
                 </a>
               </li>
@@ -655,9 +602,8 @@ export function App() {
 
           <div className="docs-sidebar-aside">
             <strong>Heads up</strong>
-            Live metrics, command-palette search, and the token playground are
-            part of these docs. Press <span className="docs-kbd">⌘K</span> to
-            jump anywhere.
+            Live metrics, command-palette search, and the token playground are part of these docs.
+            Press <span className="docs-kbd">⌘K</span> to jump anywhere.
           </div>
         </aside>
 
@@ -682,8 +628,7 @@ export function App() {
               eyebrow="Getting Started"
               title={
                 <>
-                  Install once, then <em>choose the authoring model</em> that
-                  matches your stack.
+                  Install once, then <em>choose the authoring model</em> that matches your stack.
                 </>
               }
               body="animix is intentionally CSS-first. The other integrations build on the same primitives instead of inventing separate motion systems."
@@ -710,19 +655,14 @@ export function App() {
                   <h3>{installTab.title}</h3>
                   <p>{installTab.description}</p>
                   <p className="docs-install-meta">
-                    Same package, three authoring modes — pick whichever fits
-                    your stack and keep them aligned through shared tokens.
+                    Same package, three authoring modes — pick whichever fits your stack and keep
+                    them aligned through shared tokens.
                   </p>
                 </div>
                 <CodeBlock title={installTab.title} code={installTab.code} />
               </div>
 
-              <AnimateStagger
-                animation="slide-up"
-                delay={80}
-                inView
-                className="docs-pathways"
-              >
+              <AnimateStagger animation="slide-up" delay={80} inView className="docs-pathways">
                 {pathwayCards.map((card, idx) => (
                   <a
                     key={card.title}
@@ -730,9 +670,7 @@ export function App() {
                     className="docs-pathway"
                     aria-label={`${card.title} — jump to section`}
                   >
-                    <span className="docs-pathway-num">
-                      {String(idx + 1).padStart(2, '0')}
-                    </span>
+                    <span className="docs-pathway-num">{String(idx + 1).padStart(2, '0')}</span>
                     <div className="docs-pathway-body">
                       <h4>{card.title}</h4>
                       <p>{card.body}</p>
@@ -807,7 +745,10 @@ export function App() {
                 >
                   <li>Stacking multiple entrance classes on the same element.</li>
                   <li>Animating repeated keyboard flows like a command palette panel.</li>
-                  <li>Starting from <code>scale(0)</code> when scale and opacity already communicate entry.</li>
+                  <li>
+                    Starting from <code>scale(0)</code> when scale and opacity already communicate
+                    entry.
+                  </li>
                 </ul>
               </div>
             </div>
@@ -827,12 +768,7 @@ export function App() {
             />
 
             <div className="docs-split docs-split-aside">
-              <AnimateStagger
-                animation="slide-up"
-                delay={70}
-                inView
-                className="docs-grid"
-              >
+              <AnimateStagger animation="slide-up" delay={70} inView className="docs-grid">
                 {tailwindNotes.map((note) => (
                   <article key={note.title} className="docs-card">
                     <strong>{note.title}</strong>
@@ -895,15 +831,14 @@ export function App() {
 @tailwind components;
 @tailwind utilities;
 
-@import 'animix/css';
-@import 'animix/shadcn';`}
+@import '@animix-js/animix/css';
+@import '@animix-js/animix/shadcn';`}
                 />
                 <div className="docs-card">
                   <strong>Implementation note</strong>
                   <p>
-                    Import <code>animix/shadcn</code> after your shadcn styles
-                    so the preset can attach the correct animation properties
-                    without fighting earlier rules.
+                    Import <code>animix/shadcn</code> after your shadcn styles so the preset can
+                    attach the correct animation properties without fighting earlier rules.
                   </p>
                 </div>
               </div>
@@ -938,8 +873,8 @@ export function App() {
               eyebrow="Token System"
               title={
                 <>
-                  Tune <em>distance, easing, duration</em> with CSS variables —
-                  not forks of keyframes.
+                  Tune <em>distance, easing, duration</em> with CSS variables — not forks of
+                  keyframes.
                 </>
               }
               body="Token overrides are what make the library feel product-ready. They let one interface feel tighter, softer, or calmer without drifting away from the shared animation language."
@@ -962,9 +897,8 @@ export function App() {
                 <div className="docs-card">
                   <strong>Where to override</strong>
                   <p>
-                    Prefer setting tokens on a section wrapper, card cluster,
-                    or component root so related motion stays coherent across
-                    children.
+                    Prefer setting tokens on a section wrapper, card cluster, or component root so
+                    related motion stays coherent across children.
                   </p>
                 </div>
               </div>
@@ -1051,16 +985,10 @@ document.documentElement.classList.toggle('animix-no-motion', prefersNoMotion);`
                     motionMode === 'reduced' ? ' animix-no-motion' : ''
                   }`}
                 >
-                  <div
-                    key={motionMode + 'a'}
-                    className="docs-motion-card animix-in-slide-up"
-                  >
+                  <div key={motionMode + 'a'} className="docs-motion-card animix-in-slide-up">
                     Settings updated
                   </div>
-                  <div
-                    key={motionMode + 'b'}
-                    className="docs-motion-card animix-toast-in-bottom"
-                  >
+                  <div key={motionMode + 'b'} className="docs-motion-card animix-toast-in-bottom">
                     Toast feedback synced
                   </div>
                   <div className="docs-motion-loader-row">
@@ -1109,20 +1037,12 @@ document.documentElement.classList.toggle('animix-no-motion', prefersNoMotion);`
               <div className="docs-recipe">
                 <span className="docs-recipe-label">Popover + toast</span>
                 <div className="docs-recipe-stage">
-                  <div className="docs-toast-demo animix-toast-in-bottom">
-                    Changes synced
-                  </div>
+                  <div className="docs-toast-demo animix-toast-in-bottom">Changes synced</div>
                   <div className="docs-anchor-demo">
-                    <button
-                      type="button"
-                      className="animix-focus-soft animix-press-in"
-                    >
+                    <button type="button" className="animix-focus-soft animix-press-in">
                       Invite member
                     </button>
-                    <div
-                      className="docs-anchor-popover animix-tooltip-in"
-                      style={popoverStyle}
-                    >
+                    <div className="docs-anchor-popover animix-tooltip-in" style={popoverStyle}>
                       Scale from the trigger, not the center.
                     </div>
                   </div>
@@ -1180,8 +1100,8 @@ document.documentElement.classList.toggle('animix-no-motion', prefersNoMotion);`
             <div className="docs-footer-mark">
               <em>animix</em>
               <span>
-                One motion language across pure CSS, Tailwind, React, and
-                shadcn/ui. Reduced-motion safe by default.
+                One motion language across pure CSS, Tailwind, React, and shadcn/ui. Reduced-motion
+                safe by default.
               </span>
             </div>
             <div className="docs-footer-col">
@@ -1208,11 +1128,7 @@ document.documentElement.classList.toggle('animix-no-motion', prefersNoMotion);`
         </div>
       </main>
 
-      <CommandPalette
-        open={cmdkOpen}
-        onOpenChange={setCmdkOpen}
-        items={searchItems}
-      />
+      <CommandPalette open={cmdkOpen} onOpenChange={setCmdkOpen} items={searchItems} />
     </div>
   );
 }

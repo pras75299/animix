@@ -1,34 +1,43 @@
-<div align="center">
+# animix
 
-```
- █████╗ ███╗   ██╗██╗███╗   ███╗██╗██╗  ██╗
-██╔══██╗████╗  ██║██║████╗ ████║██║╚██╗██╔╝
-███████║██╔██╗ ██║██║██╔████╔██║██║ ╚███╔╝
-██╔══██║██║╚██╗██║██║██║╚██╔╝██║██║ ██╔██╗
-██║  ██║██║ ╚████║██║██║ ╚═╝ ██║██║██╔╝ ██╗
-╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═╝
-```
+> **Production-ready CSS animation library for Tailwind CSS v3/v4, React, and shadcn/ui — zero runtime by default, reduced-motion safe.**
 
-**Production-ready CSS animation library for Tailwind CSS v3/v4 and shadcn/ui**
+<p>
+  <a href="https://www.npmjs.com/package/@animix-js/animix"><img src="https://img.shields.io/npm/v/@animix-js%2Fanimix?style=flat-square&label=npm&color=5B5BFF" alt="npm version" /></a>
+  <a href="https://www.npmjs.com/package/@animix-js/animix"><img src="https://img.shields.io/npm/dm/@animix-js%2Fanimix?style=flat-square&label=downloads&color=5B5BFF" alt="downloads" /></a>
+  <a href="https://bundlephobia.com/package/@animix-js/animix"><img src="https://img.shields.io/bundlephobia/minzip/@animix-js%2Fanimix?style=flat-square&label=gzip&color=5B5BFF" alt="bundle size" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-5B5BFF?style=flat-square" alt="MIT license" /></a>
+  <img src="https://img.shields.io/badge/types-included-5B5BFF?style=flat-square" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/tree--shaking-yes-5B5BFF?style=flat-square" alt="tree-shaking" />
+</p>
 
-[![npm version](https://img.shields.io/npm/v/animix?style=flat-square&color=22C55E)](https://www.npmjs.com/package/animix)
-[![npm downloads](https://img.shields.io/npm/dm/animix?style=flat-square&color=22C55E)](https://www.npmjs.com/package/animix)
-[![License: MIT](https://img.shields.io/badge/License-MIT-22C55E?style=flat-square)](LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.4+-22C55E?style=flat-square)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-v3%2Fv4-22C55E?style=flat-square)](https://tailwindcss.com/)
-
-</div>
+**[Documentation](https://animix-js.github.io/animix)** · **[Live playground](https://animix-js.github.io/animix#overview)** · **[Changelog](./CHANGELOG.md)** · **[Issues](https://github.com/animix-js/animix/issues)**
 
 ---
 
-## Why animix?
+## What you get
 
-- **Zero runtime JS** for base animations — pure CSS keyframes, no hydration cost
-- **Three consumption modes**: drop-in CSS, Tailwind plugin, or React component API
-- **CSS custom property tokens** — override any timing, easing, or distance per-component
-- **shadcn/ui presets** — Radix UI `data-state` animations out of the box, zero conflicts
-- **Accessibility first** — `prefers-reduced-motion` handled via token zeroing (not `display: none`)
-- **Fully typed** — complete TypeScript definitions for React bindings
+- **Zero runtime JS** for base animations — pure CSS keyframes, no main-thread cost.
+- **Three consumption modes** — drop-in CSS, Tailwind plugin, or React component API. One token system across all of them.
+- **shadcn/ui presets** — Radix UI `data-state` and `data-side` selectors mapped to motion families, no component rewrites.
+- **CSS custom property tokens** — override duration, easing, distance, scale start, hover lift, press scale, intensity per component.
+- **Accessibility first** — `prefers-reduced-motion` zeros durations without breaking final layout state.
+- **Composited animations only** — every keyframe targets `transform` and `opacity`, never properties that trigger layout.
+- **Fully typed** — TypeScript definitions for the React layer.
+
+## Bundle size & latency
+
+Measured from the published tarball (run `npm pack --dry-run` to verify):
+
+| Path                     | Runtime JS      | CSS (gzip)    | First-frame latency | Notes                                                                 |
+| ------------------------ | --------------- | ------------- | ------------------- | --------------------------------------------------------------------- |
+| Pure CSS (full)          | **0 kB**        | **8.8 kB**    | 1 frame (~16 ms)    | composited on the GPU                                                 |
+| Pure CSS (cherry-picked) | 0 kB            | from **1 kB** | 1 frame             | per-category imports (`/css/entrance`, `/css/exit`, …)                |
+| Tailwind plugin          | 0 kB at runtime | 8.8 kB        | 1 frame             | plugin runs at build time only                                        |
+| React bindings           | **3.0 kB gzip** | 8.8 kB        | 1 frame             | uses `useLayoutEffect`, no `setTimeout` between mount and class apply |
+| Reduced motion           | 0 kB            | —             | instant             | tokens zero out, end-state still applies                              |
+
+Published tarball: **46 kB compressed / 264 kB unpacked / 32 files** — source maps are stripped for publish.
 
 ---
 
@@ -37,25 +46,17 @@
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Mode 1: Pure CSS](#mode-1--pure-css)
-  - [Entrance Animations](#entrance-animations)
-  - [Exit Animations](#exit-animations)
-  - [Attention Seekers](#attention-seekers)
-  - [Loaders](#loaders)
-  - [Transitions](#transitions)
-  - [Modifier Classes](#modifier-classes)
-  - [Stagger System](#stagger-system)
 - [Mode 2: Tailwind Plugin](#mode-2--tailwind-plugin)
 - [Mode 3: React Bindings](#mode-3--react-bindings)
-  - [Animate Component](#animate-component)
-  - [AnimateStagger Component](#animatestagger-component)
-  - [useAnimation Hook](#useanimation-hook)
-  - [useInView Hook](#useinview-hook)
 - [shadcn/ui Integration](#shadcnui-integration)
 - [CSS Token Reference](#css-token-reference)
 - [Animation Catalog](#animation-catalog)
 - [Accessibility](#accessibility)
 - [Browser Support](#browser-support)
+- [FAQ](#faq)
+- [Versioning & changelog](#versioning--changelog)
 - [Contributing](#contributing)
+- [License](#license)
 
 ---
 
@@ -63,13 +64,13 @@
 
 ```bash
 # npm
-npm install animix
+npm install @animix-js/animix
 
 # pnpm
-pnpm add animix
+pnpm add @animix-js/animix
 
 # yarn
-yarn add animix
+yarn add @animix-js/animix
 ```
 
 **Peer dependencies** (all optional — install only what you use):
@@ -93,7 +94,7 @@ npm install react react-dom # for React bindings
 Or with a bundler:
 
 ```js
-import 'animix/css';
+import '@animix-js/animix/css';
 ```
 
 ```html
@@ -110,16 +111,16 @@ Import the full bundle or individual categories:
 
 ```js
 // Full bundle (all animations + utilities)
-import 'animix/css';
+import '@animix-js/animix/css';
 
 // Or cherry-pick for smaller bundles
-import 'animix/css/tokens'; // CSS custom properties only
-import 'animix/css/entrance'; // Entrance keyframes + classes
-import 'animix/css/exit'; // Exit keyframes + classes
-import 'animix/css/attention'; // Attention seeker animations
-import 'animix/css/loaders'; // Loading indicators
-import 'animix/css/transitions'; // UI transition patterns
-import 'animix/css/utilities'; // Modifier & stagger classes
+import '@animix-js/animix/css/tokens'; // CSS custom properties only
+import '@animix-js/animix/css/entrance'; // Entrance keyframes + classes
+import '@animix-js/animix/css/exit'; // Exit keyframes + classes
+import '@animix-js/animix/css/attention'; // Attention seeker animations
+import '@animix-js/animix/css/loaders'; // Loading indicators
+import '@animix-js/animix/css/transitions'; // UI transition patterns
+import '@animix-js/animix/css/utilities'; // Modifier & stagger classes
 ```
 
 ---
@@ -395,7 +396,7 @@ For larger lists (20+ items), use `<AnimateStagger>` from the React bindings whi
 
 ```ts
 // tailwind.config.ts
-import animix from 'animix/tailwind';
+import animix from '@animix-js/animix/tailwind';
 
 export default {
   plugins: [animix()],
@@ -406,7 +407,7 @@ Import the token stylesheet separately (the plugin registers keyframes but CSS v
 
 ```css
 /* globals.css */
-@import 'animix/css/tokens';
+@import '@animix-js/animix/css/tokens';
 ```
 
 Now use `animate-animix-*` utilities alongside standard Tailwind duration/delay/easing:
@@ -447,8 +448,8 @@ Override tokens inline with Tailwind's arbitrary value syntax or inline styles:
 ## Mode 3 — React Bindings
 
 ```tsx
-import { Animate, AnimateStagger, useAnimation, useInView } from 'animix/react';
-import 'animix/css';
+import { Animate, AnimateStagger, useAnimation, useInView } from '@animix-js/animix/react';
+import '@animix-js/animix/css';
 ```
 
 ---
@@ -576,7 +577,7 @@ Imperative control: play, pause, resume, reverse, and reset a CSS animation on a
 
 ```tsx
 import { useRef } from 'react';
-import { useAnimation } from 'animix/react';
+import { useAnimation } from '@animix-js/animix/react';
 
 function NotificationBell() {
   const ref = useRef<HTMLButtonElement>(null);
@@ -611,7 +612,7 @@ Returns `true` when the referenced element enters the viewport.
 
 ```tsx
 import { useRef } from 'react';
-import { useInView } from 'animix/react';
+import { useInView } from '@animix-js/animix/react';
 
 function AnimatedCounter() {
   const ref = useRef<HTMLDivElement>(null);
@@ -642,8 +643,8 @@ Import the presets file **after** your shadcn styles:
 @tailwind utilities;
 
 /* animix */
-@import 'animix/css';
-@import 'animix/shadcn'; /* ← must come last */
+@import '@animix-js/animix/css';
+@import '@animix-js/animix/shadcn'; /* ← must come last */
 ```
 
 This automatically wires animations onto Radix UI `data-state`/`data-side` attributes — no class changes to your components needed:
@@ -859,9 +860,56 @@ All animations use `transform` and `opacity` — both GPU-composited, no layout 
 
 ---
 
+## FAQ
+
+**Why pick this over Framer Motion?**
+Framer Motion is excellent for spring-based, gesture-driven, layout-animation flows — and it costs ~30 kB gzip plus React render orchestration. animix targets the much larger surface of "lifecycle motion" (mount, exit, hover, focus, in-view, status loaders, overlay enters/exits) where CSS keyframes are sufficient and free. Use Framer Motion for shared-element transitions and physics; use animix for everything else.
+
+**Does it work without React?**
+Yes. The `@animix-js/animix/css` and `@animix-js/animix/tailwind` paths have no JS runtime at all. The React bindings are an optional layer.
+
+**Does it work in Server Components / Next.js App Router?**
+The CSS path is fully server-renderable — no `"use client"` needed. The React bindings (`Animate`, `AnimateStagger`, `useAnimation`, `useInView`) are client components and need `"use client"` on their importing files.
+
+**Why are some animations starting from `scale(0.95)` and not `scale(0)`?**
+"Natural" entry: `scale(0)` looks unprofessional and exaggerates motion. animix uses `scale(0.95)` for subtle emphasis that reads as polished, not theatrical. Override `--animix-scale-start` if you need different.
+
+**Can I disable motion globally?**
+Three ways: (1) the user's `prefers-reduced-motion` is respected automatically; (2) add `class="animix-no-motion"` to `<html>` or any subtree as a manual kill switch; (3) override `--animix-motion-intensity: 0` for surgical scope.
+
+**Do animations block hydration / Largest Contentful Paint?**
+No. The CSS bundle is render-blocking only at first paint (8.8 kB gzip). Animations themselves run on the compositor thread and don't affect LCP scoring after initial paint.
+
+**Does it tree-shake?**
+The Tailwind plugin uses Tailwind's JIT to ship only the classes you reference. The CSS path has cherry-pick imports (`/css/entrance`, `/css/exit`, etc.) for partial loading. The React layer is marked `sideEffects: false` for JS but `*.css` files are flagged as side-effectful so bundlers don't drop them.
+
+**What about CLS (Cumulative Layout Shift)?**
+Zero. animix never animates dimensional properties — only `transform` and `opacity`. Reduced-motion mode keeps `animation-fill-mode: both`, so the end state lands instantly without a layout shift.
+
+---
+
+## Versioning & changelog
+
+This package follows [SemVer](https://semver.org/). See [CHANGELOG.md](./CHANGELOG.md) for release notes.
+
+Pre-1.0 means the public surface is still maturing — minor versions may rename CSS classes or React APIs. Pin exact versions if you need stability today.
+
+---
+
 ## Contributing
 
-We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, commit conventions, and the animation checklist.
+Contributions welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for setup, commit conventions, and the animation checklist.
+
+```bash
+git clone https://github.com/animix-js/animix
+cd animix
+npm install
+npm run dev          # playground at :5173
+npm run dev:docs     # docs site
+npm run build        # build + emit /dist
+npm run typecheck    # type check all workspaces
+npm run lint
+```
 
 ---
 

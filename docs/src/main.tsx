@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import 'animix/css';
+import '@animix-js/animix/css';
 import './docs.css';
 import { App } from './App';
 

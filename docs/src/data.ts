@@ -130,8 +130,7 @@ export const installTabs: Record<InstallMode, SnippetTab> = {
     id: 'npm',
     label: 'npm',
     title: 'Install with npm',
-    description:
-      'Start with the package, then add the optional integrations you actually use.',
+    description: 'Start with the package, then add the optional integrations you actually use.',
     code: `npm install animix
 npm install tailwindcss react react-dom`,
   },
@@ -161,7 +160,7 @@ export const cssTabs: SnippetTab[] = [
     title: 'Import the full CSS bundle',
     description:
       'Use this first. It gives you the complete motion vocabulary, utilities, and reduced-motion support immediately.',
-    code: `import 'animix/css';
+    code: `import '@animix-js/animix/css';
 
 <div class="animix-in-slide-up">Ship motion that feels intentional</div>
 <button class="animix-press-in animix-focus-soft">Invite member</button>
@@ -171,13 +170,12 @@ export const cssTabs: SnippetTab[] = [
     id: 'partial',
     label: 'Cherry-pick',
     title: 'Import only the pieces you need',
-    description:
-      'Once usage is clear, trim imports by category instead of guessing upfront.',
-    code: `import 'animix/css/tokens';
-import 'animix/css/entrance';
-import 'animix/css/exit';
-import 'animix/css/transitions';
-import 'animix/css/utilities';
+    description: 'Once usage is clear, trim imports by category instead of guessing upfront.',
+    code: `import '@animix-js/animix/css/tokens';
+import '@animix-js/animix/css/entrance';
+import '@animix-js/animix/css/exit';
+import '@animix-js/animix/css/transitions';
+import '@animix-js/animix/css/utilities';
 
 <div class="animix-in-fade animix-delay-150">Visible after 150ms</div>`,
   },
@@ -205,7 +203,7 @@ export const tailwindTabs: SnippetTab[] = [
     title: 'Register the Tailwind plugin',
     description:
       'The alias layer mirrors the core CSS timings and curves so utility examples stay truthful.',
-    code: `import animix from 'animix/tailwind';
+    code: `import animix from '@animix-js/animix/tailwind';
 
 export default {
   content: ['./src/**/*.{ts,tsx,js,jsx}'],
@@ -246,7 +244,7 @@ export const reactTabs: Record<ReactMode, SnippetTab> = {
     title: 'Mount, hover, focus, in-view, or exit with one component',
     description:
       'Use Animate when you want ergonomic composition while keeping the motion CSS-driven.',
-    code: `import { Animate } from 'animix/react';
+    code: `import { Animate } from '@animix-js/animix/react';
 
 <Animate animation="slide-up">
   <Card />
@@ -266,7 +264,7 @@ export const reactTabs: Record<ReactMode, SnippetTab> = {
     title: 'Stagger list items without hand-authored nth-child rules',
     description:
       'AnimateStagger handles the progressive delay and optional viewport trigger for you.',
-    code: `import { AnimateStagger } from 'animix/react';
+    code: `import { AnimateStagger } from '@animix-js/animix/react';
 
 <AnimateStagger animation="slide-up" delay={80} inView inViewThreshold={0.1}>
   {items.map((item) => (
@@ -281,7 +279,7 @@ export const reactTabs: Record<ReactMode, SnippetTab> = {
     description:
       'The hooks layer gives you imperative control, viewport state, and reduced-motion awareness without another runtime.',
     code: `import { useRef } from 'react';
-import { useAnimation, useInView, usePrefersReducedMotion } from 'animix/react';
+import { useAnimation, useInView, usePrefersReducedMotion } from '@animix-js/animix/react';
 
 function Bell() {
   const ref = useRef<HTMLButtonElement>(null);
@@ -331,8 +329,7 @@ export const recipeTabs: Record<RecipeMode, SnippetTab> = {
     id: 'popover',
     label: 'Popover',
     title: 'Scale anchored surfaces from the trigger',
-    description:
-      'Popover motion should feel attached to the button or menu item that caused it.',
+    description: 'Popover motion should feel attached to the button or menu item that caused it.',
     code: `<button class="animix-focus-soft animix-press-in">Invite member</button>
 <div
   class="animix-tooltip-in"
@@ -361,18 +358,15 @@ export const integrationCards = [
 export const cssSteps = [
   {
     title: 'Import first, optimize second',
-    body:
-      'Start with animix/css so the whole motion system is available. Cherry-pick only after the usage pattern stabilizes.',
+    body: 'Start with animix/css so the whole motion system is available. Cherry-pick only after the usage pattern stabilizes.',
   },
   {
     title: 'Choose a single base class',
-    body:
-      'Pick one entrance, exit, transition, or attention class per element. Add modifiers for timing instead of stacking competing keyframes.',
+    body: 'Pick one entrance, exit, transition, or attention class per element. Add modifiers for timing instead of stacking competing keyframes.',
   },
   {
     title: 'Scope tokens on the container',
-    body:
-      'Override distance, easing, or duration on a parent so every child shares the same motion language.',
+    body: 'Override distance, easing, or duration on a parent so every child shares the same motion language.',
   },
 ];
 
@@ -459,9 +453,21 @@ export const catalogItems: CatalogItem[] = [
   { className: 'animix-loader-spin', category: 'Loader / Transition', blurb: 'Standard spinner' },
   { className: 'animix-loader-dots', category: 'Loader / Transition', blurb: 'Three-dot pulse' },
   { className: 'animix-modal-in', category: 'Loader / Transition', blurb: 'Dialog enter pattern' },
-  { className: 'animix-drawer-in-right', category: 'Loader / Transition', blurb: 'Side sheet enter' },
-  { className: 'animix-toast-in-bottom', category: 'Loader / Transition', blurb: 'Bottom toast slide' },
-  { className: 'animix-tooltip-in', category: 'Loader / Transition', blurb: 'Anchored tooltip enter' },
+  {
+    className: 'animix-drawer-in-right',
+    category: 'Loader / Transition',
+    blurb: 'Side sheet enter',
+  },
+  {
+    className: 'animix-toast-in-bottom',
+    category: 'Loader / Transition',
+    blurb: 'Bottom toast slide',
+  },
+  {
+    className: 'animix-tooltip-in',
+    category: 'Loader / Transition',
+    blurb: 'Anchored tooltip enter',
+  },
 ];
 
 export const accessibilityNotes = [

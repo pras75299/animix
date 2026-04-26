@@ -4,7 +4,12 @@
     "noEmit": true,
     "declaration": false,
     "declarationMap": false,
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "@animix-js/animix/react": ["../react/index.ts"],
+      "@animix-js/animix/css": ["../src/index.css"]
+    }
   },
   "include": ["./src/**/*.ts", "./src/**/*.tsx", "./vite.config.ts", "./tailwind.config.ts"]
 }
