@@ -1,0 +1,50 @@
+# Netlify configuration for the animix docs site.
+# Build command runs from the repo root; the docs Vite config emits
+# to docs/dist and that's what gets published.
+
+[build]
+  base = ""
+  command = "npm run build:docs"
+  publish = "docs/dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--no-audit --no-fund"
+  # Vite reads this; '/' is the right value when Netlify serves at the
+  # site root or a custom domain. Override per-deploy if you ever
+  # publish under a sub-path (e.g. preview branches at /branch/feature/).
+  DOCS_BASE = "/"
+
+# The docs site is a single-page app — every route resolves to index.html
+# and the hash router takes over from there. This guards against any
+# direct deep-link 404 if a future version uses history routing.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Long-cache hashed Vite assets; index.html stays mutable.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Sane security defaults. Adjust if you ever embed iframes, third-party
+# fonts beyond Google Fonts, or analytics scripts.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
