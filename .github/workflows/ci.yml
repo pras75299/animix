@@ -47,6 +47,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Build docs
+        run: npm run build:docs
+
       - name: Verify exports exist
         run: |
           test -f dist/index.js         || (echo "❌ dist/index.js missing" && exit 1)
