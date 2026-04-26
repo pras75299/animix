@@ -54,35 +54,23 @@ const pathwayCards = [
   {
     title: 'Pure CSS',
     href: '#css',
-    body: 'Fastest adoption. Drop the bundle in, ship classes immediately.',
-    snippet: "import '@pras75299/animix/css';",
-    stats: [
-      { label: 'Runtime', value: '0 kB' },
-      { label: 'CSS gzip', value: '8.8 kB' },
-      { label: 'Cherry-pick', value: 'from 1 kB' },
-    ],
+    body: 'Fastest adoption. Import once, ship classes.',
+    snippet: '@pras75299/animix/css',
+    stats: ['0 kB runtime', '8.8 kB css', 'from 1 kB cherry-picked'],
   },
   {
     title: 'Tailwind plugin',
     href: '#tailwind',
-    body: 'Alias layer for utility-driven teams. Build-time only — nothing extra ships.',
-    snippet: 'plugins: [animix()],',
-    stats: [
-      { label: 'Runtime', value: '0 kB' },
-      { label: 'Plugin', value: 'build-time' },
-      { label: 'Tokens', value: 'shared' },
-    ],
+    body: 'Alias layer for utility-driven teams. Build-time only.',
+    snippet: 'plugins: [animix()]',
+    stats: ['0 kB runtime', 'build-time only', 'shared tokens'],
   },
   {
     title: 'React bindings',
     href: '#react',
-    body: 'Composition, stagger orchestration, hooks — no separate animation runtime.',
-    snippet: "import { Animate } from '@pras75299/animix/react';",
-    stats: [
-      { label: 'JS gzip', value: '3.0 kB' },
-      { label: 'Deps', value: 'react only' },
-      { label: 'Hooks', value: '3 included' },
-    ],
+    body: 'Composition, stagger, hooks — no separate runtime.',
+    snippet: '@pras75299/animix/react',
+    stats: ['3.0 kB js', 'react peer only', '3 hooks included'],
   },
 ];
 
@@ -670,23 +658,20 @@ export function App() {
                     className="docs-pathway"
                     aria-label={`${card.title} — jump to section`}
                   >
-                    <span className="docs-pathway-num">{String(idx + 1).padStart(2, '0')}</span>
-                    <div className="docs-pathway-body">
+                    <header className="docs-pathway-head">
+                      <span className="docs-pathway-num">{String(idx + 1).padStart(2, '0')}</span>
                       <h4>{card.title}</h4>
-                      <p>{card.body}</p>
-                      <code className="docs-pathway-snippet">{card.snippet}</code>
-                      <ul className="docs-pathway-stats">
-                        {card.stats.map((stat) => (
-                          <li key={stat.label}>
-                            <span>{stat.label}</span>
-                            <strong>{stat.value}</strong>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <span className="docs-pathway-arrow" aria-hidden="true">
-                      <Icon name="arrow-up-right" size={14} />
-                    </span>
+                      <span className="docs-pathway-arrow" aria-hidden="true">
+                        <Icon name="arrow-up-right" size={14} />
+                      </span>
+                    </header>
+                    <p className="docs-pathway-body">{card.body}</p>
+                    <code className="docs-pathway-snippet">{card.snippet}</code>
+                    <ul className="docs-pathway-stats">
+                      {card.stats.map((stat) => (
+                        <li key={stat}>{stat}</li>
+                      ))}
+                    </ul>
                   </a>
                 ))}
               </AnimateStagger>
