@@ -20,7 +20,6 @@ import {
   cssTabs,
   fallbackMetrics,
   installTabs,
-  integrationCards,
   navItems,
   proofItems,
   reactApiCards,
@@ -48,6 +47,44 @@ function formatCompact(value: number) {
 const popoverStyle = {
   '--transform-origin': '1.25rem top',
 } as CSSProperties;
+
+/* Real bundle metrics (measured from dist/ + src/ at build time).
+   Update these only when measurements change. */
+const pathwayCards = [
+  {
+    title: 'Pure CSS',
+    href: '#css',
+    body: 'Fastest adoption. Drop the bundle in, ship classes immediately.',
+    snippet: "import 'animix/css';",
+    stats: [
+      { label: 'Runtime', value: '0 kB' },
+      { label: 'CSS gzip', value: '8.8 kB' },
+      { label: 'Cherry-pick', value: 'from 1 kB' },
+    ],
+  },
+  {
+    title: 'Tailwind plugin',
+    href: '#tailwind',
+    body: 'Alias layer for utility-driven teams. Build-time only — nothing extra ships.',
+    snippet: "plugins: [animix()],",
+    stats: [
+      { label: 'Runtime', value: '0 kB' },
+      { label: 'Plugin', value: 'build-time' },
+      { label: 'Tokens', value: 'shared' },
+    ],
+  },
+  {
+    title: 'React bindings',
+    href: '#react',
+    body: 'Composition, stagger orchestration, hooks — no separate animation runtime.',
+    snippet: "import { Animate } from 'animix/react';",
+    stats: [
+      { label: 'JS gzip', value: '3.0 kB' },
+      { label: 'Deps', value: 'react only' },
+      { label: 'Hooks', value: '3 included' },
+    ],
+  },
+];
 
 /* -------------------------------------------------------------------------- */
 /* useScrollSpy                                                                */
@@ -686,19 +723,33 @@ export function App() {
                 inView
                 className="docs-pathways"
               >
-                {integrationCards.map((card, idx) => (
-                  <article key={card.title} className="docs-pathway">
+                {pathwayCards.map((card, idx) => (
+                  <a
+                    key={card.title}
+                    href={card.href}
+                    className="docs-pathway"
+                    aria-label={`${card.title} — jump to section`}
+                  >
                     <span className="docs-pathway-num">
                       {String(idx + 1).padStart(2, '0')}
                     </span>
                     <div className="docs-pathway-body">
                       <h4>{card.title}</h4>
                       <p>{card.body}</p>
+                      <code className="docs-pathway-snippet">{card.snippet}</code>
+                      <ul className="docs-pathway-stats">
+                        {card.stats.map((stat) => (
+                          <li key={stat.label}>
+                            <span>{stat.label}</span>
+                            <strong>{stat.value}</strong>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                     <span className="docs-pathway-arrow" aria-hidden="true">
                       <Icon name="arrow-up-right" size={14} />
                     </span>
-                  </article>
+                  </a>
                 ))}
               </AnimateStagger>
             </div>
