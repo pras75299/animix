@@ -144,7 +144,7 @@ function useRepoMetrics() {
     async function load() {
       try {
         const [repoRes, versionRes, downloadsRes] = await Promise.all([
-          fetch('https://api.github.com/repos/animix-js/animix', {
+          fetch('https://api.github.com/repos/pras75299/animix', {
             signal: controller.signal,
           }),
           fetch('https://registry.npmjs.org/animix/latest', {

@@ -11,7 +11,7 @@
   <img src="https://img.shields.io/badge/tree--shaking-yes-5B5BFF?style=flat-square" alt="tree-shaking" />
 </p>
 
-**[Documentation](https://animix-js.github.io/animix)** · **[Live playground](https://animix-js.github.io/animix#overview)** · **[Changelog](./CHANGELOG.md)** · **[Issues](https://github.com/animix-js/animix/issues)**
+**[Documentation](https://pras75299.github.io/animix)** · **[Live playground](https://pras75299.github.io/animix#overview)** · **[Changelog](./CHANGELOG.md)** · **[Issues](https://github.com/pras75299/animix/issues)**
 
 ---
 
@@ -901,7 +901,7 @@ Pre-1.0 means the public surface is still maturing — minor versions may rename
 Contributions welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for setup, commit conventions, and the animation checklist.
 
 ```bash
-git clone https://github.com/animix-js/animix
+git clone https://github.com/pras75299/animix
 cd animix
 npm install
 npm run dev          # playground at :5173

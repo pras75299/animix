@@ -27,8 +27,8 @@ export type CatalogItem = {
 };
 
 export const repoLinks = {
-  github: 'https://github.com/animix-js/animix',
-  issues: 'https://github.com/animix-js/animix/issues',
+  github: 'https://github.com/pras75299/animix',
+  issues: 'https://github.com/pras75299/animix/issues',
   npm: 'https://www.npmjs.com/package/animix',
 };
 

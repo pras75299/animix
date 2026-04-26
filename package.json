@@ -22,13 +22,13 @@
     "ui",
     "design-system"
   ],
-  "homepage": "https://github.com/animix-js/animix#readme",
+  "homepage": "https://github.com/pras75299/animix#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/animix-js/animix.git"
+    "url": "git+https://github.com/pras75299/animix.git"
   },
   "bugs": {
-    "url": "https://github.com/animix-js/animix/issues"
+    "url": "https://github.com/pras75299/animix/issues"
   },
   "publishConfig": {
     "access": "public",
