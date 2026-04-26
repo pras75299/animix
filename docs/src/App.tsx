@@ -1,5 +1,5 @@
 import { type CSSProperties, useEffect, useMemo, useState } from 'react';
-import { Animate, AnimateStagger } from '@animix-js/animix/react';
+import { Animate, AnimateStagger } from '@pras75299/animix/react';
 import {
   CodeBlock,
   CommandPalette,
@@ -55,7 +55,7 @@ const pathwayCards = [
     title: 'Pure CSS',
     href: '#css',
     body: 'Fastest adoption. Drop the bundle in, ship classes immediately.',
-    snippet: "import '@animix-js/animix/css';",
+    snippet: "import '@pras75299/animix/css';",
     stats: [
       { label: 'Runtime', value: '0 kB' },
       { label: 'CSS gzip', value: '8.8 kB' },
@@ -77,7 +77,7 @@ const pathwayCards = [
     title: 'React bindings',
     href: '#react',
     body: 'Composition, stagger orchestration, hooks — no separate animation runtime.',
-    snippet: "import { Animate } from '@animix-js/animix/react';",
+    snippet: "import { Animate } from '@pras75299/animix/react';",
     stats: [
       { label: 'JS gzip', value: '3.0 kB' },
       { label: 'Deps', value: 'react only' },
@@ -831,8 +831,8 @@ export function App() {
 @tailwind components;
 @tailwind utilities;
 
-@import '@animix-js/animix/css';
-@import '@animix-js/animix/shadcn';`}
+@import '@pras75299/animix/css';
+@import '@pras75299/animix/shadcn';`}
                 />
                 <div className="docs-card">
                   <strong>Implementation note</strong>

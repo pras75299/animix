@@ -15,8 +15,8 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@animix-js/animix/react': path.join(repoRoot, 'react/index.ts'),
-      '@animix-js/animix/css': path.join(repoRoot, 'src/index.css'),
+      '@pras75299/animix/react': path.join(repoRoot, 'react/index.ts'),
+      '@pras75299/animix/css': path.join(repoRoot, 'src/index.css'),
     },
   },
 });

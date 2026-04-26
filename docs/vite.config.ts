@@ -19,14 +19,14 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     resolve: {
       alias: {
-        '@animix-js/animix/react': path.join(repoRoot, 'react/index.ts'),
-        '@animix-js/animix/css': path.join(repoRoot, 'src/index.css'),
-        '@animix-js/animix/css/tokens': path.join(repoRoot, 'src/tokens.css'),
-        '@animix-js/animix/css/entrance': path.join(repoRoot, 'src/animations/entrance.css'),
-        '@animix-js/animix/css/exit': path.join(repoRoot, 'src/animations/exit.css'),
-        '@animix-js/animix/css/transitions': path.join(repoRoot, 'src/animations/transitions.css'),
-        '@animix-js/animix/css/utilities': path.join(repoRoot, 'src/utilities.css'),
-        '@animix-js/animix/shadcn': path.join(repoRoot, 'shadcn-presets.css'),
+        '@pras75299/animix/react': path.join(repoRoot, 'react/index.ts'),
+        '@pras75299/animix/css': path.join(repoRoot, 'src/index.css'),
+        '@pras75299/animix/css/tokens': path.join(repoRoot, 'src/tokens.css'),
+        '@pras75299/animix/css/entrance': path.join(repoRoot, 'src/animations/entrance.css'),
+        '@pras75299/animix/css/exit': path.join(repoRoot, 'src/animations/exit.css'),
+        '@pras75299/animix/css/transitions': path.join(repoRoot, 'src/animations/transitions.css'),
+        '@pras75299/animix/css/utilities': path.join(repoRoot, 'src/utilities.css'),
+        '@pras75299/animix/shadcn': path.join(repoRoot, 'shadcn-presets.css'),
       },
     },
   };

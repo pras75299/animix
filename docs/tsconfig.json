@@ -6,9 +6,9 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@animix-js/animix/react": ["../react/index.ts"],
-      "@animix-js/animix/css": ["../src/index.css"],
-      "@animix-js/animix/shadcn": ["../shadcn-presets.css"]
+      "@pras75299/animix/react": ["../react/index.ts"],
+      "@pras75299/animix/css": ["../src/index.css"],
+      "@pras75299/animix/shadcn": ["../shadcn-presets.css"]
     }
   },
   "include": ["src/**/*", "vite.config.ts"]

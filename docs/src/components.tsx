@@ -1,5 +1,5 @@
 import { type ReactNode, useEffect, useRef, useState } from 'react';
-import { Animate } from '@animix-js/animix/react';
+import { Animate } from '@pras75299/animix/react';
 import { type SnippetTab, type SearchItem } from './data';
 
 /* -------------------------------------------------------------------------- */

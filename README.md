@@ -3,9 +3,9 @@
 > **Production-ready CSS animation library for Tailwind CSS v3/v4, React, and shadcn/ui — zero runtime by default, reduced-motion safe.**
 
 <p>
-  <a href="https://www.npmjs.com/package/@animix-js/animix"><img src="https://img.shields.io/npm/v/@animix-js%2Fanimix?style=flat-square&label=npm&color=5B5BFF" alt="npm version" /></a>
-  <a href="https://www.npmjs.com/package/@animix-js/animix"><img src="https://img.shields.io/npm/dm/@animix-js%2Fanimix?style=flat-square&label=downloads&color=5B5BFF" alt="downloads" /></a>
-  <a href="https://bundlephobia.com/package/@animix-js/animix"><img src="https://img.shields.io/bundlephobia/minzip/@animix-js%2Fanimix?style=flat-square&label=gzip&color=5B5BFF" alt="bundle size" /></a>
+  <a href="https://www.npmjs.com/package/@pras75299/animix"><img src="https://img.shields.io/npm/v/@pras75299%2Fanimix?style=flat-square&label=npm&color=5B5BFF" alt="npm version" /></a>
+  <a href="https://www.npmjs.com/package/@pras75299/animix"><img src="https://img.shields.io/npm/dm/@pras75299%2Fanimix?style=flat-square&label=downloads&color=5B5BFF" alt="downloads" /></a>
+  <a href="https://bundlephobia.com/package/@pras75299/animix"><img src="https://img.shields.io/bundlephobia/minzip/@pras75299%2Fanimix?style=flat-square&label=gzip&color=5B5BFF" alt="bundle size" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-5B5BFF?style=flat-square" alt="MIT license" /></a>
   <img src="https://img.shields.io/badge/types-included-5B5BFF?style=flat-square" alt="TypeScript" />
   <img src="https://img.shields.io/badge/tree--shaking-yes-5B5BFF?style=flat-square" alt="tree-shaking" />
@@ -64,13 +64,13 @@ Published tarball: **46 kB compressed / 264 kB unpacked / 32 files** — source 
 
 ```bash
 # npm
-npm install @animix-js/animix
+npm install @pras75299/animix
 
 # pnpm
-pnpm add @animix-js/animix
+pnpm add @pras75299/animix
 
 # yarn
-yarn add @animix-js/animix
+yarn add @pras75299/animix
 ```
 
 **Peer dependencies** (all optional — install only what you use):
@@ -94,7 +94,7 @@ npm install react react-dom # for React bindings
 Or with a bundler:
 
 ```js
-import '@animix-js/animix/css';
+import '@pras75299/animix/css';
 ```
 
 ```html
@@ -111,16 +111,16 @@ Import the full bundle or individual categories:
 
 ```js
 // Full bundle (all animations + utilities)
-import '@animix-js/animix/css';
+import '@pras75299/animix/css';
 
 // Or cherry-pick for smaller bundles
-import '@animix-js/animix/css/tokens'; // CSS custom properties only
-import '@animix-js/animix/css/entrance'; // Entrance keyframes + classes
-import '@animix-js/animix/css/exit'; // Exit keyframes + classes
-import '@animix-js/animix/css/attention'; // Attention seeker animations
-import '@animix-js/animix/css/loaders'; // Loading indicators
-import '@animix-js/animix/css/transitions'; // UI transition patterns
-import '@animix-js/animix/css/utilities'; // Modifier & stagger classes
+import '@pras75299/animix/css/tokens'; // CSS custom properties only
+import '@pras75299/animix/css/entrance'; // Entrance keyframes + classes
+import '@pras75299/animix/css/exit'; // Exit keyframes + classes
+import '@pras75299/animix/css/attention'; // Attention seeker animations
+import '@pras75299/animix/css/loaders'; // Loading indicators
+import '@pras75299/animix/css/transitions'; // UI transition patterns
+import '@pras75299/animix/css/utilities'; // Modifier & stagger classes
 ```
 
 ---
@@ -396,7 +396,7 @@ For larger lists (20+ items), use `<AnimateStagger>` from the React bindings whi
 
 ```ts
 // tailwind.config.ts
-import animix from '@animix-js/animix/tailwind';
+import animix from '@pras75299/animix/tailwind';
 
 export default {
   plugins: [animix()],
@@ -407,7 +407,7 @@ Import the token stylesheet separately (the plugin registers keyframes but CSS v
 
 ```css
 /* globals.css */
-@import '@animix-js/animix/css/tokens';
+@import '@pras75299/animix/css/tokens';
 ```
 
 Now use `animate-animix-*` utilities alongside standard Tailwind duration/delay/easing:
@@ -448,8 +448,8 @@ Override tokens inline with Tailwind's arbitrary value syntax or inline styles:
 ## Mode 3 — React Bindings
 
 ```tsx
-import { Animate, AnimateStagger, useAnimation, useInView } from '@animix-js/animix/react';
-import '@animix-js/animix/css';
+import { Animate, AnimateStagger, useAnimation, useInView } from '@pras75299/animix/react';
+import '@pras75299/animix/css';
 ```
 
 ---
@@ -577,7 +577,7 @@ Imperative control: play, pause, resume, reverse, and reset a CSS animation on a
 
 ```tsx
 import { useRef } from 'react';
-import { useAnimation } from '@animix-js/animix/react';
+import { useAnimation } from '@pras75299/animix/react';
 
 function NotificationBell() {
   const ref = useRef<HTMLButtonElement>(null);
@@ -612,7 +612,7 @@ Returns `true` when the referenced element enters the viewport.
 
 ```tsx
 import { useRef } from 'react';
-import { useInView } from '@animix-js/animix/react';
+import { useInView } from '@pras75299/animix/react';
 
 function AnimatedCounter() {
   const ref = useRef<HTMLDivElement>(null);
@@ -643,8 +643,8 @@ Import the presets file **after** your shadcn styles:
 @tailwind utilities;
 
 /* animix */
-@import '@animix-js/animix/css';
-@import '@animix-js/animix/shadcn'; /* ← must come last */
+@import '@pras75299/animix/css';
+@import '@pras75299/animix/shadcn'; /* ← must come last */
 ```
 
 This automatically wires animations onto Radix UI `data-state`/`data-side` attributes — no class changes to your components needed:
@@ -866,7 +866,7 @@ All animations use `transform` and `opacity` — both GPU-composited, no layout 
 Framer Motion is excellent for spring-based, gesture-driven, layout-animation flows — and it costs ~30 kB gzip plus React render orchestration. animix targets the much larger surface of "lifecycle motion" (mount, exit, hover, focus, in-view, status loaders, overlay enters/exits) where CSS keyframes are sufficient and free. Use Framer Motion for shared-element transitions and physics; use animix for everything else.
 
 **Does it work without React?**
-Yes. The `@animix-js/animix/css` and `@animix-js/animix/tailwind` paths have no JS runtime at all. The React bindings are an optional layer.
+Yes. The `@pras75299/animix/css` and `@pras75299/animix/tailwind` paths have no JS runtime at all. The React bindings are an optional layer.
 
 **Does it work in Server Components / Next.js App Router?**
 The CSS path is fully server-renderable — no `"use client"` needed. The React bindings (`Animate`, `AnimateStagger`, `useAnimation`, `useInView`) are client components and need `"use client"` on their importing files.

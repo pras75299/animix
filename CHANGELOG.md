@@ -7,6 +7,20 @@ Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.2.1] — 2026-04-26
+
+### Fixed
+
+- README badges and install snippet referenced `@animix-js/animix` but the package was published under `@pras75299/animix`. All registry-facing references corrected.
+
+## [0.2.0] — 2026-04-26
+
+### Added
+
+- First public release on the npm registry as `@pras75299/animix`.
+- Source maps stripped from publish tarball (47.8 kB compressed / 268.7 kB unpacked / 32 files).
+- `publishConfig`, `engines`, `sideEffects`, expanded `keywords` for discoverability.
+
 ## [Unreleased]
 
 ### Added

@@ -1,5 +1,5 @@
 import { useState, type CSSProperties } from 'react';
-import { Animate, AnimateStagger, usePrefersReducedMotion } from '@animix-js/animix/react';
+import { Animate, AnimateStagger, usePrefersReducedMotion } from '@pras75299/animix/react';
 
 const cssEntranceSamples = [
   'animix-in-fade',
