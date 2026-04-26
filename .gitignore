@@ -19,6 +19,9 @@ node_modules/
 # Editor
 .vscode/
 .idea/
+
+# Local agent / IDE (not part of the library)
+.claude/
 *.swp
 *.swo
 .DS_Store
