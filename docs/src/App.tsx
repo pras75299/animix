@@ -147,10 +147,10 @@ function useRepoMetrics() {
           fetch('https://api.github.com/repos/pras75299/animix', {
             signal: controller.signal,
           }),
-          fetch('https://registry.npmjs.org/animix/latest', {
+          fetch('https://registry.npmjs.org/@pras75299%2Fanimix/latest', {
             signal: controller.signal,
           }),
-          fetch('https://api.npmjs.org/downloads/point/last-month/animix', {
+          fetch('https://api.npmjs.org/downloads/point/last-month/@pras75299/animix', {
             signal: controller.signal,
           }),
         ]);

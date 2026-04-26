@@ -29,7 +29,7 @@ export type CatalogItem = {
 export const repoLinks = {
   github: 'https://github.com/pras75299/animix',
   issues: 'https://github.com/pras75299/animix/issues',
-  npm: 'https://www.npmjs.com/package/animix',
+  npm: 'https://www.npmjs.com/package/@pras75299/animix',
 };
 
 export type RepoMetrics = {
