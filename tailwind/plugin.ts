@@ -6,7 +6,7 @@
  *   export default { plugins: [animix()] }
  *
  * Then use Tailwind utilities directly:
- *   <div class="animate-animix-fade-in duration-300 delay-150 ease-spring" />
+ *   <div class="animate-animix-fade-in animix-delay-150 ease-spring" />
  */
 
 import plugin from 'tailwindcss/plugin';
@@ -55,26 +55,24 @@ const keyframes = {
     to: { opacity: '1', transform: 'perspective(400px) rotateY(0deg)' },
   },
   'animix-rotate-in': {
-    from: { opacity: '0', transform: 'rotate(-180deg) scale(0.8)' },
+    from: { opacity: '0', transform: 'rotate(-12deg) scale(0.96)' },
     to: { opacity: '1', transform: 'rotate(0deg) scale(1)' },
   },
   'animix-bounce-in': {
-    '0%': { opacity: '0', transform: 'scale(0.3)' },
-    '50%': { opacity: '1', transform: 'scale(1.05)' },
-    '70%': { transform: 'scale(0.9)' },
-    '85%': { transform: 'scale(1.02)' },
+    '0%': { opacity: '0', transform: 'scale(0.92)' },
+    '60%': { opacity: '1', transform: 'scale(1.02)' },
+    '82%': { transform: 'scale(0.985)' },
     '100%': { opacity: '1', transform: 'scale(1)' },
   },
   'animix-elastic-in': {
-    '0%': { opacity: '0', transform: 'scale(0)' },
-    '55%': { opacity: '1', transform: 'scale(1.1)' },
-    '70%': { transform: 'scale(0.95)' },
-    '85%': { transform: 'scale(1.025)' },
-    '92%': { transform: 'scale(0.99)' },
+    '0%': { opacity: '0', transform: 'scale(0.94)' },
+    '55%': { opacity: '1', transform: 'scale(1.03)' },
+    '70%': { transform: 'scale(0.99)' },
+    '85%': { transform: 'scale(1.01)' },
     '100%': { opacity: '1', transform: 'scale(1)' },
   },
   'animix-blur-in': {
-    from: { opacity: '0', filter: 'blur(8px)', transform: 'scale(1.02)' },
+    from: { opacity: '0', filter: 'blur(4px)', transform: 'scale(1.02)' },
     to: { opacity: '1', filter: 'blur(0px)', transform: 'scale(1)' },
   },
 
@@ -117,11 +115,11 @@ const keyframes = {
   },
   'animix-rotate-out': {
     from: { opacity: '1', transform: 'rotate(0deg) scale(1)' },
-    to: { opacity: '0', transform: 'rotate(180deg) scale(0.8)' },
+    to: { opacity: '0', transform: 'rotate(12deg) scale(0.96)' },
   },
   'animix-blur-out': {
     from: { opacity: '1', filter: 'blur(0px)', transform: 'scale(1)' },
-    to: { opacity: '0', filter: 'blur(8px)', transform: 'scale(0.98)' },
+    to: { opacity: '0', filter: 'blur(4px)', transform: 'scale(0.98)' },
   },
 
   /* Attention */
@@ -316,12 +314,12 @@ const keyframes = {
     to: { opacity: '0', transform: 'translateY(calc(100% + 1.5rem))' },
   },
   'animix-tooltip-in': {
-    from: { opacity: '0', transform: 'scale(0.9)' },
+    from: { opacity: '0', transform: 'scale(0.96)' },
     to: { opacity: '1', transform: 'scale(1)' },
   },
   'animix-tooltip-out': {
     from: { opacity: '1', transform: 'scale(1)' },
-    to: { opacity: '0', transform: 'scale(0.9)' },
+    to: { opacity: '0', transform: 'scale(0.96)' },
   },
 
   /* Micro + icon + text + image packs */
@@ -371,54 +369,54 @@ const keyframes = {
 const animations = {
   /* Entrance */
   'fade-in':
-    'animix-fade-in var(--animix-duration-base,300ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+    'animix-fade-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'slide-up':
-    'animix-slide-up-in var(--animix-duration-base,300ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+    'animix-slide-up-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'slide-down':
-    'animix-slide-down-in var(--animix-duration-base,300ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+    'animix-slide-down-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'slide-left':
-    'animix-slide-left-in var(--animix-duration-base,300ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+    'animix-slide-left-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'slide-right':
-    'animix-slide-right-in var(--animix-duration-base,300ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+    'animix-slide-right-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'scale-up':
-    'animix-scale-up-in var(--animix-duration-base,300ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) var(--animix-delay,0ms) both',
+    'animix-scale-up-in var(--animix-duration-base,240ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) var(--animix-delay,0ms) both',
   'scale-down':
-    'animix-scale-down-in var(--animix-duration-base,300ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) var(--animix-delay,0ms) both',
+    'animix-scale-down-in var(--animix-duration-base,240ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) var(--animix-delay,0ms) both',
   'flip-x':
-    'animix-flip-x-in var(--animix-duration-slow,500ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+    'animix-flip-x-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'flip-y':
-    'animix-flip-y-in var(--animix-duration-slow,500ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+    'animix-flip-y-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'rotate-in':
-    'animix-rotate-in var(--animix-duration-slow,500ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) var(--animix-delay,0ms) both',
+    'animix-rotate-in var(--animix-duration-base,240ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) var(--animix-delay,0ms) both',
   'bounce-in':
-    'animix-bounce-in var(--animix-duration-slow,500ms) ease var(--animix-delay,0ms) both',
+    'animix-bounce-in var(--animix-duration-base,240ms) var(--animix-ease-default,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'elastic-in':
-    'animix-elastic-in var(--animix-duration-slow,500ms) ease var(--animix-delay,0ms) both',
+    'animix-elastic-in var(--animix-duration-base,240ms) var(--animix-ease-bounce,cubic-bezier(0.68,-0.55,0.27,1.55)) var(--animix-delay,0ms) both',
   'blur-in':
-    'animix-blur-in var(--animix-duration-base,300ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+    'animix-blur-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   /* Exit */
   'fade-out':
-    'animix-fade-out var(--animix-duration-base,300ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) var(--animix-delay,0ms) both',
+    'animix-fade-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'slide-up-out':
-    'animix-slide-up-out var(--animix-duration-base,300ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) var(--animix-delay,0ms) both',
+    'animix-slide-up-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'slide-down-out':
-    'animix-slide-down-out var(--animix-duration-base,300ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) var(--animix-delay,0ms) both',
+    'animix-slide-down-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'slide-left-out':
-    'animix-slide-left-out var(--animix-duration-base,300ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) var(--animix-delay,0ms) both',
+    'animix-slide-left-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'slide-right-out':
-    'animix-slide-right-out var(--animix-duration-base,300ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) var(--animix-delay,0ms) both',
+    'animix-slide-right-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'scale-up-out':
-    'animix-scale-up-out var(--animix-duration-base,300ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) var(--animix-delay,0ms) both',
+    'animix-scale-up-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'scale-down-out':
-    'animix-scale-down-out var(--animix-duration-base,300ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) var(--animix-delay,0ms) both',
+    'animix-scale-down-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'flip-x-out':
-    'animix-flip-x-out var(--animix-duration-slow,500ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) var(--animix-delay,0ms) both',
+    'animix-flip-x-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'flip-y-out':
-    'animix-flip-y-out var(--animix-duration-slow,500ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) var(--animix-delay,0ms) both',
+    'animix-flip-y-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'rotate-out':
-    'animix-rotate-out var(--animix-duration-slow,500ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) var(--animix-delay,0ms) both',
+    'animix-rotate-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'blur-out':
-    'animix-blur-out var(--animix-duration-base,300ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) var(--animix-delay,0ms) both',
+    'animix-blur-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   /* Attention */
   pulse:
     'animix-pulse var(--animix-duration-slower,800ms) var(--animix-ease-default,cubic-bezier(0.4,0,0.2,1)) var(--animix-delay,0ms) both infinite',
@@ -437,75 +435,76 @@ const animations = {
   wobble: 'animix-wobble var(--animix-duration-slower,800ms) ease var(--animix-delay,0ms) both',
   /* Loaders */
   spin: 'animix-spin 600ms linear var(--animix-delay,0ms) infinite',
-  skeleton: 'animix-skeleton-shimmer 1.6s ease-in-out infinite',
+  skeleton: 'animix-skeleton-shimmer 1.4s linear infinite',
   /* Page + overlay */
   'page-fade-in':
-    'animix-page-fade-in var(--animix-duration-slow,500ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+    'animix-page-fade-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'page-fade-out':
-    'animix-page-fade-out var(--animix-duration-slow,500ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) var(--animix-delay,0ms) both',
+    'animix-page-fade-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'page-slide-in':
-    'animix-page-slide-in var(--animix-duration-slow,500ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+    'animix-page-slide-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'page-slide-out':
-    'animix-page-slide-out var(--animix-duration-slow,500ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) var(--animix-delay,0ms) both',
+    'animix-page-slide-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'overlay-in':
-    'animix-overlay-in var(--animix-duration-base,300ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+    'animix-overlay-in var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'overlay-out':
-    'animix-overlay-out var(--animix-duration-base,300ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) var(--animix-delay,0ms) both',
+    'animix-overlay-out var(--animix-duration-micro,140ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   /* Transitions */
   'modal-in':
-    'animix-modal-in var(--animix-duration-base,300ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) both',
+    'animix-modal-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'modal-out':
-    'animix-modal-out var(--animix-duration-base,300ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) both',
+    'animix-modal-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'drawer-in-right':
-    'animix-drawer-in-right var(--animix-duration-slow,500ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) both',
+    'animix-drawer-in-right var(--animix-duration-slow,280ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'drawer-out-right':
-    'animix-drawer-out-right var(--animix-duration-slow,500ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) both',
+    'animix-drawer-out-right var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'drawer-in-left':
-    'animix-drawer-in-left var(--animix-duration-slow,500ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) both',
+    'animix-drawer-in-left var(--animix-duration-slow,280ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'drawer-out-left':
-    'animix-drawer-out-left var(--animix-duration-slow,500ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) both',
+    'animix-drawer-out-left var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'drawer-in-bottom':
-    'animix-drawer-in-bottom var(--animix-duration-slow,500ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) both',
+    'animix-drawer-in-bottom var(--animix-duration-slow,280ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'drawer-out-bottom':
-    'animix-drawer-out-bottom var(--animix-duration-slow,500ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) both',
+    'animix-drawer-out-bottom var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'drawer-in-top':
-    'animix-drawer-in-top var(--animix-duration-slow,500ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) both',
+    'animix-drawer-in-top var(--animix-duration-slow,280ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'drawer-out-top':
-    'animix-drawer-out-top var(--animix-duration-slow,500ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) both',
+    'animix-drawer-out-top var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'toast-in':
-    'animix-toast-in-right var(--animix-duration-base,300ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) both',
+    'animix-toast-in-right var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'toast-out':
-    'animix-toast-out-right var(--animix-duration-base,300ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) both',
+    'animix-toast-out-right var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'toast-in-bottom':
-    'animix-toast-in-bottom var(--animix-duration-base,300ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) both',
+    'animix-toast-in-bottom var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'toast-out-bottom':
-    'animix-toast-out-bottom var(--animix-duration-base,300ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) both',
+    'animix-toast-out-bottom var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'tooltip-in':
-    'animix-tooltip-in var(--animix-duration-fast,150ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) both',
+    'animix-tooltip-in var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'tooltip-out':
-    'animix-tooltip-out var(--animix-duration-fast,150ms) var(--animix-ease-in,cubic-bezier(0.4,0,1,1)) both',
+    'animix-tooltip-out var(--animix-duration-micro,140ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   /* Packs: micro / icon / text / image */
   'badge-pulse-soft':
     'animix-badge-pulse-soft 1.8s var(--animix-ease-default,cubic-bezier(0.4,0,0.2,1)) var(--animix-delay,0ms) both infinite',
   'icon-spin': 'animix-spin 850ms linear var(--animix-delay,0ms) infinite',
   'icon-success-pop':
-    'animix-icon-success-pop var(--animix-duration-base,300ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) var(--animix-delay,0ms) both',
+    'animix-icon-success-pop var(--animix-duration-base,240ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) var(--animix-delay,0ms) both',
   'icon-shake-soft':
     'animix-shake-soft 280ms var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
   'icon-bell-ring':
     'animix-icon-bell-ring 600ms var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
   'text-headline-rise':
-    'animix-text-headline-rise var(--animix-duration-slow,500ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+    'animix-text-headline-rise var(--animix-duration-slow,280ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'counter-tick':
-    'animix-counter-tick var(--animix-duration-micro,180ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+    'animix-counter-tick var(--animix-duration-micro,140ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'img-mask-reveal':
-    'animix-img-mask-reveal var(--animix-duration-slow,500ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1)) var(--animix-delay,0ms) both',
+    'animix-img-mask-reveal var(--animix-duration-slow,280ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'img-parallax-lite':
     'animix-img-parallax-lite 1ms linear var(--animix-delay,0ms) both',
 } as const;
 
 /* ── Custom easing values ───────────────────────────────────────── */
 const transitionTimingFunction = {
+  'in-out': 'cubic-bezier(0.77, 0, 0.175, 1)',
   spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
   bounce: 'cubic-bezier(0.68, -0.55, 0.27, 1.55)',
 };
@@ -523,14 +522,15 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
       /* 1. CSS custom property tokens */
       addBase({
         ':root': {
-          '--animix-duration-micro': '180ms',
-          '--animix-duration-fast': '150ms',
-          '--animix-duration-base': '300ms',
-          '--animix-duration-slow': '500ms',
-          '--animix-duration-slower': '800ms',
-          '--animix-ease-default': 'cubic-bezier(0.4, 0, 0.2, 1)',
-          '--animix-ease-in': 'cubic-bezier(0.4, 0, 1, 1)',
-          '--animix-ease-out': 'cubic-bezier(0, 0, 0.2, 1)',
+          '--animix-duration-micro': '140ms',
+          '--animix-duration-fast': '180ms',
+          '--animix-duration-base': '240ms',
+          '--animix-duration-slow': '280ms',
+          '--animix-duration-slower': '420ms',
+          '--animix-ease-default': 'cubic-bezier(0.23, 1, 0.32, 1)',
+          '--animix-ease-in': 'cubic-bezier(0.64, 0, 0.78, 0)',
+          '--animix-ease-out': 'cubic-bezier(0.23, 1, 0.32, 1)',
+          '--animix-ease-in-out': 'cubic-bezier(0.77, 0, 0.175, 1)',
           '--animix-ease-spring': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
           '--animix-ease-bounce': 'cubic-bezier(0.68, -0.55, 0.27, 1.55)',
           '--animix-slide-distance': '16px',
@@ -544,6 +544,7 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
           '--animix-text-stagger-step': '40ms',
           '--animix-image-zoom': '1.04',
           '--animix-motion-intensity': '1',
+          '--animix-transform-origin': 'center center',
           '--animix-delay': '0ms',
           '--animix-stagger-delay': '75ms',
           '--animix-stagger-index': '0',
@@ -615,8 +616,10 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
         '.animix-on-hover [class*="animix-"], .animix-on-hover [class*="animate-"]': {
           'animation-play-state': 'paused',
         },
-        '.animix-on-hover:hover [class*="animix-"], .animix-on-hover:hover [class*="animate-"]': {
-          'animation-play-state': 'running',
+        '@media (hover: hover) and (pointer: fine)': {
+          '.animix-on-hover:hover [class*="animix-"], .animix-on-hover:hover [class*="animate-"]': {
+            'animation-play-state': 'running',
+          },
         },
         '.animix-on-focus [class*="animix-"], .animix-on-focus [class*="animate-"]': {
           'animation-play-state': 'paused',
@@ -640,25 +643,25 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
         '.animix-enter-fade, .animate-animix-enter-fade': {
           opacity: '1',
           'transition-property': 'opacity',
-          'transition-duration': 'var(--animix-duration-base,300ms)',
+          'transition-duration': 'var(--animix-duration-base,240ms)',
           'transition-delay': 'var(--animix-delay,0ms)',
-          'transition-timing-function': 'var(--animix-ease-out,cubic-bezier(0,0,0.2,1))',
+          'transition-timing-function': 'var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
         },
         '.animix-enter-up, .animate-animix-enter-up': {
           opacity: '1',
           transform: 'translateY(0)',
           'transition-property': 'opacity, transform',
-          'transition-duration': 'var(--animix-duration-base,300ms)',
+          'transition-duration': 'var(--animix-duration-base,240ms)',
           'transition-delay': 'var(--animix-delay,0ms)',
-          'transition-timing-function': 'var(--animix-ease-out,cubic-bezier(0,0,0.2,1))',
+          'transition-timing-function': 'var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
         },
         '.animix-enter-scale, .animate-animix-enter-scale': {
           opacity: '1',
           transform: 'scale(1)',
           'transition-property': 'opacity, transform',
-          'transition-duration': 'var(--animix-duration-base,300ms)',
+          'transition-duration': 'var(--animix-duration-base,240ms)',
           'transition-delay': 'var(--animix-delay,0ms)',
-          'transition-timing-function': 'var(--animix-ease-out,cubic-bezier(0,0,0.2,1))',
+          'transition-timing-function': 'var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
         },
         '@supports (animation-timeline: view())': {
           '.animix-scroll-reveal-up, .animate-animix-scroll-reveal-up': {
@@ -695,11 +698,8 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
       addUtilities({
         '.animix-hover-lift, .animate-animix-hover-lift': {
           transition:
-            'transform var(--animix-duration-micro,180ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1))',
+            'transform var(--animix-duration-micro,140ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
           'will-change': 'transform',
-        },
-        '.animix-hover-lift:hover, .animate-animix-hover-lift:hover': {
-          transform: 'translateY(calc(var(--animix-hover-lift,-2px) * var(--animix-motion-intensity,1)))',
         },
         '.animix-hover-lift:active, .animate-animix-hover-lift:active': {
           transform: 'translateY(0) scale(var(--animix-press-scale,0.97))',
@@ -713,7 +713,7 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
         },
         '.animix-focus-soft, .animate-animix-focus-soft': {
           transition:
-            'outline-color var(--animix-duration-micro,180ms) ease, outline-offset var(--animix-duration-micro,180ms) ease, box-shadow var(--animix-duration-micro,180ms) ease',
+            'outline-color var(--animix-duration-micro,140ms) ease, outline-offset var(--animix-duration-micro,140ms) ease, box-shadow var(--animix-duration-micro,140ms) ease',
           outline: 'var(--animix-focus-ring-width,2px) solid transparent',
           'outline-offset': 'var(--animix-focus-ring-offset,2px)',
         },
@@ -725,10 +725,7 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
         },
         '.animix-active-pop, .animate-animix-active-pop': {
           transition:
-            'transform var(--animix-duration-micro,180ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1))',
-        },
-        '.animix-active-pop:hover, .animate-animix-active-pop:hover': {
-          transform: 'scale(var(--animix-active-pop-scale,1.02))',
+            'transform var(--animix-duration-micro,140ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1))',
         },
         '.animix-active-pop:active, .animate-animix-active-pop:active': {
           transform: 'scale(var(--animix-press-scale,0.97))',
@@ -750,14 +747,27 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
             width: '100%',
             height: 'auto',
             transition:
-              'transform var(--animix-duration-slow,500ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1))',
+              'transform var(--animix-duration-slow,280ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
             'transform-origin': 'center center',
             'will-change': 'transform',
           },
-        '.animix-img-zoom-wrap:hover > img, .animix-img-zoom-wrap:hover > picture > img, .animix-img-zoom-wrap:focus-within > img, .animix-img-zoom-wrap:focus-within > picture > img, .animate-animix-img-zoom-wrap:hover > img, .animate-animix-img-zoom-wrap:hover > picture > img, .animate-animix-img-zoom-wrap:focus-within > img, .animate-animix-img-zoom-wrap:focus-within > picture > img':
+        '.animix-img-zoom-wrap:focus-within > img, .animix-img-zoom-wrap:focus-within > picture > img, .animate-animix-img-zoom-wrap:focus-within > img, .animate-animix-img-zoom-wrap:focus-within > picture > img':
           {
             transform: 'scale(var(--animix-image-zoom,1.04))',
           },
+        '@media (hover: hover) and (pointer: fine)': {
+          '.animix-hover-lift:hover, .animate-animix-hover-lift:hover': {
+            transform:
+              'translateY(calc(var(--animix-hover-lift,-2px) * var(--animix-motion-intensity,1)))',
+          },
+          '.animix-active-pop:hover, .animate-animix-active-pop:hover': {
+            transform: 'scale(var(--animix-active-pop-scale,1.02))',
+          },
+          '.animix-img-zoom-wrap:hover > img, .animix-img-zoom-wrap:hover > picture > img, .animate-animix-img-zoom-wrap:hover > img, .animate-animix-img-zoom-wrap:hover > picture > img':
+            {
+              transform: 'scale(var(--animix-image-zoom,1.04))',
+            },
+        },
         '.animix-img-shimmer, .animate-animix-img-shimmer': {
           background:
             'linear-gradient(110deg, var(--animix-skeleton-base,hsl(0,0%,88%)) 0%, var(--animix-skeleton-highlight,hsl(0,0%,96%)) 45%, var(--animix-skeleton-base,hsl(0,0%,88%)) 90%)',

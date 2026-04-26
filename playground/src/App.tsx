@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { Animate, AnimateStagger, usePrefersReducedMotion } from 'animix/react';
 
 const cssEntranceSamples = [
@@ -6,15 +6,15 @@ const cssEntranceSamples = [
   'animix-in-slide-up',
   'animix-in-scale-up',
   'animix-in-blur',
-  'animix-in-bounce animix-slow',
+  'animix-in-bounce',
 ] as const;
 
 const tailwindSamples = [
-  'animate-animix-fade-in duration-500',
-  'animate-animix-slide-up animix-delay-150 duration-500',
+  'animate-animix-fade-in',
+  'animate-animix-slide-up animix-delay-150',
   'animate-animix-icon-success-pop',
   'animate-animix-text-headline-rise',
-  'animate-animix-badge-pulse-soft',
+  'animate-animix-toast-in-bottom',
 ] as const;
 
 const modernCssSamples = [
@@ -34,20 +34,25 @@ const launchStats = [
 const featureCards = [
   {
     title: 'Onboarding Checklist',
-    body: 'Guide new users with progressive reveals and contextual nudges.',
+    body: 'Stage first-run guidance with quick reveals and no wasted motion.',
     badgeClass: 'animix-in-slide-up',
   },
   {
     title: 'Revenue Pulse',
-    body: 'Highlight live metrics with subtle attention animations.',
+    body: 'Use restrained attention loops so metrics feel active, not noisy.',
     badgeClass: 'animix-pulse',
   },
   {
     title: 'Command Menu',
-    body: 'Use fast scale entries for command palettes and quick actions.',
-    badgeClass: 'animix-in-scale-up',
+    body: 'Keep keyboard-invoked panels instant and save motion for surrounding context.',
+    badgeClass: 'animix-in-fade',
   },
 ] as const;
+
+const anchoredPopoverStyle = {
+  '--transform-origin': '1.5rem top',
+  transformOrigin: 'var(--transform-origin)',
+} as CSSProperties;
 
 function DemoCard({ label, className }: { label: string; className: string }) {
   return (
@@ -87,7 +92,7 @@ export function App() {
               <button
                 type="button"
                 onClick={() => setIntensityBold(false)}
-                className={`rounded-md px-3 py-1.5 text-xs font-medium ${
+                className={`animix-press-in animix-focus-soft rounded-md px-3 py-1.5 text-xs font-medium ${
                   !intensityBold
                     ? 'bg-violet-600 text-white'
                     : 'bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200'
@@ -98,7 +103,7 @@ export function App() {
               <button
                 type="button"
                 onClick={() => setIntensityBold(true)}
-                className={`rounded-md px-3 py-1.5 text-xs font-medium ${
+                className={`animix-press-in animix-focus-soft rounded-md px-3 py-1.5 text-xs font-medium ${
                   intensityBold
                     ? 'bg-violet-600 text-white'
                     : 'bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200'
@@ -121,7 +126,7 @@ export function App() {
             <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 p-8 text-white shadow-lg dark:border-zinc-700">
               <Animate animation="slide-up" trigger="mount" className="block">
                 <p className="mb-3 inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-medium backdrop-blur">
-                  v0.2 · micro packs + intent presets
+                  240ms defaults · fast exits · origin-aware popovers
                 </p>
               </Animate>
               <Animate animation="elastic" trigger="mount" intent="text" className="block">
@@ -131,14 +136,14 @@ export function App() {
               </Animate>
               <Animate animation="fade" trigger="mount" className="mt-4 block">
                 <p className="max-w-2xl text-sm text-white/85">
-                  Toggle Subtle / Expressive above to change token-driven lift and zoom amounts.
+                  The demo now mirrors the latest motion defaults: quicker UI timings, gentler scale starts, and hover behavior reserved for fine pointers.
                 </p>
               </Animate>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Animate animation="bounce" trigger="mount" intent="button" className="inline-block">
                   <button
                     type="button"
-                    className="rounded-md bg-white px-4 py-2 text-sm font-semibold text-violet-700 shadow-sm"
+                    className="animix-press-in animix-focus-soft rounded-md bg-white px-4 py-2 text-sm font-semibold text-violet-700 shadow-sm"
                   >
                     Primary CTA
                   </button>
@@ -146,7 +151,7 @@ export function App() {
                 <Animate animation="fade" trigger="mount" className="inline-block">
                   <button
                     type="button"
-                    className="rounded-md border border-white/40 px-4 py-2 text-sm font-medium text-white"
+                    className="animix-press-in animix-focus-soft rounded-md border border-white/40 px-4 py-2 text-sm font-medium text-white"
                   >
                     Secondary
                   </button>
@@ -170,7 +175,7 @@ export function App() {
                 <button
                   type="button"
                   onClick={() => setFormError((v) => !v)}
-                  className="animix-hover-lift animix-focus-soft rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white dark:bg-zinc-100 dark:text-zinc-900"
+                  className="animix-hover-lift animix-press-in animix-focus-soft rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white dark:bg-zinc-100 dark:text-zinc-900"
                 >
                   Toggle validation shake
                 </button>
@@ -200,7 +205,7 @@ export function App() {
                 <button
                   type="button"
                   onClick={() => setSwapSuccess((s) => !s)}
-                  className="animix-press-in rounded border border-zinc-200 px-2 py-1 text-xs dark:border-zinc-600"
+                  className="animix-press-in animix-focus-soft rounded border border-zinc-200 px-2 py-1 text-xs dark:border-zinc-600"
                 >
                   Toggle status
                 </button>
@@ -216,7 +221,7 @@ export function App() {
             <button
               type="button"
               onClick={() => setPaletteOpen((o) => !o)}
-              className="animix-active-pop rounded-lg border border-zinc-200 bg-white px-4 py-2 text-sm font-medium dark:border-zinc-700 dark:bg-zinc-900"
+              className="animix-active-pop animix-focus-soft rounded-lg border border-zinc-200 bg-white px-4 py-2 text-sm font-medium dark:border-zinc-700 dark:bg-zinc-900"
             >
               {paletteOpen ? 'Close palette' : 'Open palette'}
             </button>
@@ -230,15 +235,24 @@ export function App() {
                     autoFocus
                   />
                   <AnimateStagger animation="slide-up" delay={50} className="mt-3 flex flex-col gap-1">
-                    <div className="rounded-md px-2 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800">
+                    <button
+                      type="button"
+                      className="animix-focus-soft animix-press-in rounded-md bg-zinc-100 px-2 py-2 text-left text-sm font-medium text-zinc-900 dark:bg-zinc-800 dark:text-zinc-50"
+                    >
                       Go to Dashboard
-                    </div>
-                    <div className="rounded-md px-2 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800">
+                    </button>
+                    <button
+                      type="button"
+                      className="animix-focus-soft animix-press-in rounded-md px-2 py-2 text-left text-sm text-zinc-600 dark:text-zinc-300"
+                    >
                       Invite teammate
-                    </div>
-                    <div className="rounded-md px-2 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800">
+                    </button>
+                    <button
+                      type="button"
+                      className="animix-focus-soft animix-press-in rounded-md px-2 py-2 text-left text-sm text-zinc-600 dark:text-zinc-300"
+                    >
                       Toggle theme
-                    </div>
+                    </button>
                   </AnimateStagger>
                 </div>
               </div>
@@ -251,7 +265,7 @@ export function App() {
               <div className="animate-animix-toast-in rounded-lg border border-zinc-200 bg-white p-3 text-sm shadow-md dark:border-zinc-700 dark:bg-zinc-900">
                 Deploy started on <strong>preview</strong>
               </div>
-              <div className="animate-animix-toast-in rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-100">
+              <div className="animate-animix-toast-in-bottom rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-100">
                 Build succeeded · 8 assets
               </div>
             </div>
@@ -272,7 +286,7 @@ export function App() {
                     loading="lazy"
                   />
                   <p className="bg-white px-2 py-1 text-xs text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400">
-                    {label} · hover zoom
+                    {label} · fine-pointer hover zoom
                   </p>
                 </div>
               ))}
@@ -290,7 +304,7 @@ export function App() {
                 type="button"
                 onClick={() => setChevronOpen((c) => !c)}
                 aria-expanded={chevronOpen}
-                className="animix-focus-soft flex items-center gap-2 rounded-md border border-zinc-200 px-3 py-2 text-sm dark:border-zinc-600"
+                className="animix-focus-soft animix-press-in flex items-center gap-2 rounded-md border border-zinc-200 px-3 py-2 text-sm dark:border-zinc-600"
               >
                 <span>Section</span>
                 <svg
@@ -328,8 +342,11 @@ export function App() {
               Single-line headline rise via Tailwind utility.
             </p>
             <p>
-              <span className="animix-text-underline-sweep cursor-pointer font-medium text-violet-600 dark:text-violet-400">
-                Hover for underline sweep
+              <span
+                className="animix-text-underline-sweep cursor-pointer font-medium text-violet-600 dark:text-violet-400"
+                tabIndex={0}
+              >
+                Hover on pointer devices or focus for underline sweep
               </span>
             </p>
           </section>
@@ -337,17 +354,24 @@ export function App() {
           <section className="space-y-4">
             <h2 className="text-lg font-semibold">Recipe: Tabs + accordion (state CSS)</h2>
             <div className="flex gap-4 border-b border-zinc-200 dark:border-zinc-700">
-              <button type="button" className="animix-tab-underline pb-2 text-sm font-medium" aria-selected="true">
+              <button
+                type="button"
+                className="animix-tab-underline animix-focus-soft animix-press-in pb-2 text-sm font-medium"
+                aria-selected="true"
+              >
                 Overview
               </button>
-              <button type="button" className="animix-tab-underline pb-2 text-sm text-zinc-500 dark:text-zinc-400">
+              <button
+                type="button"
+                className="animix-tab-underline animix-focus-soft animix-press-in pb-2 text-sm text-zinc-500 dark:text-zinc-400"
+              >
                 Activity
               </button>
             </div>
             <button
               type="button"
               onClick={() => setAccordionOpen((a) => !a)}
-              className="text-sm font-medium text-violet-600 dark:text-violet-400"
+              className="animix-focus-soft animix-press-in rounded-md text-sm font-medium text-violet-600 dark:text-violet-400"
             >
               {accordionOpen ? 'Collapse' : 'Expand'} panel
             </button>
@@ -363,7 +387,7 @@ export function App() {
 
           <section className="space-y-4">
             <h2 className="text-lg font-semibold">Real example: KPI cards</h2>
-            <AnimateStagger animation="slide-up" delay={90} inView className="grid gap-4 sm:grid-cols-3">
+            <AnimateStagger animation="slide-up" delay={60} inView className="grid gap-4 sm:grid-cols-3">
               {launchStats.map((stat) => (
                 <div
                   key={stat.label}
@@ -372,7 +396,7 @@ export function App() {
                   <p className="text-xs uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
                     {stat.label}
                   </p>
-                  <p className="mt-2 text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
+                  <p className="mt-2 text-2xl font-semibold tabular-nums text-zinc-900 dark:text-zinc-100">
                     {stat.value}
                   </p>
                 </div>
@@ -385,7 +409,7 @@ export function App() {
             <div className="grid gap-4 md:grid-cols-3">
               {featureCards.map((card) => (
                 <Animate key={card.title} animation="slide-up" trigger="inView" intent="image" className="block">
-                  <article className="animix-active-pop rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+                  <article className="animix-hover-lift animix-active-pop rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
                     <span
                       className={`mb-4 inline-flex rounded-full bg-violet-100 px-2.5 py-1 text-xs font-semibold text-violet-700 dark:bg-violet-900/50 dark:text-violet-200 ${card.badgeClass}`}
                     >
@@ -409,7 +433,7 @@ export function App() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-lg font-semibold">Tailwind animate-animix-*</h2>
+            <h2 className="text-lg font-semibold">Tailwind animate-animix-* aliases</h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {tailwindSamples.map((cls) => (
                 <DemoCard
@@ -429,9 +453,9 @@ export function App() {
                   intent=&quot;icon&quot; · elastic
                 </div>
               </Animate>
-              <Animate animation="tada" trigger="hover" className="inline-block">
-                <div className="cursor-pointer rounded-lg border-2 border-dashed border-violet-400 px-5 py-3 text-sm font-medium text-violet-800 dark:text-violet-200">
-                  Hover · tada
+              <Animate animation="fade" trigger="mount" easing="in-out" className="inline-block">
+                <div className="rounded-lg border-2 border-dashed border-violet-400 px-5 py-3 text-sm font-medium text-violet-800 dark:text-violet-200">
+                  easing=&quot;in-out&quot; · fade
                 </div>
               </Animate>
             </div>
@@ -445,7 +469,7 @@ export function App() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-lg font-semibold">Toast + modal (utilities)</h2>
+            <h2 className="text-lg font-semibold">Toast + popover (utilities)</h2>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900">
                 <div className="animate-animix-toast-in rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800 dark:border-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200">
@@ -453,10 +477,18 @@ export function App() {
                 </div>
               </div>
               <div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900">
-                <div className="animate-animix-overlay-in rounded-md bg-zinc-900/10 p-2 dark:bg-zinc-100/10">
-                  <div className="animate-animix-modal-in rounded-lg bg-white p-4 shadow-md dark:bg-zinc-800">
-                    <p className="text-sm font-medium">Modal</p>
-                    <p className="mt-1 text-xs text-zinc-500">Overlay + modal choreography</p>
+                <div className="rounded-md bg-zinc-900/5 p-3 dark:bg-zinc-100/5">
+                  <button
+                    type="button"
+                    className="animix-focus-soft animix-press-in rounded-md border border-zinc-200 px-3 py-2 text-sm font-medium dark:border-zinc-600"
+                  >
+                    Invite member
+                  </button>
+                  <div
+                    className="animate-animix-tooltip-in mt-3 inline-flex max-w-xs rounded-lg border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-600 shadow-md dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                    style={anchoredPopoverStyle}
+                  >
+                    Popovers now scale from the trigger instead of the center.
                   </div>
                 </div>
               </div>
@@ -485,13 +517,13 @@ export function App() {
             <h2 className="text-lg font-semibold">View transitions (MPA)</h2>
             <p className="text-sm text-zinc-600 dark:text-zinc-400">
               Import <code className="rounded bg-zinc-200 px-1 dark:bg-zinc-800">animix/css/view-transitions</code> for
-              same-origin cross-document transitions.
+              same-origin cross-document transitions with the updated fast-out timing pair.
             </p>
           </section>
 
           <section className="space-y-4">
             <h2 className="text-lg font-semibold">AnimateStagger</h2>
-            <AnimateStagger animation="slide-up" delay={80} inView className="flex flex-col gap-3">
+            <AnimateStagger animation="slide-up" delay={60} inView className="flex flex-col gap-3">
               <div className="rounded-md bg-zinc-200 px-4 py-3 text-sm dark:bg-zinc-800">First</div>
               <div className="rounded-md bg-zinc-200 px-4 py-3 text-sm dark:bg-zinc-800">Second</div>
               <div className="rounded-md bg-zinc-200 px-4 py-3 text-sm dark:bg-zinc-800">Third</div>
