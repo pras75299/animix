@@ -16,6 +16,7 @@ import {
   accessibilityNotes,
   catalogItems,
   changelogHighlights,
+  comparisonRows,
   cssSteps,
   cssTabs,
   fallbackMetrics,
@@ -23,6 +24,7 @@ import {
   navItems,
   proofItems,
   reactApiCards,
+  reactNotes,
   reactTabs,
   recipeTabs,
   repoLinks,
@@ -31,6 +33,7 @@ import {
   tailwindNotes,
   tailwindTabs,
   tokenRows,
+  viewTransitionTabs,
 } from './data';
 
 /* -------------------------------------------------------------------------- */
@@ -374,6 +377,91 @@ function Hero({ metrics }: { metrics: RepoMetrics }) {
   );
 }
 
+function ExitPatternDemo() {
+  const [open, setOpen] = useState(true);
+  const [exiting, setExiting] = useState(false);
+
+  function replay() {
+    setOpen(true);
+    setExiting(false);
+  }
+
+  function dismiss() {
+    if (open && !exiting) {
+      setExiting(true);
+    }
+  }
+
+  return (
+    <div
+      className="docs-card"
+      style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: 'var(--sp-2)',
+          flexWrap: 'wrap',
+        }}
+      >
+        <div>
+          <strong>Live exit flow</strong>
+          <p style={{ marginTop: 6 }}>Parent holds mount state, child only receives `exiting`.</p>
+        </div>
+        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <button type="button" className="docs-btn docs-btn-secondary" onClick={replay}>
+            Replay
+          </button>
+          <button
+            type="button"
+            className="docs-btn docs-btn-primary"
+            onClick={dismiss}
+            disabled={!open || exiting}
+          >
+            {exiting ? 'Closing…' : 'Dismiss'}
+          </button>
+        </div>
+      </div>
+
+      <div
+        style={{
+          minHeight: 136,
+          borderRadius: 'var(--radius-lg)',
+          border: '1px solid var(--c-rule)',
+          background: 'var(--c-panel-2)',
+          padding: 'var(--sp-3)',
+          display: 'flex',
+          alignItems: 'flex-end',
+        }}
+      >
+        {open ? (
+          <Animate
+            animation="slide-up"
+            exitAnimation="scale-down"
+            exiting={exiting}
+            onEnd={() => {
+              if (exiting) {
+                setOpen(false);
+                setExiting(false);
+              }
+            }}
+          >
+            <div className="docs-motion-card" style={{ maxWidth: 360 }}>
+              Saved. Remove me only after the exit completes.
+            </div>
+          </Animate>
+        ) : (
+          <div className="docs-motion-loader-row">
+            The toast is fully unmounted. Replay to run it again.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* -------------------------------------------------------------------------- */
 /* Catalog gallery                                                             */
 /* -------------------------------------------------------------------------- */
@@ -456,7 +544,7 @@ function Catalog() {
   return (
     <section id="catalog" className="docs-section">
       <SectionHead
-        num="08 / 11"
+        num="10 / 13"
         eyebrow="Animation Catalog"
         title={
           <>
@@ -612,7 +700,7 @@ export function App() {
           {/* 02 — Install */}
           <section id="install" className="docs-section">
             <SectionHead
-              num="02 / 11"
+              num="02 / 13"
               eyebrow="Getting Started"
               title={
                 <>
@@ -681,7 +769,7 @@ export function App() {
           {/* 03 — Pure CSS */}
           <section id="css" className="docs-section">
             <SectionHead
-              num="03 / 11"
+              num="03 / 13"
               eyebrow="Pure CSS"
               title={
                 <>
@@ -717,24 +805,34 @@ export function App() {
 
             <div className="docs-split">
               <SnippetTabs tabs={cssTabs} initialId="bundle" />
-              <div className="docs-card">
-                <strong>Common mistakes</strong>
-                <ul
-                  style={{
-                    margin: '8px 0 0',
-                    paddingLeft: 20,
-                    fontSize: 'var(--fs-sm)',
-                    color: 'var(--c-ink-3)',
-                    lineHeight: 1.6,
-                  }}
-                >
-                  <li>Stacking multiple entrance classes on the same element.</li>
-                  <li>Animating repeated keyboard flows like a command palette panel.</li>
-                  <li>
-                    Starting from <code>scale(0)</code> when scale and opacity already communicate
-                    entry.
-                  </li>
-                </ul>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
+                <div className="docs-card">
+                  <strong>Common mistakes</strong>
+                  <ul
+                    style={{
+                      margin: '8px 0 0',
+                      paddingLeft: 20,
+                      fontSize: 'var(--fs-sm)',
+                      color: 'var(--c-ink-3)',
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    <li>Stacking multiple entrance classes on the same element.</li>
+                    <li>Animating repeated keyboard flows like a command palette panel.</li>
+                    <li>
+                      Starting from <code>scale(0)</code> when scale and opacity already communicate
+                      entry.
+                    </li>
+                  </ul>
+                </div>
+                <CodeBlock
+                  title="Typed class exports"
+                  code={`import { animix, animateAnimix } from '@pras75299/animix/classes';
+
+const cardEnter = animix.entrance.slideUp;
+const toastExit = animix.exit.scaleDown;
+const tailwindAlias = animateAnimix.transitions.modalIn;`}
+                />
               </div>
             </div>
           </section>
@@ -742,7 +840,7 @@ export function App() {
           {/* 04 — Tailwind */}
           <section id="tailwind" className="docs-section">
             <SectionHead
-              num="04 / 11"
+              num="04 / 13"
               eyebrow="Tailwind Plugin"
               title={
                 <>
@@ -768,14 +866,14 @@ export function App() {
           {/* 05 — React */}
           <section id="react" className="docs-section">
             <SectionHead
-              num="05 / 11"
+              num="05 / 13"
               eyebrow="React Bindings"
               title={
                 <>
                   Composition and orchestration <em>without a separate runtime.</em>
                 </>
               }
-              body="The React API stays intentionally thin. It only helps with wiring, triggers, and hooks. The motion itself still comes from the same CSS source."
+              body="The React API stays intentionally thin. It helps with wiring, unmount exits, viewport triggers, and client boundaries. The motion itself still comes from the same CSS source."
             />
 
             <AnimateStagger
@@ -793,12 +891,60 @@ export function App() {
             </AnimateStagger>
 
             <SnippetTabs tabs={Object.values(reactTabs)} initialId="animate" />
+
+            <div className="docs-split" style={{ marginTop: 'var(--sp-5)' }}>
+              <ExitPatternDemo />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
+                {reactNotes.map((note) => (
+                  <article key={note.title} className="docs-card">
+                    <strong>{note.title}</strong>
+                    <p>{note.body}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
           </section>
 
-          {/* 06 — shadcn */}
+          {/* 06 — View Transitions */}
+          <section id="view-transitions" className="docs-section">
+            <SectionHead
+              num="06 / 13"
+              eyebrow="View Transitions"
+              title={
+                <>
+                  A platform primitive with <em>very little established competition.</em>
+                </>
+              }
+              body="animix already ships view-transition recipes in CSS. The gap was discoverability, not capability. This section surfaces how to use them for both same-document and cross-document flows."
+            />
+
+            <div className="docs-split docs-split-aside">
+              <SnippetTabs tabs={viewTransitionTabs} initialId="same-document" />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
+                <article className="docs-card">
+                  <strong>When to reach for it</strong>
+                  <p>
+                    Use View Transitions when the browser can animate between whole-screen states
+                    more cleanly than hand-authored enter/exit classes. Navigation, filters, and
+                    tabbed surfaces are the obvious wins.
+                  </p>
+                </article>
+                <article className="docs-card">
+                  <strong>What animix is doing</strong>
+                  <p>
+                    The shipped stylesheet defines old/new root recipes and reduced-motion guards.
+                    You still decide where to call <code>document.startViewTransition()</code> and
+                    which elements deserve named transitions.
+                  </p>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          {/* 07 — shadcn */}
           <section id="shadcn" className="docs-section">
             <SectionHead
-              num="06 / 11"
+              num="07 / 13"
               eyebrow="shadcn/ui"
               title={
                 <>
@@ -851,10 +997,10 @@ export function App() {
             </div>
           </section>
 
-          {/* 07 — Tokens */}
+          {/* 08 — Tokens */}
           <section id="tokens" className="docs-section">
             <SectionHead
-              num="07 / 11"
+              num="08 / 13"
               eyebrow="Token System"
               title={
                 <>
@@ -913,13 +1059,70 @@ export function App() {
             </div>
           </section>
 
-          {/* 08 — Catalog */}
+          {/* 09 — Compare */}
+          <section id="compare" className="docs-section">
+            <SectionHead
+              num="09 / 13"
+              eyebrow="Competitive Positioning"
+              title={
+                <>
+                  Be explicit about the wedge, <em>and explicit about the boundaries.</em>
+                </>
+              }
+              body="animix does not need to beat every animation tool at everything. It needs to win the lifecycle-motion layer clearly, then say where other tools still make more sense."
+            />
+
+            <div className="docs-split">
+              <div className="docs-table-wrap">
+                <table className="docs-table">
+                  <thead>
+                    <tr>
+                      <th>Feature</th>
+                      <th>animix</th>
+                      <th>animate.css</th>
+                      <th>tailwindcss-animate</th>
+                      <th>framer-motion</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {comparisonRows.map((row) => (
+                      <tr key={row[0]}>
+                        {row.map((cell, idx) => (
+                          <td key={`${row[0]}-${idx}`}>{cell}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
+                <article className="docs-card">
+                  <strong>Where animix wins</strong>
+                  <p>
+                    Shared motion language, zero-runtime CSS by default, Tailwind aliases, React
+                    unmount exits, and shadcn-ready component motion from one package.
+                  </p>
+                </article>
+                <article className="docs-card">
+                  <strong>What to deliberately skip</strong>
+                  <p>
+                    Layout animation, FLIP, drag, pinch, physics, and arbitrary timelines still
+                    belong to a runtime library like framer-motion or GSAP. That is a boundary, not
+                    a bug.
+                  </p>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          {/* 10 — Catalog */}
           <Catalog />
 
-          {/* 09 — Accessibility */}
+          {/* 11 — Accessibility */}
           <section id="accessibility" className="docs-section">
             <SectionHead
-              num="09 / 11"
+              num="11 / 13"
               eyebrow="Accessibility"
               title={
                 <>
@@ -985,10 +1188,10 @@ document.documentElement.classList.toggle('animix-no-motion', prefersNoMotion);`
             </div>
           </section>
 
-          {/* 10 — Recipes */}
+          {/* 12 — Recipes */}
           <section id="recipes" className="docs-section">
             <SectionHead
-              num="10 / 11"
+              num="12 / 13"
               eyebrow="Implementation Recipes"
               title={
                 <>
@@ -1038,10 +1241,10 @@ document.documentElement.classList.toggle('animix-no-motion', prefersNoMotion);`
             <SnippetTabs tabs={Object.values(recipeTabs)} initialId="command" />
           </section>
 
-          {/* 11 — Changelog */}
+          {/* 13 — Changelog */}
           <section id="changelog" className="docs-section">
             <SectionHead
-              num="11 / 11"
+              num="13 / 13"
               eyebrow="Changelog Highlights"
               title={
                 <>

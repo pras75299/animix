@@ -49,6 +49,27 @@
   }
 }
 
+@keyframes animix-head-shake {
+  0% {
+    transform: translateX(0);
+  }
+  12% {
+    transform: translateX(calc(var(--animix-slide-distance, 16px) * -0.4)) rotateY(-9deg);
+  }
+  37% {
+    transform: translateX(calc(var(--animix-slide-distance, 16px) * 0.3)) rotateY(7deg);
+  }
+  62% {
+    transform: translateX(calc(var(--animix-slide-distance, 16px) * -0.2)) rotateY(-5deg);
+  }
+  87% {
+    transform: translateX(calc(var(--animix-slide-distance, 16px) * 0.1)) rotateY(2deg);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
 @keyframes animix-wiggle {
   0%,
   100% {
@@ -254,6 +275,16 @@
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
+}
+
+.animix-head-shake {
+  animation-name: animix-head-shake;
+  animation-duration: var(--animix-duration-slow, 500ms);
+  animation-timing-function: var(--animix-ease-default, cubic-bezier(0.4, 0, 0.2, 1));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+  transform-origin: center center;
 }
 
 .animix-wiggle {
