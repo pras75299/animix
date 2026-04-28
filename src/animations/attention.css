@@ -451,6 +451,11 @@
     transform: none;
   }
 
+  .animix-head-shake {
+    animation: none;
+    transform: none;
+  }
+
   .animix-hover-lift:hover,
   .animix-hover-lift:active,
   .animix-press-in:active,

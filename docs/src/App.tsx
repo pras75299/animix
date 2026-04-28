@@ -664,7 +664,7 @@ export function App() {
 
       <main className="docs-shell">
         <aside className="docs-sidebar" aria-label="Documentation sections">
-          <p className="docs-sidebar-label">Documentation · 11 sections</p>
+          <p className="docs-sidebar-label">Documentation · {navItems.length} sections</p>
           <ol className="docs-sidebar-list">
             {navItems.map((item, idx) => (
               <li key={item.id}>

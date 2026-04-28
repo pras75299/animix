@@ -124,6 +124,10 @@ function getAnimationClass(
     'wobble',
   ];
 
+  if (type === 'in' && name === 'bounce') {
+    return 'animix-in-bounce';
+  }
+
   if (type === 'attention' || attentionNames.includes(name as AttentionAnimation)) {
     return `animix-${name}`;
   }
