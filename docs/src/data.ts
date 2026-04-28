@@ -2,7 +2,7 @@
    so the rebuild changes only the visual layer, not the documented surface. */
 
 export type InstallMode = 'npm' | 'pnpm' | 'yarn';
-export type ReactMode = 'animate' | 'stagger' | 'hooks';
+export type ReactMode = 'animate' | 'exit' | 'server' | 'stagger' | 'hooks';
 export type RecipeMode = 'command' | 'toast' | 'popover';
 
 export type SnippetTab = {
@@ -44,7 +44,7 @@ export const fallbackMetrics: RepoMetrics = {
   stars: '—',
   forks: '—',
   issues: '—',
-  version: 'v0.2.0',
+  version: 'v0.2.1',
   downloads: 'live',
 };
 
@@ -54,8 +54,10 @@ export const navItems = [
   { id: 'css', label: 'CSS' },
   { id: 'tailwind', label: 'Tailwind' },
   { id: 'react', label: 'React' },
+  { id: 'view-transitions', label: 'View Transitions' },
   { id: 'shadcn', label: 'shadcn/ui' },
   { id: 'tokens', label: 'Tokens' },
+  { id: 'compare', label: 'Compare' },
   { id: 'catalog', label: 'Catalog' },
   { id: 'accessibility', label: 'Accessibility' },
   { id: 'recipes', label: 'Recipes' },
@@ -84,8 +86,29 @@ export const searchItems: SearchItem[] = [
   {
     href: '#react',
     title: 'React bindings',
-    body: 'Animate, AnimateStagger, useAnimation, useInView, and reduced-motion hooks.',
-    keywords: ['react', 'animate', 'animatestagger', 'useanimation', 'useinview'],
+    body: 'Animate, AnimateStagger, exit orchestration, App Router boundaries, and reduced-motion hooks.',
+    keywords: [
+      'react',
+      'animate',
+      'animatestagger',
+      'useanimation',
+      'useinview',
+      'exit',
+      'next.js',
+      'server components',
+    ],
+  },
+  {
+    href: '#view-transitions',
+    title: 'View Transitions',
+    body: 'Same-document and cross-document recipes built on the platform primitive.',
+    keywords: [
+      'view transitions',
+      'view-transition',
+      'document.startViewTransition',
+      'navigation',
+      'same-document',
+    ],
   },
   {
     href: '#shadcn',
@@ -98,6 +121,12 @@ export const searchItems: SearchItem[] = [
     title: 'Motion tokens',
     body: 'Override duration, easing, distance, intensity, and interaction values.',
     keywords: ['tokens', 'duration', 'easing', 'distance', 'scale', 'hover'],
+  },
+  {
+    href: '#compare',
+    title: 'animix vs alternatives',
+    body: 'Compare animix with animate.css, tailwindcss-animate, and framer-motion.',
+    keywords: ['compare', 'animate.css', 'tailwindcss-animate', 'framer-motion', 'comparison'],
   },
   {
     href: '#catalog',
@@ -131,7 +160,7 @@ export const installTabs: Record<InstallMode, SnippetTab> = {
     label: 'npm',
     title: 'Install with npm',
     description: 'Start with the package, then add the optional integrations you actually use.',
-    code: `npm install animix
+    code: `npm install @pras75299/animix
 npm install tailwindcss react react-dom`,
   },
   pnpm: {
@@ -140,7 +169,7 @@ npm install tailwindcss react react-dom`,
     title: 'Install with pnpm',
     description:
       'The docs app itself uses pnpm-style workspace wiring, but the package works the same either way.',
-    code: `pnpm add animix
+    code: `pnpm add @pras75299/animix
 pnpm add tailwindcss react react-dom`,
   },
   yarn: {
@@ -148,7 +177,7 @@ pnpm add tailwindcss react react-dom`,
     label: 'yarn',
     title: 'Install with yarn',
     description: 'Use this when your app already ships through a Yarn workflow.',
-    code: `yarn add animix
+    code: `yarn add @pras75299/animix
 yarn add tailwindcss react react-dom`,
   },
 };
@@ -258,6 +287,75 @@ export const reactTabs: Record<ReactMode, SnippetTab> = {
   <Toast />
 </Animate>`,
   },
+  exit: {
+    id: 'exit',
+    label: 'Exit flow',
+    title: 'Animate unmounts by holding mount state outside the child',
+    description:
+      'This is animix’s clean answer to React unmount animation: the parent flips `exiting`, then removes the subtree after the exit completes.',
+    code: `import { useState } from 'react';
+import { Animate } from '@pras75299/animix/react';
+
+function ToastDemo() {
+  const [open, setOpen] = useState(true);
+  const [exiting, setExiting] = useState(false);
+
+  function requestClose() {
+    setExiting(true);
+  }
+
+  return (
+    <>
+      {open && (
+        <Animate
+          animation="slide-up"
+          exitAnimation="scale-down"
+          exiting={exiting}
+          onEnd={() => {
+            if (exiting) {
+              setOpen(false);
+              setExiting(false);
+            }
+          }}
+        >
+          <div className="animix-toast-in-bottom">
+            Saved
+            <button onClick={requestClose}>Dismiss</button>
+          </div>
+        </Animate>
+      )}
+    </>
+  );
+}`,
+  },
+  server: {
+    id: 'server',
+    label: 'Next / SSR',
+    title: 'Keep CSS server-rendered and isolate the React helpers to client islands',
+    description:
+      'The CSS path is server-safe. Only files importing the React bindings need `"use client"`.',
+    code: `/* app/layout.tsx */
+import '@pras75299/animix/css';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return <html lang="en"><body>{children}</body></html>;
+}
+
+/* app/components/command-menu.tsx */
+'use client';
+
+import { Animate } from '@pras75299/animix/react';
+
+export function CommandMenu({ open }: { open: boolean }) {
+  if (!open) return null;
+
+  return (
+    <Animate animation="scale-up">
+      <div className="animix-modal-in">Search commands</div>
+    </Animate>
+  );
+}`,
+  },
   stagger: {
     id: 'stagger',
     label: 'AnimateStagger',
@@ -298,6 +396,85 @@ function Bell() {
 }`,
   },
 };
+
+export const reactNotes = [
+  {
+    title: 'Exit orchestration stays parent-controlled',
+    body: 'The child only knows whether it is exiting. The parent decides when to finally remove the node after `onEnd` or `animix:exit-complete`.',
+  },
+  {
+    title: 'Server Components can own the CSS import',
+    body: 'Keep `@pras75299/animix/css` in the layout or route segment. Put `"use client"` only on files that import `@pras75299/animix/react`.',
+  },
+  {
+    title: 'Typed class exports close the autocomplete gap',
+    body: 'Use `@pras75299/animix/classes` when you want string-safe class references in shared helpers, constants, or variant maps.',
+  },
+] as const;
+
+export const viewTransitionTabs: SnippetTab[] = [
+  {
+    id: 'same-document',
+    label: 'Same-document',
+    title: 'Wrap state changes in `document.startViewTransition()`',
+    description:
+      'Use this for tab switches, route state changes, and in-app flows where the DOM updates inside the same document.',
+    code: `import '@pras75299/animix/css/view-transitions';
+
+function swapPanel(nextPanel: string) {
+  if (!document.startViewTransition) {
+    setPanel(nextPanel);
+    return;
+  }
+
+  document.startViewTransition(() => {
+    setPanel(nextPanel);
+  });
+}`,
+  },
+  {
+    id: 'cross-document',
+    label: 'Cross-document',
+    title: 'Import the recipe on both pages and let same-origin navigation animate',
+    description:
+      'animix ships root-level old/new recipes already. Import the stylesheet in both routes and keep navigation same-origin.',
+    code: `/* app/globals.css or site.css */
+@import '@pras75299/animix/css';
+@import '@pras75299/animix/css/view-transitions';
+
+/* Optional: name shared elements for more specific transitions */
+.docs-card-grid {
+  view-transition-name: docs-card-grid;
+}`,
+  },
+];
+
+export const comparisonRows = [
+  [
+    'Primary strength',
+    'Lifecycle motion across CSS, Tailwind, React, and shadcn/ui',
+    'Large grab-bag of drop-in keyframes',
+    'Small Tailwind-friendly component transitions',
+    'Gestures, layout animation, shared-element transitions, and timelines',
+  ],
+  [
+    'Runtime cost',
+    '0 kB for CSS/Tailwind, small optional React helper layer',
+    '0 kB',
+    '0 kB',
+    'React runtime orchestration and larger JS payload',
+  ],
+  [
+    'Exit / unmount story',
+    'Yes: `exiting={...}` on `<Animate>`',
+    'Manual React orchestration',
+    'Manual React orchestration',
+    'Yes',
+  ],
+  ['Layout / FLIP / drag', 'Deliberately no', 'No', 'No', 'Yes'],
+  ['Tailwind alias layer', 'Yes', 'No', 'Yes', 'No'],
+  ['View Transitions recipes', 'Yes', 'No', 'No', 'Possible, but not the core abstraction'],
+] as const;
 
 export const recipeTabs: Record<RecipeMode, SnippetTab> = {
   command: {
@@ -438,15 +615,35 @@ export const catalogItems: CatalogItem[] = [
   { className: 'animix-in-scale-up', category: 'Entrance', blurb: 'Natural scale-in (0.95→1)' },
   { className: 'animix-in-elastic', category: 'Entrance', blurb: 'Spring overshoot entrance' },
   { className: 'animix-in-blur', category: 'Entrance', blurb: 'Defocus reveal for hero copy' },
+  {
+    className: 'animix-in-light-speed',
+    category: 'Entrance',
+    blurb: 'Fast skewed arrival for emphatic UI',
+  },
+  {
+    className: 'animix-in-roll',
+    category: 'Entrance',
+    blurb: 'Rotational sweep for celebratory entry',
+  },
   { className: 'animix-out-fade', category: 'Exit', blurb: 'Quiet opacity exit' },
   { className: 'animix-out-slide-up', category: 'Exit', blurb: 'Dismiss to top' },
   { className: 'animix-out-slide-right', category: 'Exit', blurb: 'Toast-style sweep right' },
   { className: 'animix-out-scale-down', category: 'Exit', blurb: 'Anchored shrink exit' },
   { className: 'animix-out-rotate', category: 'Exit', blurb: 'Tilt exit for emphasis' },
   { className: 'animix-out-blur', category: 'Exit', blurb: 'Defocus dismiss' },
+  {
+    className: 'animix-out-hinge',
+    category: 'Exit',
+    blurb: 'Dramatic hinge drop for destructive teardown',
+  },
   { className: 'animix-pulse', category: 'Attention', blurb: 'Soft repeating heartbeat' },
   { className: 'animix-bounce', category: 'Attention', blurb: 'Vertical attention seeker' },
   { className: 'animix-shake', category: 'Attention', blurb: 'Error or invalid state' },
+  {
+    className: 'animix-head-shake',
+    category: 'Attention',
+    blurb: 'Directional no / reject feedback',
+  },
   { className: 'animix-rubber-band', category: 'Attention', blurb: 'Elastic stretch celebration' },
   { className: 'animix-tada', category: 'Attention', blurb: 'Festive multi-axis flourish' },
   { className: 'animix-float', category: 'Attention', blurb: 'Idle hover for cards' },
@@ -486,11 +683,13 @@ export const accessibilityNotes = [
 ];
 
 export const changelogHighlights = [
-  '13 entrance animations and 11 exit animations for mount and teardown flows.',
-  '12 attention seekers plus loader components for feedback and status surfaces.',
+  '15 entrance animations and 14 exit animations for mount, teardown, and emphatic UI flows.',
+  '13 attention seekers plus loader components for feedback and status surfaces.',
   '14 transition patterns for modal, drawer, tooltip, toast, overlay, and page UI.',
   'Tailwind v3 and v4 plugin support with animate-animix-* aliases.',
   'React Animate, AnimateStagger, useAnimation, useInView, and reduced-motion hooks.',
+  'Typed class-name exports for autocomplete-friendly string composition.',
+  'Documented View Transitions and Next.js App Router adoption patterns.',
   'shadcn/ui presets for Dialog, Sheet, Dropdown, Tooltip, Accordion, Toast, and Command.',
 ];
 

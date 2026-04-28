@@ -65,6 +65,11 @@
       "import": "./dist/react/index.js",
       "require": "./dist/react/index.cjs"
     },
+    "./classes": {
+      "types": "./dist/classes.d.ts",
+      "import": "./dist/classes.js",
+      "require": "./dist/classes.cjs"
+    },
     "./css": "./src/index.css",
     "./css/tokens": "./src/tokens.css",
     "./css/entrance": "./src/animations/entrance.css",
@@ -158,6 +163,7 @@
   "tsup": {
     "entry": {
       "index": "src/index.ts",
+      "classes": "src/classes.ts",
       "tailwind/plugin": "tailwind/plugin.ts",
       "react/index": "react/index.ts"
     },

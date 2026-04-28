@@ -166,6 +166,35 @@
   }
 }
 
+@keyframes animix-light-speed-in {
+  0% {
+    opacity: 0;
+    transform: translateX(calc(var(--animix-slide-distance, 16px) * 2.5)) skewX(-14deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(0) skewX(8deg);
+  }
+  80% {
+    transform: skewX(-4deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) skewX(0deg);
+  }
+}
+
+@keyframes animix-roll-in {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--animix-slide-distance, 16px) * 2.25)) rotate(100deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
 /* ── Classes ───────────────────────────────────────────────────── */
 /* Each class sets the animation shorthand via vars so modifier
    classes (.animix-fast, .animix-ease-spring, etc.) just need to
@@ -286,4 +315,24 @@
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
+}
+
+.animix-in-light-speed {
+  animation-name: animix-light-speed-in;
+  animation-duration: var(--animix-duration-slow, 500ms);
+  animation-timing-function: var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+  transform-origin: center center;
+}
+
+.animix-in-roll {
+  animation-name: animix-roll-in;
+  animation-duration: var(--animix-duration-slow, 500ms);
+  animation-timing-function: var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+  transform-origin: center center;
 }

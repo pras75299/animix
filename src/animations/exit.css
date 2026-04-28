@@ -128,6 +128,53 @@
   }
 }
 
+@keyframes animix-light-speed-out {
+  from {
+    opacity: 1;
+    transform: translateX(0) skewX(0deg);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(calc(var(--animix-slide-distance, 16px) * 2.5)) skewX(14deg);
+  }
+}
+
+@keyframes animix-roll-out {
+  from {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(calc(var(--animix-slide-distance, 16px) * 2.25)) rotate(100deg);
+  }
+}
+
+@keyframes animix-hinge-out {
+  0% {
+    opacity: 1;
+    transform: rotate(0deg) translateY(0);
+    transform-origin: top left;
+  }
+  20%,
+  60% {
+    opacity: 1;
+    transform: rotate(72deg) translateY(0);
+    transform-origin: top left;
+  }
+  40%,
+  80% {
+    opacity: 1;
+    transform: rotate(54deg) translateY(0);
+    transform-origin: top left;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(54deg) translateY(calc(var(--animix-slide-distance, 16px) * 3));
+    transform-origin: top left;
+  }
+}
+
 /* ── Classes ───────────────────────────────────────────────────── */
 
 .animix-out-fade {
@@ -227,4 +274,34 @@
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
+}
+
+.animix-out-light-speed {
+  animation-name: animix-light-speed-out;
+  animation-duration: var(--animix-duration-fast, 180ms);
+  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.64, 0, 0.78, 0));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+  transform-origin: center center;
+}
+
+.animix-out-roll {
+  animation-name: animix-roll-out;
+  animation-duration: var(--animix-duration-fast, 180ms);
+  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.64, 0, 0.78, 0));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+  transform-origin: center center;
+}
+
+.animix-out-hinge {
+  animation-name: animix-hinge-out;
+  animation-duration: var(--animix-duration-slower, 800ms);
+  animation-timing-function: var(--animix-ease-in, cubic-bezier(0.64, 0, 0.78, 0));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+  transform-origin: top left;
 }

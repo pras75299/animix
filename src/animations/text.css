@@ -26,14 +26,16 @@
 }
 
 .animix-text-headline-rise {
-  animation: animix-text-headline-rise var(--animix-duration-slow, 500ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1)) both;
+  animation: animix-text-headline-rise var(--animix-duration-slow, 500ms)
+    var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1)) both;
 }
 
 /* Wrap each word/chunk in a span; delays scale with --animix-text-stagger-step */
 .animix-text-stagger > * {
   display: inline-block;
   opacity: 0;
-  animation: animix-text-headline-rise var(--animix-duration-base, 300ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1)) both;
+  animation: animix-text-headline-rise var(--animix-duration-base, 300ms)
+    var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1)) both;
 }
 
 .animix-text-stagger > *:nth-child(1) {
@@ -87,7 +89,8 @@
 
 .animix-counter-tick {
   display: inline-block;
-  animation: animix-counter-tick var(--animix-duration-micro, 180ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1)) both;
+  animation: animix-counter-tick var(--animix-duration-micro, 180ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1))
+    both;
 }
 
 @media (prefers-reduced-motion: reduce) {

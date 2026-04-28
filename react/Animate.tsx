@@ -40,7 +40,9 @@ export type EntranceAnimation =
   | 'rotate'
   | 'bounce'
   | 'elastic'
-  | 'blur';
+  | 'blur'
+  | 'light-speed'
+  | 'roll';
 
 export type ExitAnimation =
   | 'fade'
@@ -53,12 +55,16 @@ export type ExitAnimation =
   | 'flip-x'
   | 'flip-y'
   | 'rotate'
-  | 'blur';
+  | 'blur'
+  | 'light-speed'
+  | 'roll'
+  | 'hinge';
 
 export type AttentionAnimation =
   | 'pulse'
   | 'bounce'
   | 'shake'
+  | 'head-shake'
   | 'wiggle'
   | 'ping'
   | 'float'
@@ -98,7 +104,7 @@ const INTENT_UTILITY_CLASSES: Record<MotionIntent, string> = {
 /* ── Class name helpers ─────────────────────────────────────────── */
 
 function getAnimationClass(
-  name: AnimationName,
+  name: AnimationName | ExitAnimation,
   type: 'in' | 'out' | 'attention' | 'transition',
 ): string {
   // Attention animations
@@ -106,6 +112,7 @@ function getAnimationClass(
     'pulse',
     'bounce',
     'shake',
+    'head-shake',
     'wiggle',
     'ping',
     'float',
@@ -116,6 +123,10 @@ function getAnimationClass(
     'swing',
     'wobble',
   ];
+
+  if (type === 'in' && name === 'bounce') {
+    return 'animix-in-bounce';
+  }
 
   if (type === 'attention' || attentionNames.includes(name as AttentionAnimation)) {
     return `animix-${name}`;
@@ -143,9 +154,7 @@ function getDurationClass(duration: 'fast' | 'base' | 'slow' | 'slower' | number
   return `animix-${duration}`;
 }
 
-function getEasingClass(
-  easing: 'default' | 'spring' | 'bounce' | 'in' | 'out' | 'in-out',
-): string {
+function getEasingClass(easing: 'default' | 'spring' | 'bounce' | 'in' | 'out' | 'in-out'): string {
   if (easing === 'default') {
     return '';
   }
