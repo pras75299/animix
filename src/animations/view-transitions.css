@@ -8,13 +8,13 @@
 }
 
 ::view-transition-old(root) {
-  animation: animix-vt-old var(--animix-duration-base, 300ms)
-    var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1)) both;
+  animation: animix-vt-old var(--animix-duration-base, 300ms) var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1))
+    both;
 }
 
 ::view-transition-new(root) {
-  animation: animix-vt-new var(--animix-duration-base, 300ms)
-    var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1)) both;
+  animation: animix-vt-new var(--animix-duration-base, 300ms) var(--animix-ease-out, cubic-bezier(0.23, 1, 0.32, 1))
+    both;
 }
 
 @keyframes animix-vt-old {

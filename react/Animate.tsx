@@ -143,9 +143,7 @@ function getDurationClass(duration: 'fast' | 'base' | 'slow' | 'slower' | number
   return `animix-${duration}`;
 }
 
-function getEasingClass(
-  easing: 'default' | 'spring' | 'bounce' | 'in' | 'out' | 'in-out',
-): string {
+function getEasingClass(easing: 'default' | 'spring' | 'bounce' | 'in' | 'out' | 'in-out'): string {
   if (easing === 'default') {
     return '';
   }

@@ -60,7 +60,8 @@
 }
 
 .animix-img-mask-reveal {
-  animation: animix-img-mask-reveal var(--animix-duration-slow, 500ms) var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1)) both;
+  animation: animix-img-mask-reveal var(--animix-duration-slow, 500ms)
+    var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1)) both;
 }
 
 .animix-img-parallax-lite {

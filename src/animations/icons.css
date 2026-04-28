@@ -71,7 +71,8 @@
 }
 
 .animix-icon-success-pop {
-  animation: animix-icon-success-pop var(--animix-duration-base, 300ms) var(--animix-ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) both;
+  animation: animix-icon-success-pop var(--animix-duration-base, 300ms)
+    var(--animix-ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) both;
 }
 
 .animix-icon-shake-soft {

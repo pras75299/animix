@@ -498,8 +498,7 @@ const animations = {
     'animix-counter-tick var(--animix-duration-micro,140ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'img-mask-reveal':
     'animix-img-mask-reveal var(--animix-duration-slow,280ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
-  'img-parallax-lite':
-    'animix-img-parallax-lite 1ms linear var(--animix-delay,0ms) both',
+  'img-parallax-lite': 'animix-img-parallax-lite 1ms linear var(--animix-delay,0ms) both',
 } as const;
 
 /* ── Custom easing values ───────────────────────────────────────── */
@@ -740,7 +739,10 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
           {
             transform: 'rotate(180deg)',
           },
-        '.animix-img-zoom-wrap, .animate-animix-img-zoom-wrap': { overflow: 'hidden', 'border-radius': 'inherit' },
+        '.animix-img-zoom-wrap, .animate-animix-img-zoom-wrap': {
+          overflow: 'hidden',
+          'border-radius': 'inherit',
+        },
         '.animix-img-zoom-wrap > img, .animix-img-zoom-wrap > picture > img, .animate-animix-img-zoom-wrap > img, .animate-animix-img-zoom-wrap > picture > img':
           {
             display: 'block',

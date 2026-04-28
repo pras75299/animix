@@ -405,9 +405,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .animix-hover-lift:hover {
-    transform: translateY(
-      calc(var(--animix-hover-lift, -2px) * var(--animix-motion-intensity, 1))
-    );
+    transform: translateY(calc(var(--animix-hover-lift, -2px) * var(--animix-motion-intensity, 1)));
   }
 
   .animix-active-pop:hover {
