@@ -252,7 +252,7 @@
 
 .animix-pulse {
   animation-name: animix-pulse;
-  animation-duration: var(--animix-duration-slower, 800ms);
+  animation-duration: var(--animix-duration-slower, 420ms);
   animation-timing-function: var(--animix-ease-default, cubic-bezier(0.4, 0, 0.2, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
@@ -261,7 +261,7 @@
 
 .animix-bounce {
   animation-name: animix-bounce;
-  animation-duration: var(--animix-duration-slower, 800ms);
+  animation-duration: var(--animix-duration-slower, 420ms);
   animation-timing-function: var(--animix-ease-default, cubic-bezier(0.4, 0, 0.2, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
@@ -270,7 +270,7 @@
 
 .animix-shake {
   animation-name: animix-shake;
-  animation-duration: var(--animix-duration-slow, 500ms);
+  animation-duration: var(--animix-duration-slow, 280ms);
   /* Canonical shake curve — sharp turnarounds at each direction reversal
      so the motion reads as a jolt rather than a hesitation. */
   animation-timing-function: cubic-bezier(0.36, 0.07, 0.19, 0.97);
@@ -282,7 +282,7 @@
 
 .animix-head-shake {
   animation-name: animix-head-shake;
-  animation-duration: var(--animix-duration-slow, 500ms);
+  animation-duration: var(--animix-duration-slow, 280ms);
   animation-timing-function: var(--animix-ease-default, cubic-bezier(0.4, 0, 0.2, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
@@ -329,7 +329,7 @@
 
 .animix-jello {
   animation-name: animix-jello;
-  animation-duration: var(--animix-duration-slower, 800ms);
+  animation-duration: var(--animix-duration-slower, 420ms);
   animation-timing-function: var(--animix-ease-default, cubic-bezier(0.4, 0, 0.2, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
@@ -339,7 +339,7 @@
 
 .animix-rubber-band {
   animation-name: animix-rubber-band;
-  animation-duration: var(--animix-duration-slower, 800ms);
+  animation-duration: var(--animix-duration-slower, 420ms);
   animation-timing-function: var(--animix-ease-default, cubic-bezier(0.4, 0, 0.2, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
@@ -349,7 +349,7 @@
 
 .animix-tada {
   animation-name: animix-tada;
-  animation-duration: var(--animix-duration-slower, 800ms);
+  animation-duration: var(--animix-duration-slower, 420ms);
   animation-timing-function: var(--animix-ease-default, cubic-bezier(0.4, 0, 0.2, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
@@ -359,7 +359,7 @@
 
 .animix-swing {
   animation-name: animix-swing;
-  animation-duration: var(--animix-duration-slower, 800ms);
+  animation-duration: var(--animix-duration-slower, 420ms);
   animation-timing-function: var(--animix-ease-default, cubic-bezier(0.4, 0, 0.2, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
@@ -370,7 +370,7 @@
 
 .animix-wobble {
   animation-name: animix-wobble;
-  animation-duration: var(--animix-duration-slower, 800ms);
+  animation-duration: var(--animix-duration-slower, 420ms);
   animation-timing-function: var(--animix-ease-default, cubic-bezier(0.4, 0, 0.2, 1));
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);

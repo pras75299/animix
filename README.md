@@ -98,7 +98,7 @@ import '@pras75299/animix/css';
 ```
 
 ```html
-<div class="animix-in-fade animix-slow">Fades in at 500ms</div>
+<div class="animix-in-fade animix-slow">Fades in at 280ms</div>
 <div class="animix-in-slide-up animix-delay-300">Slides up after 300ms</div>
 <button class="animix-shake animix-on-hover">Shakes on hover</button>
 ```
@@ -244,7 +244,7 @@ Pre-built patterns for common UI component lifecycle animations.
 <div class="animix-page-slide-in">Page enters with slide</div>
 
 <!-- Modal -->
-<div class="animix-modal-in">Modal opens (scale + slide)</div>
+<div class="animix-modal-in">Modal opens (centered scale + fade)</div>
 <div class="animix-modal-out">Modal closes</div>
 
 <!-- Drawer — choose the side it opens from -->
@@ -275,10 +275,10 @@ Chain any modifier after the animation class to override individual sub-properti
 #### Duration
 
 ```html
-<div class="animix-in-fade animix-fast">150ms</div>
-<div class="animix-in-fade">300ms (default)</div>
-<div class="animix-in-fade animix-slow">500ms</div>
-<div class="animix-in-fade animix-slower">800ms</div>
+<div class="animix-in-fade animix-fast">180ms</div>
+<div class="animix-in-fade">240ms (default)</div>
+<div class="animix-in-fade animix-slow">280ms</div>
+<div class="animix-in-fade animix-slower">420ms</div>
 ```
 
 #### Delay
@@ -417,6 +417,12 @@ Now use `animate-animix-*` utilities alongside standard Tailwind duration/delay/
 <div class="animate-animix-fade-in">Fade in</div>
 <div class="animate-animix-slide-up">Slide up</div>
 
+<!-- Parametric utility variants -->
+<div class="animate-animix-fade-in-25">Fade from 25% opacity</div>
+<div class="animate-animix-zoom-in-90">Zoom in from 0.9 scale</div>
+<div class="animate-animix-slide-in-from-top-8">Slide in from top (2rem)</div>
+<div class="animate-animix-slide-out-to-right-8">Slide out to right (2rem)</div>
+
 <!-- Combine with Tailwind modifiers -->
 <div class="animate-animix-scale-up duration-500 delay-150">Custom timing via Tailwind</div>
 
@@ -461,6 +467,8 @@ interface AnimateProps {
   children: React.ReactNode;
   animation: AnimationName; // see Animation Catalog below
   trigger?: 'mount' | 'hover' | 'focus' | 'inView' | 'manual';
+  /** Required when trigger='manual' */
+  manualActive?: boolean;
   duration?: 'fast' | 'base' | 'slow' | 'slower' | number; // number = ms
   delay?: number; // milliseconds
   easing?: 'default' | 'spring' | 'bounce' | 'in' | 'out';
@@ -508,6 +516,11 @@ interface AnimateProps {
   <Avatar src="/me.jpg" />
 </Animate>
 
+// Manual trigger (controlled by parent state)
+<Animate animation="fade" trigger="manual" manualActive={isOpen}>
+  <Panel />
+</Animate>
+
 // asChild — merges animation onto the child (no wrapper div)
 <Animate animation="fade" asChild>
   <p className="text-muted-foreground">No extra wrapper div</p>
@@ -539,6 +552,8 @@ function ToastWithExit() {
 
 Entrance/exit presets such as `animix-in-blur` / `animate-animix-blur-in` animate the CSS **`filter`** (blur), not just `opacity` / `transform`. That can be **more expensive** (repaints, compositing) on low-end devices. Prefer fade or slide variants when you need maximum smoothness; rely on `prefers-reduced-motion` (token durations go to `0ms`) or `.animix-no-motion` for user-controlled reduction.
 
+`animix-loader-skeleton` currently uses `background-position` shimmer for broad compatibility. A transform-driven pseudo-element shimmer is planned as a dedicated performance refactor rather than bundled into routine transition tuning.
+
 ---
 
 ### AnimateStagger Component
@@ -566,6 +581,18 @@ Applies progressive delays to each child automatically via JS-set `--animix-stag
   inViewThreshold={0.1}
 >
   {testimonials.map((t) => <Testimonial key={t.id} {...t} />)}
+</AnimateStagger>
+
+// Keep semantic list markup with no extra wrapper
+<AnimateStagger animation="slide-up" delay={60} as="ul">
+  {rows.map((row) => (
+    <li key={row.id}>{row.label}</li>
+  ))}
+</AnimateStagger>
+
+// Or merge onto a single child container
+<AnimateStagger animation="fade" asChild>
+  <ol className="space-y-2">{items.map((item) => <li key={item.id}>{item}</li>)}</ol>
 </AnimateStagger>
 ```
 
@@ -649,21 +676,21 @@ Import the presets file **after** your shadcn styles:
 
 This automatically wires animations onto Radix UI `data-state`/`data-side` attributes — no class changes to your components needed:
 
-| Component                      | Opens with                      | Closes with           |
-| ------------------------------ | ------------------------------- | --------------------- |
-| `Dialog` / `AlertDialog`       | `modal-in` (scale + translateY) | `modal-out`           |
-| `Sheet` `side="right"`         | drawer slide from right         | slide back out right  |
-| `Sheet` `side="left"`          | drawer from left                | slide back out left   |
-| `Sheet` `side="top"`           | drawer from top                 | slide back out top    |
-| `Sheet` `side="bottom"`        | drawer from bottom (mobile)     | slide back out bottom |
-| `DropdownMenu` / `ContextMenu` | directional slide + scale       | scale down out        |
-| `Popover`                      | directional slide + scale       | scale down out        |
-| `Tooltip`                      | fast pop (150ms spring)         | fast fade out         |
-| `Accordion` / `Collapsible`    | height expand                   | height collapse       |
-| `Toast` (Radix)                | slide in from right             | slide out right       |
-| `Sonner` toast                 | slide in from right             | slide out right       |
-| `Command` / CMDk dialog        | scale up                        | —                     |
-| `NavigationMenu`               | fade in                         | fade out              |
+| Component                      | Opens with                         | Closes with           |
+| ------------------------------ | ---------------------------------- | --------------------- |
+| `Dialog` / `AlertDialog`       | `modal-in` (centered scale + fade) | `modal-out`           |
+| `Sheet` `side="right"`         | drawer slide from right            | slide back out right  |
+| `Sheet` `side="left"`          | drawer from left                   | slide back out left   |
+| `Sheet` `side="top"`           | drawer from top                    | slide back out top    |
+| `Sheet` `side="bottom"`        | drawer from bottom (mobile)        | slide back out bottom |
+| `DropdownMenu` / `ContextMenu` | directional slide + scale          | scale down out        |
+| `Popover`                      | directional slide + scale          | scale down out        |
+| `Tooltip`                      | fast pop (150ms spring)            | fast fade out         |
+| `Accordion` / `Collapsible`    | height expand                      | height collapse       |
+| `Toast` (Radix)                | slide in from right                | slide out right       |
+| `Sonner` toast                 | slide in from right                | slide out right       |
+| `Command` / CMDk dialog        | scale up                           | —                     |
+| `NavigationMenu`               | fade in                            | fade out              |
 
 > All shadcn presets respect `prefers-reduced-motion` — a single `@media` rule at the bottom of `shadcn-presets.css` strips all animations for users who prefer reduced motion.
 
@@ -691,10 +718,10 @@ All tokens are CSS custom properties on `:root`. Override them on any element or
 
 | Token                      | Default | Notes                     |
 | -------------------------- | ------- | ------------------------- |
-| `--animix-duration-fast`   | `150ms` | Tooltips, hover feedback  |
-| `--animix-duration-base`   | `300ms` | Most UI entrances/exits   |
-| `--animix-duration-slow`   | `500ms` | Drawers, page transitions |
-| `--animix-duration-slower` | `800ms` | Attention animations      |
+| `--animix-duration-fast`   | `180ms` | Tooltips, hover feedback  |
+| `--animix-duration-base`   | `240ms` | Most UI entrances/exits   |
+| `--animix-duration-slow`   | `280ms` | Drawers, page transitions |
+| `--animix-duration-slower` | `420ms` | Attention animations      |
 
 ### Easing Tokens
 
@@ -861,8 +888,11 @@ Core presets animate `transform` and `opacity` only — both GPU-composited, no 
 
 ## FAQ
 
-**Why pick this over Framer Motion?**
-Framer Motion is excellent for spring-based, gesture-driven, layout-animation flows — and it costs ~30 kB gzip plus React render orchestration. animix targets the much larger surface of "lifecycle motion" (mount, exit, hover, focus, in-view, status loaders, overlay enters/exits) where CSS keyframes are sufficient and free. Use Framer Motion for shared-element transitions and physics; use animix for everything else.
+**How do I choose between animix, Motion, GSAP, and Anime.js?**
+Use animix for CSS-first lifecycle motion (mount/exit/overlay/attention/loaders) with design-system tokens. Use Motion for React layout/shared-element/gesture-heavy orchestration. Use GSAP for timeline choreography, ScrollTrigger, and advanced interaction sequencing. Use Anime.js when you want a compact JS timeline engine with WAAPI sync.
+
+**Can animix be paired with Motion/GSAP instead of replacing them?**
+Yes. Recommended split: animix owns app-shell lifecycle motion and token consistency; Motion/GSAP/Anime.js own specialized choreography and runtime interaction flows where imperative sequencing is required.
 
 **Does it work without React?**
 Yes. The `@pras75299/animix/css` and `@pras75299/animix/tailwind` paths have no JS runtime at all. The React bindings are an optional layer.

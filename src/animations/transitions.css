@@ -126,22 +126,22 @@
 @keyframes animix-modal-in {
   from {
     opacity: 0;
-    transform: scale(0.95) translateY(-8px);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: scale(1);
   }
 }
 
 @keyframes animix-modal-out {
   from {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: scale(1);
   }
   to {
     opacity: 0;
-    transform: scale(0.95) translateY(-8px);
+    transform: scale(0.95);
   }
 }
 
@@ -256,35 +256,35 @@
 /* ── Classes: Drawer ───────────────────────────────────────────── */
 
 .animix-drawer-in-right {
-  animation: animix-drawer-in-right var(--animix-duration-slow, 500ms) var(--animix-ease-out) both;
+  animation: animix-drawer-in-right var(--animix-duration-slow, 280ms) var(--animix-ease-out) both;
 }
 
 .animix-drawer-out-right {
-  animation: animix-drawer-out-right var(--animix-duration-base, 240ms) var(--animix-ease-out) both;
+  animation: animix-drawer-out-right var(--animix-duration-fast, 180ms) var(--animix-ease-out) both;
 }
 
 .animix-drawer-in-left {
-  animation: animix-drawer-in-left var(--animix-duration-slow, 500ms) var(--animix-ease-out) both;
+  animation: animix-drawer-in-left var(--animix-duration-slow, 280ms) var(--animix-ease-out) both;
 }
 
 .animix-drawer-out-left {
-  animation: animix-drawer-out-left var(--animix-duration-base, 240ms) var(--animix-ease-out) both;
+  animation: animix-drawer-out-left var(--animix-duration-fast, 180ms) var(--animix-ease-out) both;
 }
 
 .animix-drawer-in-top {
-  animation: animix-drawer-in-top var(--animix-duration-slow, 500ms) var(--animix-ease-out) both;
+  animation: animix-drawer-in-top var(--animix-duration-slow, 280ms) var(--animix-ease-out) both;
 }
 
 .animix-drawer-out-top {
-  animation: animix-drawer-out-top var(--animix-duration-base, 240ms) var(--animix-ease-out) both;
+  animation: animix-drawer-out-top var(--animix-duration-fast, 180ms) var(--animix-ease-out) both;
 }
 
 .animix-drawer-in-bottom {
-  animation: animix-drawer-in-bottom var(--animix-duration-slow, 500ms) var(--animix-ease-out) both;
+  animation: animix-drawer-in-bottom var(--animix-duration-slow, 280ms) var(--animix-ease-out) both;
 }
 
 .animix-drawer-out-bottom {
-  animation: animix-drawer-out-bottom var(--animix-duration-base, 240ms) var(--animix-ease-out) both;
+  animation: animix-drawer-out-bottom var(--animix-duration-fast, 180ms) var(--animix-ease-out) both;
 }
 
 /* ── Classes: Modal ────────────────────────────────────────────── */

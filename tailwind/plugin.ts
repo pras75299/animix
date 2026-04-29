@@ -22,6 +22,18 @@ const keyframes = {
     from: { opacity: '0' },
     to: { opacity: '1' },
   },
+  'animix-fade-in-25': {
+    from: { opacity: '0.25' },
+    to: { opacity: '1' },
+  },
+  'animix-fade-in-50': {
+    from: { opacity: '0.5' },
+    to: { opacity: '1' },
+  },
+  'animix-fade-in-75': {
+    from: { opacity: '0.75' },
+    to: { opacity: '1' },
+  },
   'animix-slide-up-in': {
     from: { opacity: '0', transform: 'translateY(var(--animix-slide-distance,16px))' },
     to: { opacity: '1', transform: 'translateY(0)' },
@@ -40,6 +52,14 @@ const keyframes = {
   },
   'animix-scale-up-in': {
     from: { opacity: '0', transform: 'scale(var(--animix-scale-start,0.95))' },
+    to: { opacity: '1', transform: 'scale(1)' },
+  },
+  'animix-zoom-in-95': {
+    from: { opacity: '0', transform: 'scale(0.95)' },
+    to: { opacity: '1', transform: 'scale(1)' },
+  },
+  'animix-zoom-in-90': {
+    from: { opacity: '0', transform: 'scale(0.9)' },
     to: { opacity: '1', transform: 'scale(1)' },
   },
   'animix-scale-down-in': {
@@ -97,6 +117,18 @@ const keyframes = {
     from: { opacity: '1' },
     to: { opacity: '0' },
   },
+  'animix-fade-out-25': {
+    from: { opacity: '1' },
+    to: { opacity: '0.25' },
+  },
+  'animix-fade-out-50': {
+    from: { opacity: '1' },
+    to: { opacity: '0.5' },
+  },
+  'animix-fade-out-75': {
+    from: { opacity: '1' },
+    to: { opacity: '0.75' },
+  },
   'animix-slide-up-out': {
     from: { opacity: '1', transform: 'translateY(0)' },
     to: { opacity: '0', transform: 'translateY(calc(-1 * var(--animix-slide-distance,16px)))' },
@@ -120,6 +152,46 @@ const keyframes = {
   'animix-scale-down-out': {
     from: { opacity: '1', transform: 'scale(1)' },
     to: { opacity: '0', transform: 'scale(var(--animix-scale-start,0.95))' },
+  },
+  'animix-zoom-out-95': {
+    from: { opacity: '1', transform: 'scale(1)' },
+    to: { opacity: '0', transform: 'scale(0.95)' },
+  },
+  'animix-zoom-out-90': {
+    from: { opacity: '1', transform: 'scale(1)' },
+    to: { opacity: '0', transform: 'scale(0.9)' },
+  },
+  'animix-slide-in-from-top-8': {
+    from: { opacity: '0', transform: 'translateY(-2rem)' },
+    to: { opacity: '1', transform: 'translateY(0)' },
+  },
+  'animix-slide-in-from-bottom-8': {
+    from: { opacity: '0', transform: 'translateY(2rem)' },
+    to: { opacity: '1', transform: 'translateY(0)' },
+  },
+  'animix-slide-in-from-left-8': {
+    from: { opacity: '0', transform: 'translateX(-2rem)' },
+    to: { opacity: '1', transform: 'translateX(0)' },
+  },
+  'animix-slide-in-from-right-8': {
+    from: { opacity: '0', transform: 'translateX(2rem)' },
+    to: { opacity: '1', transform: 'translateX(0)' },
+  },
+  'animix-slide-out-to-top-8': {
+    from: { opacity: '1', transform: 'translateY(0)' },
+    to: { opacity: '0', transform: 'translateY(-2rem)' },
+  },
+  'animix-slide-out-to-bottom-8': {
+    from: { opacity: '1', transform: 'translateY(0)' },
+    to: { opacity: '0', transform: 'translateY(2rem)' },
+  },
+  'animix-slide-out-to-left-8': {
+    from: { opacity: '1', transform: 'translateX(0)' },
+    to: { opacity: '0', transform: 'translateX(-2rem)' },
+  },
+  'animix-slide-out-to-right-8': {
+    from: { opacity: '1', transform: 'translateX(0)' },
+    to: { opacity: '0', transform: 'translateX(2rem)' },
   },
   'animix-flip-x-out': {
     from: { opacity: '1', transform: 'perspective(400px) rotateX(0deg)' },
@@ -318,12 +390,12 @@ const keyframes = {
 
   /* Transitions */
   'animix-modal-in': {
-    from: { opacity: '0', transform: 'scale(0.95) translateY(-8px)' },
-    to: { opacity: '1', transform: 'scale(1) translateY(0)' },
+    from: { opacity: '0', transform: 'scale(0.95)' },
+    to: { opacity: '1', transform: 'scale(1)' },
   },
   'animix-modal-out': {
-    from: { opacity: '1', transform: 'scale(1) translateY(0)' },
-    to: { opacity: '0', transform: 'scale(0.95) translateY(-8px)' },
+    from: { opacity: '1', transform: 'scale(1)' },
+    to: { opacity: '0', transform: 'scale(0.95)' },
   },
   'animix-drawer-in-right': {
     from: { transform: 'translateX(100%)' },
@@ -430,6 +502,12 @@ const animations = {
   /* Entrance */
   'fade-in':
     'animix-fade-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  'fade-in-25':
+    'animix-fade-in-25 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  'fade-in-50':
+    'animix-fade-in-50 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  'fade-in-75':
+    'animix-fade-in-75 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'slide-up':
     'animix-slide-up-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'slide-down':
@@ -440,6 +518,10 @@ const animations = {
     'animix-slide-right-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'scale-up':
     'animix-scale-up-in var(--animix-duration-base,240ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) var(--animix-delay,0ms) both',
+  'zoom-in-95':
+    'animix-zoom-in-95 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  'zoom-in-90':
+    'animix-zoom-in-90 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'scale-down':
     'animix-scale-down-in var(--animix-duration-base,240ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) var(--animix-delay,0ms) both',
   'flip-x':
@@ -461,6 +543,12 @@ const animations = {
   /* Exit */
   'fade-out':
     'animix-fade-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  'fade-out-25':
+    'animix-fade-out-25 var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  'fade-out-50':
+    'animix-fade-out-50 var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  'fade-out-75':
+    'animix-fade-out-75 var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'slide-up-out':
     'animix-slide-up-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'slide-down-out':
@@ -473,6 +561,26 @@ const animations = {
     'animix-scale-up-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'scale-down-out':
     'animix-scale-down-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  'zoom-out-95':
+    'animix-zoom-out-95 var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  'zoom-out-90':
+    'animix-zoom-out-90 var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  'slide-in-from-top-8':
+    'animix-slide-in-from-top-8 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  'slide-in-from-bottom-8':
+    'animix-slide-in-from-bottom-8 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  'slide-in-from-left-8':
+    'animix-slide-in-from-left-8 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  'slide-in-from-right-8':
+    'animix-slide-in-from-right-8 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  'slide-out-to-top-8':
+    'animix-slide-out-to-top-8 var(--animix-duration-fast,180ms) var(--animix-ease-in,cubic-bezier(0.64,0,0.78,0)) var(--animix-delay,0ms) both',
+  'slide-out-to-bottom-8':
+    'animix-slide-out-to-bottom-8 var(--animix-duration-fast,180ms) var(--animix-ease-in,cubic-bezier(0.64,0,0.78,0)) var(--animix-delay,0ms) both',
+  'slide-out-to-left-8':
+    'animix-slide-out-to-left-8 var(--animix-duration-fast,180ms) var(--animix-ease-in,cubic-bezier(0.64,0,0.78,0)) var(--animix-delay,0ms) both',
+  'slide-out-to-right-8':
+    'animix-slide-out-to-right-8 var(--animix-duration-fast,180ms) var(--animix-ease-in,cubic-bezier(0.64,0,0.78,0)) var(--animix-delay,0ms) both',
   'flip-x-out':
     'animix-flip-x-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'flip-y-out':
@@ -489,23 +597,23 @@ const animations = {
     'animix-hinge-out var(--animix-duration-slower,420ms) var(--animix-ease-in,cubic-bezier(0.64,0,0.78,0)) var(--animix-delay,0ms) both',
   /* Attention */
   pulse:
-    'animix-pulse var(--animix-duration-slower,800ms) var(--animix-ease-default,cubic-bezier(0.4,0,0.2,1)) var(--animix-delay,0ms) both infinite',
+    'animix-pulse var(--animix-duration-slower,420ms) var(--animix-ease-default,cubic-bezier(0.4,0,0.2,1)) var(--animix-delay,0ms) both infinite',
   'bounce-attention':
-    'animix-bounce var(--animix-duration-slower,800ms) ease var(--animix-delay,0ms) both infinite',
+    'animix-bounce var(--animix-duration-slower,420ms) ease var(--animix-delay,0ms) both infinite',
   shake:
-    'animix-shake var(--animix-duration-slow,500ms) cubic-bezier(0.36,0.07,0.19,0.97) var(--animix-delay,0ms) both',
+    'animix-shake var(--animix-duration-slow,280ms) cubic-bezier(0.36,0.07,0.19,0.97) var(--animix-delay,0ms) both',
   'head-shake':
-    'animix-head-shake var(--animix-duration-slow,500ms) ease var(--animix-delay,0ms) both',
+    'animix-head-shake var(--animix-duration-slow,280ms) ease var(--animix-delay,0ms) both',
   wiggle: 'animix-wiggle 600ms ease var(--animix-delay,0ms) both infinite',
   ping: 'animix-ping 1s cubic-bezier(0,0,0.2,1) var(--animix-delay,0ms) both infinite',
   float: 'animix-float 3s ease var(--animix-delay,0ms) both infinite',
   heartbeat: 'animix-heartbeat 1.4s ease var(--animix-delay,0ms) both infinite',
-  jello: 'animix-jello var(--animix-duration-slower,800ms) ease var(--animix-delay,0ms) both',
+  jello: 'animix-jello var(--animix-duration-slower,420ms) ease var(--animix-delay,0ms) both',
   'rubber-band':
-    'animix-rubber-band var(--animix-duration-slower,800ms) ease var(--animix-delay,0ms) both',
-  tada: 'animix-tada var(--animix-duration-slower,800ms) ease var(--animix-delay,0ms) both',
-  swing: 'animix-swing var(--animix-duration-slower,800ms) ease var(--animix-delay,0ms) both',
-  wobble: 'animix-wobble var(--animix-duration-slower,800ms) ease var(--animix-delay,0ms) both',
+    'animix-rubber-band var(--animix-duration-slower,420ms) ease var(--animix-delay,0ms) both',
+  tada: 'animix-tada var(--animix-duration-slower,420ms) ease var(--animix-delay,0ms) both',
+  swing: 'animix-swing var(--animix-duration-slower,420ms) ease var(--animix-delay,0ms) both',
+  wobble: 'animix-wobble var(--animix-duration-slower,420ms) ease var(--animix-delay,0ms) both',
   /* Loaders */
   spin: 'animix-spin 600ms linear var(--animix-delay,0ms) infinite',
   skeleton: 'animix-skeleton-shimmer 1.4s linear infinite',
@@ -530,19 +638,19 @@ const animations = {
   'drawer-in-right':
     'animix-drawer-in-right var(--animix-duration-slow,280ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'drawer-out-right':
-    'animix-drawer-out-right var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
+    'animix-drawer-out-right var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'drawer-in-left':
     'animix-drawer-in-left var(--animix-duration-slow,280ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'drawer-out-left':
-    'animix-drawer-out-left var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
+    'animix-drawer-out-left var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'drawer-in-bottom':
     'animix-drawer-in-bottom var(--animix-duration-slow,280ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'drawer-out-bottom':
-    'animix-drawer-out-bottom var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
+    'animix-drawer-out-bottom var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'drawer-in-top':
     'animix-drawer-in-top var(--animix-duration-slow,280ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'drawer-out-top':
-    'animix-drawer-out-top var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
+    'animix-drawer-out-top var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'toast-in':
     'animix-toast-in-right var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) both',
   'toast-out':
