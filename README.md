@@ -87,7 +87,7 @@ npm install react react-dom # for React bindings
 **Fastest path** — import the CSS and add a class:
 
 ```html
-<link rel="stylesheet" href="node_modules/animix/css" />
+<link rel="stylesheet" href="node_modules/@pras75299/animix/src/index.css" />
 <div class="animix-in-slide-up">Hello world</div>
 ```
 

@@ -2,7 +2,7 @@
  * animix — Tailwind CSS v3/v4 Plugin
  *
  * Usage in tailwind.config.ts:
- *   import animix from 'animix/tailwind'
+ *   import animix from '@pras75299/animix/tailwind'
  *   export default { plugins: [animix()] }
  *
  * Then use Tailwind utilities directly:
