@@ -765,7 +765,19 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
         },
       });
 
-      /* 8. Micro interactions + icon/text/image + state patterns (parity) */
+      /* 8a. Smoothness primitives — keep flips/seekers/spinners on the
+         compositor and prevent 3D back-face flicker at rotation milestones. */
+      addUtilities({
+        '.animix-in-flip-x, .animix-in-flip-y, .animix-out-flip-x, .animix-out-flip-y, .animate-animix-flip-x, .animate-animix-flip-y, .animate-animix-flip-x-out, .animate-animix-flip-y-out':
+          {
+            'backface-visibility': 'hidden',
+            '-webkit-backface-visibility': 'hidden',
+            'transform-style': 'preserve-3d',
+            'will-change': 'transform, opacity',
+          },
+      });
+
+      /* 8b. Micro interactions + icon/text/image + state patterns (parity) */
       addUtilities({
         '.animix-hover-lift, .animate-animix-hover-lift': {
           transition:
