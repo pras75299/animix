@@ -22,7 +22,7 @@
 - **shadcn/ui presets** — Radix UI `data-state` and `data-side` selectors mapped to motion families, no component rewrites.
 - **CSS custom property tokens** — override duration, easing, distance, scale start, hover lift, press scale, intensity per component.
 - **Accessibility first** — `prefers-reduced-motion` zeros durations without breaking final layout state.
-- **Composited animations only** — every keyframe targets `transform` and `opacity`, never properties that trigger layout.
+- **Compositor-friendly by default** — core entrance, exit, attention, and transition presets target `transform` and `opacity`. The blur presets (`animix-in-blur`, `animix-out-blur`) animate `filter` as the explicit exception — see [Blur presets and performance](#blur-presets-and-performance) for guidance.
 - **Fully typed** — TypeScript definitions for the React layer.
 
 ## Bundle size & latency
@@ -855,8 +855,7 @@ document.documentElement.classList.toggle('animix-no-motion', prefersNoMotion);
 | iOS Safari       | 14+     |
 | Samsung Internet | 14+     |
 
-All animations use `transform` and `opacity` — both GPU-composited, no layout recalculation.
-`filter: blur()` is used in `animix-in-blur` / `animix-out-blur` only, with `prefers-reduced-motion` fallback.
+Core presets animate `transform` and `opacity` only — both GPU-composited, no layout recalculation. The blur family (`animix-in-blur`, `animix-out-blur`) animates `filter`, which is paint-bound and not GPU-composited on every browser; reach for the fade or slide variants on large surfaces. Every preset honours `prefers-reduced-motion`.
 
 ---
 
