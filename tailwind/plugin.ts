@@ -780,6 +780,10 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
           {
             'will-change': 'transform',
           },
+        '.animix-loader-spin, .animix-icon-spin, .animate-animix-spin, .animate-animix-icon-spin': {
+          'transform-origin': 'center center',
+          'will-change': 'transform',
+        },
       });
 
       /* 8b. Micro interactions + icon/text/image + state patterns (parity) */

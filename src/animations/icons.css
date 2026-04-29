@@ -68,6 +68,7 @@
 .animix-icon-spin {
   animation: animix-spin 0.85s linear infinite;
   transform-origin: center center;
+  will-change: transform;
 }
 
 .animix-icon-success-pop {
