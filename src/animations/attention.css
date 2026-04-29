@@ -271,10 +271,13 @@
 .animix-shake {
   animation-name: animix-shake;
   animation-duration: var(--animix-duration-slow, 500ms);
-  animation-timing-function: var(--animix-ease-default, cubic-bezier(0.4, 0, 0.2, 1));
+  /* Canonical shake curve — sharp turnarounds at each direction reversal
+     so the motion reads as a jolt rather than a hesitation. */
+  animation-timing-function: cubic-bezier(0.36, 0.07, 0.19, 0.97);
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
+  will-change: transform;
 }
 
 .animix-head-shake {
@@ -285,6 +288,7 @@
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
   transform-origin: center center;
+  will-change: transform;
 }
 
 .animix-wiggle {
@@ -330,6 +334,7 @@
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
+  will-change: transform;
 }
 
 .animix-rubber-band {
@@ -339,6 +344,7 @@
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
+  will-change: transform;
 }
 
 .animix-tada {
@@ -348,6 +354,7 @@
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
+  will-change: transform;
 }
 
 .animix-swing {
@@ -358,6 +365,7 @@
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
   transform-origin: top center;
+  will-change: transform;
 }
 
 .animix-wobble {
@@ -367,6 +375,7 @@
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
+  will-change: transform;
 }
 
 /* ── Subtle micro-interactions (transitions + light keyframes) ─── */

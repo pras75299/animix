@@ -492,7 +492,8 @@ const animations = {
     'animix-pulse var(--animix-duration-slower,800ms) var(--animix-ease-default,cubic-bezier(0.4,0,0.2,1)) var(--animix-delay,0ms) both infinite',
   'bounce-attention':
     'animix-bounce var(--animix-duration-slower,800ms) ease var(--animix-delay,0ms) both infinite',
-  shake: 'animix-shake var(--animix-duration-slow,500ms) ease var(--animix-delay,0ms) both',
+  shake:
+    'animix-shake var(--animix-duration-slow,500ms) cubic-bezier(0.36,0.07,0.19,0.97) var(--animix-delay,0ms) both',
   'head-shake':
     'animix-head-shake var(--animix-duration-slow,500ms) ease var(--animix-delay,0ms) both',
   wiggle: 'animix-wiggle 600ms ease var(--animix-delay,0ms) both infinite',
@@ -774,6 +775,10 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
             '-webkit-backface-visibility': 'hidden',
             'transform-style': 'preserve-3d',
             'will-change': 'transform, opacity',
+          },
+        '.animix-shake, .animix-head-shake, .animix-rubber-band, .animix-jello, .animix-tada, .animix-swing, .animix-wobble, .animate-animix-shake, .animate-animix-head-shake, .animate-animix-rubber-band, .animate-animix-jello, .animate-animix-tada, .animate-animix-swing, .animate-animix-wobble':
+          {
+            'will-change': 'transform',
           },
       });
 
