@@ -93,6 +93,8 @@
   border-top-color: transparent;
   border-radius: 50%;
   animation: animix-spin 600ms linear infinite;
+  transform-origin: center center;
+  will-change: transform;
 }
 
 /* ── Dots ──────────────────────────────────────────────────────── */

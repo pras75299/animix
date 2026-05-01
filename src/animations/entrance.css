@@ -270,6 +270,11 @@
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
+  /* Hide back face during 3D rotation so the mirrored side never flickers in. */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
 }
 
 .animix-in-flip-y {
@@ -279,6 +284,10 @@
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
 }
 
 .animix-in-rotate {

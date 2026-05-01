@@ -125,8 +125,16 @@ export const searchItems: SearchItem[] = [
   {
     href: '#compare',
     title: 'animix vs alternatives',
-    body: 'Compare animix with animate.css, tailwindcss-animate, and framer-motion.',
-    keywords: ['compare', 'animate.css', 'tailwindcss-animate', 'framer-motion', 'comparison'],
+    body: 'Compare animix with animate.css, tailwindcss-animate, Motion, GSAP, and Anime.js.',
+    keywords: [
+      'compare',
+      'animate.css',
+      'tailwindcss-animate',
+      'motion',
+      'gsap',
+      'anime.js',
+      'comparison',
+    ],
   },
   {
     href: '#catalog',
@@ -281,6 +289,10 @@ export const reactTabs: Record<ReactMode, SnippetTab> = {
 
 <Animate animation="fade" trigger="inView" inViewThreshold={0.2}>
   <section>Reveals when 20% visible</section>
+</Animate>
+
+<Animate animation="fade" trigger="manual" manualActive={isOpen}>
+  <aside>Controlled by parent state</aside>
 </Animate>
 
 <Animate animation="fade" exitAnimation="scale-down" exiting={isClosing}>
@@ -565,7 +577,7 @@ export const tailwindNotes = [
 export const reactApiCards = [
   {
     title: '<Animate>',
-    body: 'Declarative motion wrapper for mount, hover, focus, in-view, manual, and exit flows.',
+    body: 'Declarative motion wrapper for mount, hover, focus, in-view, controlled manual, and exit flows.',
   },
   {
     title: '<AnimateStagger>',

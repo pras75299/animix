@@ -8,13 +8,13 @@
 
 /* Override the active duration token so any animation uses it */
 .animix-fast {
-  animation-duration: var(--animix-duration-fast, 150ms);
+  animation-duration: var(--animix-duration-fast, 180ms);
 }
 .animix-slow {
-  animation-duration: var(--animix-duration-slow, 500ms);
+  animation-duration: var(--animix-duration-slow, 280ms);
 }
 .animix-slower {
-  animation-duration: var(--animix-duration-slower, 800ms);
+  animation-duration: var(--animix-duration-slower, 420ms);
 }
 
 /* ── Delay modifiers ───────────────────────────────────────────── */

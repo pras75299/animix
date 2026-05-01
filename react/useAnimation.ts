@@ -66,6 +66,24 @@ export function useAnimation(
   const { animation, duration, easing, delay = 0, repeat = 1, fillMode = 'both' } = options;
 
   const [state, setState] = useState<AnimationState>('idle');
+  const resolveAnimationName = useCallback(
+    (el: HTMLElement): string => {
+      if (animation) {
+        return animation;
+      }
+      if (el.style.animationName) {
+        return el.style.animationName;
+      }
+      const computed = getComputedStyle(el).animationName || '';
+      if (!computed || computed === 'none') {
+        return '';
+      }
+      // If multiple animation names are present, re-run the first one by default.
+      return computed.split(',')[0]?.trim() ?? '';
+    },
+    [animation],
+  );
+
   const cleanupRef = useRef<(() => void) | null>(null);
   const optionsRef = useRef(options);
   optionsRef.current = options;
@@ -131,9 +149,11 @@ export function useAnimation(
     // Remove any leftover listeners
     cleanupRef.current?.();
 
-    const animName = animation ?? el.style.animationName ?? '';
+    const animName = resolveAnimationName(el);
     if (!animName) {
-      console.warn('[animix] useAnimation.play(): no animation name provided.');
+      console.warn(
+        '[animix] useAnimation.play(): no animation found. Pass options.animation or ensure the element has a CSS animation class applied.',
+      );
       return;
     }
 
@@ -145,7 +165,7 @@ export function useAnimation(
     applyStyles(el, animName, 'normal');
     cleanupRef.current = attachListeners(el);
     setState('running');
-  }, [ref, animation, applyStyles, attachListeners]);
+  }, [ref, resolveAnimationName, applyStyles, attachListeners]);
 
   /* pause ─────────────────────────────────────────────────────── */
   const pause = useCallback(() => {
@@ -176,8 +196,11 @@ export function useAnimation(
 
     cleanupRef.current?.();
 
-    const animName = animation ?? el.style.animationName ?? '';
+    const animName = resolveAnimationName(el);
     if (!animName) {
+      console.warn(
+        '[animix] useAnimation.reverse(): no animation found. Pass options.animation or ensure the element has a CSS animation class applied.',
+      );
       return;
     }
 
@@ -187,7 +210,7 @@ export function useAnimation(
     applyStyles(el, animName, 'reverse');
     cleanupRef.current = attachListeners(el);
     setState('reversed');
-  }, [ref, animation, applyStyles, attachListeners]);
+  }, [ref, resolveAnimationName, applyStyles, attachListeners]);
 
   /* reset ─────────────────────────────────────────────────────── */
   const reset = useCallback(() => {

@@ -10,6 +10,7 @@
 import React, {
   Children,
   cloneElement,
+  type ElementType,
   forwardRef,
   isValidElement,
   useCallback,
@@ -23,7 +24,7 @@ import React, {
   type Ref,
 } from 'react';
 
-import { useComposedRefs } from './composeRefs';
+import { assignRef, useComposedRefs } from './composeRefs';
 
 /* ── Animation name catalog ─────────────────────────────────────── */
 
@@ -166,6 +167,16 @@ function getChildElementRef(child: ReactElement): Ref<HTMLElement> | undefined |
   return withRef.ref ?? undefined;
 }
 
+function composeEventHandlers<E>(
+  childHandler: ((event: E) => void) | undefined,
+  animixHandler: ((event: E) => void) | undefined,
+): (event: E) => void {
+  return (event: E) => {
+    childHandler?.(event);
+    animixHandler?.(event);
+  };
+}
+
 /* ── Props ──────────────────────────────────────────────────────── */
 
 export interface AnimateProps {
@@ -179,6 +190,11 @@ export interface AnimateProps {
   intent?: MotionIntent;
   /** When to trigger the animation. Default: 'mount' */
   trigger?: 'mount' | 'hover' | 'focus' | 'inView' | 'manual';
+  /**
+   * Controls visibility when `trigger="manual"`.
+   * Set `true` to play/show the animation classes and `false` to clear them.
+   */
+  manualActive?: boolean;
   /** Duration preset or explicit millisecond value. Default: 'base' (240ms) */
   duration?: 'fast' | 'base' | 'slow' | 'slower' | number;
   /** Delay in milliseconds. Default: 0 */
@@ -219,6 +235,7 @@ export const Animate = forwardRef<HTMLElement, AnimateProps>(function Animate(
     animation,
     intent,
     trigger = 'mount',
+    manualActive = false,
     duration = 'base',
     delay = 0,
     easing = 'default',
@@ -244,7 +261,9 @@ export const Animate = forwardRef<HTMLElement, AnimateProps>(function Animate(
     childRef: childRefForMerge,
   });
 
-  const [isVisible, setIsVisible] = useState(trigger === 'mount');
+  const [isVisible, setIsVisible] = useState(
+    trigger === 'mount' || (trigger === 'manual' && manualActive),
+  );
   const [hasEntered, setHasEntered] = useState(false);
 
   /* Build CSS class list */
@@ -300,6 +319,16 @@ export const Animate = forwardRef<HTMLElement, AnimateProps>(function Animate(
     return () => observer.disconnect();
   }, [trigger, inViewThreshold, hasEntered]);
 
+  useEffect(() => {
+    if (trigger !== 'manual') {
+      return;
+    }
+    setIsVisible(Boolean(manualActive));
+    if (manualActive) {
+      setHasEntered(true);
+    }
+  }, [trigger, manualActive]);
+
   /* Event handlers */
   const handleAnimationStart = useCallback(() => {
     onStart?.();
@@ -312,33 +341,64 @@ export const Animate = forwardRef<HTMLElement, AnimateProps>(function Animate(
     }
   }, [onEnd, exiting, exitAnimation]);
 
+  const handleMouseEnter = useCallback(() => {
+    setIsVisible(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsVisible(false);
+    setHasEntered(false);
+  }, []);
+
+  const handleFocus = useCallback(() => {
+    setIsVisible(true);
+  }, []);
+
+  const handleBlur = useCallback(() => {
+    setIsVisible(false);
+    setHasEntered(false);
+  }, []);
+
   /* Merge props onto child for asChild pattern */
   if (asChild && isValidElement(children)) {
     const child = children as ReactElement<Record<string, unknown>>;
     const existingClass = (child.props.className as string) ?? '';
+    const childOnAnimationStart = child.props.onAnimationStart as
+      | ((event: React.AnimationEvent<HTMLElement>) => void)
+      | undefined;
+    const childOnAnimationEnd = child.props.onAnimationEnd as
+      | ((event: React.AnimationEvent<HTMLElement>) => void)
+      | undefined;
+    const childOnMouseEnter = child.props.onMouseEnter as
+      | ((event: React.MouseEvent<HTMLElement>) => void)
+      | undefined;
+    const childOnMouseLeave = child.props.onMouseLeave as
+      | ((event: React.MouseEvent<HTMLElement>) => void)
+      | undefined;
+    const childOnFocus = child.props.onFocus as
+      | ((event: React.FocusEvent<HTMLElement>) => void)
+      | undefined;
+    const childOnBlur = child.props.onBlur as
+      | ((event: React.FocusEvent<HTMLElement>) => void)
+      | undefined;
+
     return cloneElement(child, {
       ...child.props,
       ref: setRef,
       className: [existingClass, composedClass].filter(Boolean).join(' '),
       style: { ...(child.props.style as CSSProperties), ...inlineStyle },
-      onAnimationStart: handleAnimationStart,
-      onAnimationEnd: handleAnimationEnd,
+      onAnimationStart: composeEventHandlers(childOnAnimationStart, () => handleAnimationStart()),
+      onAnimationEnd: composeEventHandlers(childOnAnimationEnd, () => handleAnimationEnd()),
       ...(trigger === 'hover'
         ? {
-            onMouseEnter: () => setIsVisible(true),
-            onMouseLeave: () => {
-              setIsVisible(false);
-              setHasEntered(false);
-            },
+            onMouseEnter: composeEventHandlers(childOnMouseEnter, () => handleMouseEnter()),
+            onMouseLeave: composeEventHandlers(childOnMouseLeave, () => handleMouseLeave()),
           }
         : {}),
       ...(trigger === 'focus'
         ? {
-            onFocus: () => setIsVisible(true),
-            onBlur: () => {
-              setIsVisible(false);
-              setHasEntered(false);
-            },
+            onFocus: composeEventHandlers(childOnFocus, () => handleFocus()),
+            onBlur: composeEventHandlers(childOnBlur, () => handleBlur()),
           }
         : {}),
     });
@@ -353,20 +413,14 @@ export const Animate = forwardRef<HTMLElement, AnimateProps>(function Animate(
       onAnimationEnd={handleAnimationEnd}
       {...(trigger === 'hover'
         ? {
-            onMouseEnter: () => setIsVisible(true),
-            onMouseLeave: () => {
-              setIsVisible(false);
-              setHasEntered(false);
-            },
+            onMouseEnter: handleMouseEnter,
+            onMouseLeave: handleMouseLeave,
           }
         : {})}
       {...(trigger === 'focus'
         ? {
-            onFocus: () => setIsVisible(true),
-            onBlur: () => {
-              setIsVisible(false);
-              setHasEntered(false);
-            },
+            onFocus: handleFocus,
+            onBlur: handleBlur,
           }
         : {})}
     >
@@ -389,6 +443,10 @@ export interface AnimateStaggerProps {
   inView?: boolean;
   /** InView threshold */
   inViewThreshold?: number;
+  /** Wrapper element when not using asChild. Default: 'div'. */
+  as?: ElementType;
+  /** Merge behavior into child instead of rendering a wrapper. */
+  asChild?: boolean;
   className?: string;
 }
 
@@ -398,9 +456,11 @@ export function AnimateStagger({
   delay = 75,
   inView = false,
   inViewThreshold = 0.1,
+  as: Wrapper = 'div',
+  asChild = false,
   className = '',
 }: AnimateStaggerProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement | null>(null);
   const [triggered, setTriggered] = useState(!inView);
 
   useIsomorphicLayoutEffect(() => {
@@ -427,31 +487,56 @@ export function AnimateStagger({
     return () => observer.disconnect();
   }, [inView, inViewThreshold]);
 
-  const childArray = Children.toArray(children);
   const animClass = getAnimationClass(animation, 'in');
+  const childRefForMerge =
+    asChild && isValidElement(children) ? getChildElementRef(children as ReactElement) : undefined;
+
+  const mapStaggerChildren = useCallback(
+    (nodes: ReactNode) =>
+      Children.map(nodes, (node, index) =>
+        isValidElement(node)
+          ? cloneElement(node as ReactElement<Record<string, unknown>>, {
+              ...node.props,
+              style: {
+                ...(node.props.style as CSSProperties),
+                '--animix-stagger-index': index,
+                animationDelay: `calc(${delay}ms * ${index})`,
+              } as CSSProperties,
+              className: [node.props.className as string, triggered ? animClass : '']
+                .filter(Boolean)
+                .join(' '),
+            })
+          : node,
+      ),
+    [animClass, delay, triggered],
+  );
+
+  if (asChild && isValidElement(children)) {
+    const child = children as ReactElement<Record<string, unknown>>;
+    const existingClass = (child.props.className as string) ?? '';
+    return cloneElement(child, {
+      ...child.props,
+      ref: (node: HTMLElement | null) => {
+        containerRef.current = node;
+        assignRef(childRefForMerge, node);
+      },
+      className: [existingClass, className].filter(Boolean).join(' '),
+      style: {
+        ...(child.props.style as CSSProperties),
+        '--animix-stagger-delay': `${delay}ms`,
+      } as CSSProperties,
+      children: mapStaggerChildren(child.props.children as ReactNode),
+    });
+  }
 
   return (
-    <div
+    <Wrapper
       ref={containerRef}
       className={className}
       style={{ '--animix-stagger-delay': `${delay}ms` } as CSSProperties}
     >
-      {childArray.map((child, index) =>
-        isValidElement(child)
-          ? cloneElement(child as ReactElement<Record<string, unknown>>, {
-              ...child.props,
-              style: {
-                ...(child.props.style as CSSProperties),
-                '--animix-stagger-index': index,
-                animationDelay: `calc(${delay}ms * ${index})`,
-              } as CSSProperties,
-              className: [child.props.className as string, triggered ? animClass : '']
-                .filter(Boolean)
-                .join(' '),
-            })
-          : child,
-      )}
-    </div>
+      {mapStaggerChildren(children)}
+    </Wrapper>
   );
 }
 

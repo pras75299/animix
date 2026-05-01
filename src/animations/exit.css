@@ -247,6 +247,10 @@
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
 }
 
 .animix-out-flip-y {
@@ -256,6 +260,10 @@
   animation-delay: var(--animix-delay, 0ms);
   animation-fill-mode: var(--animix-fill-mode, both);
   animation-iteration-count: var(--animix-iteration, 1);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
 }
 
 .animix-out-rotate {
