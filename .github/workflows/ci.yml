@@ -48,6 +48,8 @@ jobs:
         run: npm run build
 
       - name: Build docs
+        # Vite 8 requires Node >=20.19; library itself still supports Node 18.
+        if: matrix.node-version != 18
         run: npm run build:docs
 
       - name: Verify exports exist
