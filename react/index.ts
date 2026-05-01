@@ -14,6 +14,9 @@ export type {
   TransitionAnimation,
 } from './Animate';
 
+export { AnimatePresence } from './AnimatePresence';
+export type { AnimatePresenceProps, PresenceMode } from './AnimatePresence';
+
 export { useAnimation, useInView, usePrefersReducedMotion } from './useAnimation';
 export type {
   UseAnimationOptions,
