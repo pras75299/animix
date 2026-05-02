@@ -16,24 +16,182 @@ import plugin from 'tailwindcss/plugin';
 // Tailwind's JIT can purge/tree-shake them) and in addBase (so
 // pure-CSS users that import the stylesheet get them too).
 
+const fadeOpacitySteps = [0, 25, 50, 75, 100] as const;
+const zoomScaleSteps = [0, 50, 75, 90, 95] as const;
+const slideSpacingValues = {
+  1: '0.25rem',
+  2: '0.5rem',
+  3: '0.75rem',
+  4: '1rem',
+  5: '1.25rem',
+  6: '1.5rem',
+  8: '2rem',
+  10: '2.5rem',
+  12: '3rem',
+  16: '4rem',
+  24: '6rem',
+  32: '8rem',
+  48: '12rem',
+  64: '16rem',
+  96: '24rem',
+} as const;
+const slideDirections = {
+  top: { axis: 'Y', sign: '-' },
+  bottom: { axis: 'Y', sign: '' },
+  left: { axis: 'X', sign: '-' },
+  right: { axis: 'X', sign: '' },
+} as const;
+
+const fadeInStepKeyframes = Object.fromEntries(
+  fadeOpacitySteps.map((step) => [
+    `animix-fade-in-${step}`,
+    {
+      from: { opacity: `${step / 100}` },
+      to: { opacity: '1' },
+    },
+  ]),
+);
+
+const fadeOutStepKeyframes = Object.fromEntries(
+  fadeOpacitySteps.map((step) => [
+    `animix-fade-out-${step}`,
+    {
+      from: { opacity: '1' },
+      to: { opacity: `${step / 100}` },
+    },
+  ]),
+);
+
+const zoomInStepKeyframes = Object.fromEntries(
+  zoomScaleSteps.map((step) => [
+    `animix-zoom-in-${step}`,
+    {
+      from: { opacity: '0', transform: `scale(${step / 100})` },
+      to: { opacity: '1', transform: 'scale(1)' },
+    },
+  ]),
+);
+
+const zoomOutStepKeyframes = Object.fromEntries(
+  zoomScaleSteps.map((step) => [
+    `animix-zoom-out-${step}`,
+    {
+      from: { opacity: '1', transform: 'scale(1)' },
+      to: { opacity: '0', transform: `scale(${step / 100})` },
+    },
+  ]),
+);
+
+const slideInStepKeyframes = Object.fromEntries(
+  Object.entries(slideSpacingValues).flatMap(([step, distance]) =>
+    Object.entries(slideDirections).map(([direction, { axis, sign }]) => [
+      `animix-slide-in-from-${direction}-${step}`,
+      {
+        from: {
+          opacity: '0',
+          transform: `translate${axis}(${sign}${distance})`,
+        },
+        to: { opacity: '1', transform: `translate${axis}(0)` },
+      },
+    ]),
+  ),
+);
+
+const slideOutStepKeyframes = Object.fromEntries(
+  Object.entries(slideSpacingValues).flatMap(([step, distance]) =>
+    Object.entries(slideDirections).map(([direction, { axis, sign }]) => [
+      `animix-slide-out-to-${direction}-${step}`,
+      {
+        from: { opacity: '1', transform: `translate${axis}(0)` },
+        to: {
+          opacity: '0',
+          transform: `translate${axis}(${sign}${distance})`,
+        },
+      },
+    ]),
+  ),
+);
+
+const createAnimationValue = (name: string, duration: string, easing: string) =>
+  `${name} ${duration} ${easing} var(--animix-delay,0ms) both`;
+
+const fadeInStepAnimations = Object.fromEntries(
+  fadeOpacitySteps.map((step) => [
+    `fade-in-${step}`,
+    createAnimationValue(
+      `animix-fade-in-${step}`,
+      'var(--animix-duration-base,240ms)',
+      'var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
+    ),
+  ]),
+);
+
+const fadeOutStepAnimations = Object.fromEntries(
+  fadeOpacitySteps.map((step) => [
+    `fade-out-${step}`,
+    createAnimationValue(
+      `animix-fade-out-${step}`,
+      'var(--animix-duration-fast,180ms)',
+      'var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
+    ),
+  ]),
+);
+
+const zoomInStepAnimations = Object.fromEntries(
+  zoomScaleSteps.map((step) => [
+    `zoom-in-${step}`,
+    createAnimationValue(
+      `animix-zoom-in-${step}`,
+      'var(--animix-duration-base,240ms)',
+      'var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
+    ),
+  ]),
+);
+
+const zoomOutStepAnimations = Object.fromEntries(
+  zoomScaleSteps.map((step) => [
+    `zoom-out-${step}`,
+    createAnimationValue(
+      `animix-zoom-out-${step}`,
+      'var(--animix-duration-fast,180ms)',
+      'var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
+    ),
+  ]),
+);
+
+const slideInStepAnimations = Object.fromEntries(
+  Object.keys(slideSpacingValues).flatMap((step) =>
+    Object.keys(slideDirections).map((direction) => [
+      `slide-in-from-${direction}-${step}`,
+      createAnimationValue(
+        `animix-slide-in-from-${direction}-${step}`,
+        'var(--animix-duration-base,240ms)',
+        'var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
+      ),
+    ]),
+  ),
+);
+
+const slideOutStepAnimations = Object.fromEntries(
+  Object.keys(slideSpacingValues).flatMap((step) =>
+    Object.keys(slideDirections).map((direction) => [
+      `slide-out-to-${direction}-${step}`,
+      createAnimationValue(
+        `animix-slide-out-to-${direction}-${step}`,
+        'var(--animix-duration-fast,180ms)',
+        'var(--animix-ease-in,cubic-bezier(0.64,0,0.78,0))',
+      ),
+    ]),
+  ),
+);
+
 const keyframes = {
   /* Entrance */
   'animix-fade-in': {
     from: { opacity: '0' },
     to: { opacity: '1' },
   },
-  'animix-fade-in-25': {
-    from: { opacity: '0.25' },
-    to: { opacity: '1' },
-  },
-  'animix-fade-in-50': {
-    from: { opacity: '0.5' },
-    to: { opacity: '1' },
-  },
-  'animix-fade-in-75': {
-    from: { opacity: '0.75' },
-    to: { opacity: '1' },
-  },
+  ...fadeInStepKeyframes,
   'animix-slide-up-in': {
     from: { opacity: '0', transform: 'translateY(var(--animix-slide-distance,16px))' },
     to: { opacity: '1', transform: 'translateY(0)' },
@@ -54,14 +212,7 @@ const keyframes = {
     from: { opacity: '0', transform: 'scale(var(--animix-scale-start,0.95))' },
     to: { opacity: '1', transform: 'scale(1)' },
   },
-  'animix-zoom-in-95': {
-    from: { opacity: '0', transform: 'scale(0.95)' },
-    to: { opacity: '1', transform: 'scale(1)' },
-  },
-  'animix-zoom-in-90': {
-    from: { opacity: '0', transform: 'scale(0.9)' },
-    to: { opacity: '1', transform: 'scale(1)' },
-  },
+  ...zoomInStepKeyframes,
   'animix-scale-down-in': {
     from: { opacity: '0', transform: 'scale(1.05)' },
     to: { opacity: '1', transform: 'scale(1)' },
@@ -117,18 +268,7 @@ const keyframes = {
     from: { opacity: '1' },
     to: { opacity: '0' },
   },
-  'animix-fade-out-25': {
-    from: { opacity: '1' },
-    to: { opacity: '0.25' },
-  },
-  'animix-fade-out-50': {
-    from: { opacity: '1' },
-    to: { opacity: '0.5' },
-  },
-  'animix-fade-out-75': {
-    from: { opacity: '1' },
-    to: { opacity: '0.75' },
-  },
+  ...fadeOutStepKeyframes,
   'animix-slide-up-out': {
     from: { opacity: '1', transform: 'translateY(0)' },
     to: { opacity: '0', transform: 'translateY(calc(-1 * var(--animix-slide-distance,16px)))' },
@@ -153,46 +293,9 @@ const keyframes = {
     from: { opacity: '1', transform: 'scale(1)' },
     to: { opacity: '0', transform: 'scale(var(--animix-scale-start,0.95))' },
   },
-  'animix-zoom-out-95': {
-    from: { opacity: '1', transform: 'scale(1)' },
-    to: { opacity: '0', transform: 'scale(0.95)' },
-  },
-  'animix-zoom-out-90': {
-    from: { opacity: '1', transform: 'scale(1)' },
-    to: { opacity: '0', transform: 'scale(0.9)' },
-  },
-  'animix-slide-in-from-top-8': {
-    from: { opacity: '0', transform: 'translateY(-2rem)' },
-    to: { opacity: '1', transform: 'translateY(0)' },
-  },
-  'animix-slide-in-from-bottom-8': {
-    from: { opacity: '0', transform: 'translateY(2rem)' },
-    to: { opacity: '1', transform: 'translateY(0)' },
-  },
-  'animix-slide-in-from-left-8': {
-    from: { opacity: '0', transform: 'translateX(-2rem)' },
-    to: { opacity: '1', transform: 'translateX(0)' },
-  },
-  'animix-slide-in-from-right-8': {
-    from: { opacity: '0', transform: 'translateX(2rem)' },
-    to: { opacity: '1', transform: 'translateX(0)' },
-  },
-  'animix-slide-out-to-top-8': {
-    from: { opacity: '1', transform: 'translateY(0)' },
-    to: { opacity: '0', transform: 'translateY(-2rem)' },
-  },
-  'animix-slide-out-to-bottom-8': {
-    from: { opacity: '1', transform: 'translateY(0)' },
-    to: { opacity: '0', transform: 'translateY(2rem)' },
-  },
-  'animix-slide-out-to-left-8': {
-    from: { opacity: '1', transform: 'translateX(0)' },
-    to: { opacity: '0', transform: 'translateX(-2rem)' },
-  },
-  'animix-slide-out-to-right-8': {
-    from: { opacity: '1', transform: 'translateX(0)' },
-    to: { opacity: '0', transform: 'translateX(2rem)' },
-  },
+  ...zoomOutStepKeyframes,
+  ...slideInStepKeyframes,
+  ...slideOutStepKeyframes,
   'animix-flip-x-out': {
     from: { opacity: '1', transform: 'perspective(400px) rotateX(0deg)' },
     to: { opacity: '0', transform: 'perspective(400px) rotateX(90deg)' },
@@ -502,12 +605,7 @@ const animations = {
   /* Entrance */
   'fade-in':
     'animix-fade-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
-  'fade-in-25':
-    'animix-fade-in-25 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
-  'fade-in-50':
-    'animix-fade-in-50 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
-  'fade-in-75':
-    'animix-fade-in-75 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  ...fadeInStepAnimations,
   'slide-up':
     'animix-slide-up-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'slide-down':
@@ -518,10 +616,7 @@ const animations = {
     'animix-slide-right-in var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'scale-up':
     'animix-scale-up-in var(--animix-duration-base,240ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) var(--animix-delay,0ms) both',
-  'zoom-in-95':
-    'animix-zoom-in-95 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
-  'zoom-in-90':
-    'animix-zoom-in-90 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  ...zoomInStepAnimations,
   'scale-down':
     'animix-scale-down-in var(--animix-duration-base,240ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1)) var(--animix-delay,0ms) both',
   'flip-x':
@@ -543,12 +638,7 @@ const animations = {
   /* Exit */
   'fade-out':
     'animix-fade-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
-  'fade-out-25':
-    'animix-fade-out-25 var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
-  'fade-out-50':
-    'animix-fade-out-50 var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
-  'fade-out-75':
-    'animix-fade-out-75 var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
+  ...fadeOutStepAnimations,
   'slide-up-out':
     'animix-slide-up-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'slide-down-out':
@@ -561,26 +651,9 @@ const animations = {
     'animix-scale-up-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'scale-down-out':
     'animix-scale-down-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
-  'zoom-out-95':
-    'animix-zoom-out-95 var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
-  'zoom-out-90':
-    'animix-zoom-out-90 var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
-  'slide-in-from-top-8':
-    'animix-slide-in-from-top-8 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
-  'slide-in-from-bottom-8':
-    'animix-slide-in-from-bottom-8 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
-  'slide-in-from-left-8':
-    'animix-slide-in-from-left-8 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
-  'slide-in-from-right-8':
-    'animix-slide-in-from-right-8 var(--animix-duration-base,240ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
-  'slide-out-to-top-8':
-    'animix-slide-out-to-top-8 var(--animix-duration-fast,180ms) var(--animix-ease-in,cubic-bezier(0.64,0,0.78,0)) var(--animix-delay,0ms) both',
-  'slide-out-to-bottom-8':
-    'animix-slide-out-to-bottom-8 var(--animix-duration-fast,180ms) var(--animix-ease-in,cubic-bezier(0.64,0,0.78,0)) var(--animix-delay,0ms) both',
-  'slide-out-to-left-8':
-    'animix-slide-out-to-left-8 var(--animix-duration-fast,180ms) var(--animix-ease-in,cubic-bezier(0.64,0,0.78,0)) var(--animix-delay,0ms) both',
-  'slide-out-to-right-8':
-    'animix-slide-out-to-right-8 var(--animix-duration-fast,180ms) var(--animix-ease-in,cubic-bezier(0.64,0,0.78,0)) var(--animix-delay,0ms) both',
+  ...zoomOutStepAnimations,
+  ...slideInStepAnimations,
+  ...slideOutStepAnimations,
   'flip-x-out':
     'animix-flip-x-out var(--animix-duration-fast,180ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1)) var(--animix-delay,0ms) both',
   'flip-y-out':
