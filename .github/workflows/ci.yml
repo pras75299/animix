@@ -44,6 +44,9 @@ jobs:
       - name: Test
         run: npm test
 
+      - name: React, snippet, and snapshot tests
+        run: npm run test:react
+
       - name: Build
         run: npm run build
 
@@ -51,6 +54,14 @@ jobs:
         # Vite 8 requires Node >=20.19; library itself still supports Node 18.
         if: matrix.node-version != 18
         run: npm run build:docs
+
+      - name: Build playground
+        if: matrix.node-version != 18
+        run: npm run build:playground
+
+      - name: Preview assertions
+        if: matrix.node-version != 18
+        run: npm run test:preview
 
       - name: Verify exports exist
         run: |

@@ -1,0 +1,91 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`motion surface snapshots > matches the default motion profile for key surfaces 1`] = `
+<DocumentFragment>
+  <section
+    data-mode="default"
+  >
+    <div
+      class="motion-demo-backdrop motion-demo-backdrop-blur animate-animix-overlay-in"
+    />
+    <div
+      class="motion-demo-panel animix-enter-scale motion-demo-glass"
+    >
+      Modal
+    </div>
+    <aside
+      class="motion-demo-drawer animate-motion-demo-drawer-in motion-demo-glass"
+    >
+      Drawer
+    </aside>
+    <div
+      class="motion-demo-tooltip animate-animix-tooltip-in"
+    >
+      Tooltip
+    </div>
+    <div
+      class="motion-demo-toast animate-animix-toast-in motion-demo-glass"
+    >
+      Toast
+    </div>
+    <ul
+      data-stagger-delay="90"
+    >
+      <li>
+        Alpha
+      </li>
+      <li>
+        Beta
+      </li>
+      <li>
+        Gamma
+      </li>
+    </ul>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`motion surface snapshots > matches the reduced-motion fallback profile for key surfaces 1`] = `
+<DocumentFragment>
+  <section
+    data-mode="reduced"
+  >
+    <div
+      class="motion-demo-backdrop motion-demo-backdrop-blur animate-animix-overlay-in"
+    />
+    <div
+      class="motion-demo-panel animate-animix-fade-in"
+    >
+      Modal
+    </div>
+    <aside
+      class="motion-demo-drawer "
+    >
+      Drawer
+    </aside>
+    <div
+      class="motion-demo-tooltip "
+    >
+      Tooltip
+    </div>
+    <div
+      class="motion-demo-toast "
+    >
+      Toast
+    </div>
+    <ul
+      data-stagger-delay="0"
+    >
+      <li>
+        Alpha
+      </li>
+      <li>
+        Beta
+      </li>
+      <li>
+        Gamma
+      </li>
+    </ul>
+  </section>
+</DocumentFragment>
+`;

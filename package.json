@@ -107,6 +107,7 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,css,json,md}\"",
     "test": "node scripts/check-tailwind-keyframes.mjs",
     "test:react": "vitest run",
+    "test:preview": "node scripts/test/preview-assertions.mjs",
     "test:react:watch": "vitest",
     "prepare": "husky",
     "prepublishOnly": "npm run build && npm run typecheck && npm run lint && npm test && npm run test:react"
