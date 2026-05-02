@@ -16,14 +16,18 @@ import {
   accessibilityNotes,
   catalogItems,
   changelogHighlights,
+  comparisonColumns,
   comparisonRows,
   cssSteps,
   cssTabs,
   fallbackMetrics,
   installTabs,
   navItems,
+  pairingNotes,
+  pairingTabs,
   proofItems,
   reactApiCards,
+  reactCaveats,
   reactNotes,
   reactTabs,
   recipeTabs,
@@ -33,6 +37,7 @@ import {
   tailwindNotes,
   tailwindTabs,
   tokenRows,
+  toolChoiceCards,
   viewTransitionTabs,
 } from './data';
 
@@ -544,7 +549,7 @@ function Catalog() {
   return (
     <section id="catalog" className="docs-section">
       <SectionHead
-        num="10 / 13"
+        num="11 / 14"
         eyebrow="Animation Catalog"
         title={
           <>
@@ -700,7 +705,7 @@ export function App() {
           {/* 02 — Install */}
           <section id="install" className="docs-section">
             <SectionHead
-              num="02 / 13"
+              num="02 / 14"
               eyebrow="Getting Started"
               title={
                 <>
@@ -769,7 +774,7 @@ export function App() {
           {/* 03 — Pure CSS */}
           <section id="css" className="docs-section">
             <SectionHead
-              num="03 / 13"
+              num="03 / 14"
               eyebrow="Pure CSS"
               title={
                 <>
@@ -840,7 +845,7 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
           {/* 04 — Tailwind */}
           <section id="tailwind" className="docs-section">
             <SectionHead
-              num="04 / 13"
+              num="04 / 14"
               eyebrow="Tailwind Plugin"
               title={
                 <>
@@ -866,7 +871,7 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
           {/* 05 — React */}
           <section id="react" className="docs-section">
             <SectionHead
-              num="05 / 13"
+              num="05 / 14"
               eyebrow="React Bindings"
               title={
                 <>
@@ -892,6 +897,15 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
 
             <SnippetTabs tabs={Object.values(reactTabs)} initialId="animate" />
 
+            <div className="docs-grid docs-grid-3" style={{ marginTop: 'var(--sp-5)' }}>
+              {reactCaveats.map((note) => (
+                <article key={note.title} className="docs-card">
+                  <strong>{note.title}</strong>
+                  <p>{note.body}</p>
+                </article>
+              ))}
+            </div>
+
             <div className="docs-split" style={{ marginTop: 'var(--sp-5)' }}>
               <ExitPatternDemo />
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
@@ -908,7 +922,7 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
           {/* 06 — View Transitions */}
           <section id="view-transitions" className="docs-section">
             <SectionHead
-              num="06 / 13"
+              num="06 / 14"
               eyebrow="View Transitions"
               title={
                 <>
@@ -944,7 +958,7 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
           {/* 07 — shadcn */}
           <section id="shadcn" className="docs-section">
             <SectionHead
-              num="07 / 13"
+              num="07 / 14"
               eyebrow="shadcn/ui"
               title={
                 <>
@@ -1000,7 +1014,7 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
           {/* 08 — Tokens */}
           <section id="tokens" className="docs-section">
             <SectionHead
-              num="08 / 13"
+              num="08 / 14"
               eyebrow="Token System"
               title={
                 <>
@@ -1059,29 +1073,41 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
             </div>
           </section>
 
-          {/* 09 — Compare */}
-          <section id="compare" className="docs-section">
+          {/* 09 — Choose */}
+          <section id="choose" className="docs-section">
             <SectionHead
-              num="09 / 13"
-              eyebrow="Competitive Positioning"
+              num="09 / 14"
+              eyebrow="Choose the Right Tool"
               title={
                 <>
-                  Be explicit about the wedge, <em>and explicit about the boundaries.</em>
+                  Pick the smallest tool that fits, <em>then be explicit about the boundary.</em>
                 </>
               }
-              body="animix does not need to beat every animation tool at everything. It needs to win the lifecycle-motion layer clearly, then say where other tools still make more sense."
+              body="animix does not need to beat every animation tool at everything. It needs to win the lifecycle-motion layer clearly, then say where Motion, GSAP, Anime.js, or tailwindcss-animate are still the better fit."
             />
 
-            <div className="docs-split">
+            <AnimateStagger
+              animation="slide-up"
+              delay={70}
+              inView
+              className="docs-grid docs-grid-3 docs-mb-5"
+            >
+              {toolChoiceCards.map((card) => (
+                <article key={card.title} className="docs-card">
+                  <strong>{card.title}</strong>
+                  <p>{card.body}</p>
+                </article>
+              ))}
+            </AnimateStagger>
+
+            <div className="docs-split docs-split-aside">
               <div className="docs-table-wrap">
                 <table className="docs-table">
                   <thead>
                     <tr>
-                      <th>Feature</th>
-                      <th>animix</th>
-                      <th>animate.css</th>
-                      <th>tailwindcss-animate</th>
-                      <th>framer-motion</th>
+                      {comparisonColumns.map((column) => (
+                        <th key={column}>{column}</th>
+                      ))}
                     </tr>
                   </thead>
                   <tbody>
@@ -1100,29 +1126,55 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
                 <article className="docs-card">
                   <strong>Where animix wins</strong>
                   <p>
-                    Shared motion language, zero-runtime CSS by default, Tailwind aliases, React
-                    unmount exits, and shadcn-ready component motion from one package.
+                    Shared motion language, zero-runtime CSS by default, Tailwind aliases,
+                    React-aware exits, and shadcn-ready component motion from one package.
                   </p>
                 </article>
                 <article className="docs-card">
                   <strong>What to deliberately skip</strong>
                   <p>
-                    Layout animation, FLIP, drag, pinch, physics, and arbitrary timelines still
-                    belong to a runtime library like framer-motion or GSAP. That is a boundary, not
-                    a bug.
+                    Layout animation, FLIP, drag, scroll choreography, physics, and arbitrary
+                    timelines still belong to Motion, GSAP, or Anime.js. That is a boundary, not a
+                    bug.
                   </p>
                 </article>
               </div>
             </div>
           </section>
 
-          {/* 10 — Catalog */}
+          {/* 10 — Pairing */}
+          <section id="pairing" className="docs-section">
+            <SectionHead
+              num="10 / 14"
+              eyebrow="Pairing Guide"
+              title={
+                <>
+                  Keep ownership clean when animix <em>ships beside another motion runtime.</em>
+                </>
+              }
+              body="The safest hybrid setup is simple: animix owns lifecycle shells and shared tokens, while Motion, GSAP, or Anime.js own the few surfaces that truly need runtime choreography."
+            />
+
+            <div className="docs-split docs-split-aside">
+              <SnippetTabs tabs={pairingTabs} initialId="motion" />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
+                {pairingNotes.map((note) => (
+                  <article key={note.title} className="docs-card">
+                    <strong>{note.title}</strong>
+                    <p>{note.body}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* 11 — Catalog */}
           <Catalog />
 
-          {/* 11 — Accessibility */}
+          {/* 12 — Accessibility */}
           <section id="accessibility" className="docs-section">
             <SectionHead
-              num="11 / 13"
+              num="12 / 14"
               eyebrow="Accessibility"
               title={
                 <>
@@ -1188,10 +1240,10 @@ document.documentElement.classList.toggle('animix-no-motion', prefersNoMotion);`
             </div>
           </section>
 
-          {/* 12 — Recipes */}
+          {/* 13 — Recipes */}
           <section id="recipes" className="docs-section">
             <SectionHead
-              num="12 / 13"
+              num="13 / 14"
               eyebrow="Implementation Recipes"
               title={
                 <>
@@ -1241,10 +1293,10 @@ document.documentElement.classList.toggle('animix-no-motion', prefersNoMotion);`
             <SnippetTabs tabs={Object.values(recipeTabs)} initialId="command" />
           </section>
 
-          {/* 13 — Changelog */}
+          {/* 14 — Changelog */}
           <section id="changelog" className="docs-section">
             <SectionHead
-              num="13 / 13"
+              num="14 / 14"
               eyebrow="Changelog Highlights"
               title={
                 <>
