@@ -4,4 +4,13 @@
 # Runs lint-staged on all staged files.
 # Blocked files will prevent the commit with an actionable error.
 
+staged_markdown=$(git diff --cached --name-only -- '*.md')
+
+if [ -n "$staged_markdown" ]; then
+  echo "Markdown files are blocked from commits:"
+  echo "$staged_markdown"
+  echo "Unstage them before committing."
+  exit 1
+fi
+
 npx lint-staged
