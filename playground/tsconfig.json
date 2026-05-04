@@ -5,7 +5,6 @@
     "declaration": false,
     "declarationMap": false,
     "types": ["vite/client"],
-    "baseUrl": ".",
     "paths": {
       "@pras75299/animix/react": ["../react/index.ts"],
       "@pras75299/animix/css": ["../src/index.css"]

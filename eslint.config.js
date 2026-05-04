@@ -5,7 +5,7 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
   {
-    ignores: ['dist/**', 'node_modules/**', '*.min.*'],
+    ignores: ['dist/**', '.tsup/**', 'node_modules/**', '*.min.*'],
   },
   {
     files: ['**/*.ts', '**/*.tsx'],

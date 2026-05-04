@@ -769,339 +769,342 @@ interface AnimixOptions {
   prefix?: string;
 }
 
-const animixPlugin = plugin.withOptions<AnimixOptions>(
-  (_options = {}) =>
-    ({ addBase, addUtilities, matchUtilities, theme }) => {
-      /* 1. CSS custom property tokens */
-      addBase({
-        ':root': {
-          '--animix-duration-micro': '140ms',
-          '--animix-duration-fast': '180ms',
-          '--animix-duration-base': '240ms',
-          '--animix-duration-slow': '280ms',
-          '--animix-duration-slower': '420ms',
-          '--animix-ease-default': 'cubic-bezier(0.23, 1, 0.32, 1)',
-          '--animix-ease-in': 'cubic-bezier(0.64, 0, 0.78, 0)',
-          '--animix-ease-out': 'cubic-bezier(0.23, 1, 0.32, 1)',
-          '--animix-ease-in-out': 'cubic-bezier(0.77, 0, 0.175, 1)',
-          '--animix-ease-spring': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
-          '--animix-ease-bounce': 'cubic-bezier(0.68, -0.55, 0.27, 1.55)',
-          '--animix-slide-distance': '16px',
-          '--animix-scale-start': '0.95',
-          '--animix-hover-lift': '-2px',
-          '--animix-press-scale': '0.97',
-          '--animix-active-pop-scale': '1.02',
-          '--animix-focus-ring-width': '2px',
-          '--animix-focus-ring-offset': '2px',
-          '--animix-icon-duration': '160ms',
-          '--animix-text-stagger-step': '40ms',
-          '--animix-image-zoom': '1.04',
-          '--animix-motion-intensity': '1',
-          '--animix-transform-origin': 'center center',
-          '--animix-delay': '0ms',
-          '--animix-stagger-delay': '75ms',
-          '--animix-stagger-index': '0',
-          '--animix-fill-mode': 'both',
-          '--animix-iteration': '1',
-          '--animix-skeleton-base': 'hsl(0, 0%, 88%)',
-          '--animix-skeleton-highlight': 'hsl(0, 0%, 96%)',
-        },
-        '@media (prefers-reduced-motion: reduce)': {
+const animixPlugin: ReturnType<typeof plugin.withOptions<AnimixOptions>> =
+  plugin.withOptions<AnimixOptions>(
+    (_options = {}) =>
+      ({ addBase, addUtilities, matchUtilities, theme }) => {
+        /* 1. CSS custom property tokens */
+        addBase({
           ':root': {
-            '--animix-duration-micro': '0ms',
-            '--animix-duration-fast': '0ms',
-            '--animix-duration-base': '0ms',
-            '--animix-duration-slow': '0ms',
-            '--animix-duration-slower': '0ms',
+            '--animix-duration-micro': '140ms',
+            '--animix-duration-fast': '180ms',
+            '--animix-duration-base': '240ms',
+            '--animix-duration-slow': '280ms',
+            '--animix-duration-slower': '420ms',
+            '--animix-ease-default': 'cubic-bezier(0.23, 1, 0.32, 1)',
+            '--animix-ease-in': 'cubic-bezier(0.64, 0, 0.78, 0)',
+            '--animix-ease-out': 'cubic-bezier(0.23, 1, 0.32, 1)',
+            '--animix-ease-in-out': 'cubic-bezier(0.77, 0, 0.175, 1)',
+            '--animix-ease-spring': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+            '--animix-ease-bounce': 'cubic-bezier(0.68, -0.55, 0.27, 1.55)',
+            '--animix-slide-distance': '16px',
+            '--animix-scale-start': '0.95',
+            '--animix-hover-lift': '-2px',
+            '--animix-press-scale': '0.97',
+            '--animix-active-pop-scale': '1.02',
+            '--animix-focus-ring-width': '2px',
+            '--animix-focus-ring-offset': '2px',
+            '--animix-icon-duration': '160ms',
+            '--animix-text-stagger-step': '40ms',
+            '--animix-image-zoom': '1.04',
+            '--animix-motion-intensity': '1',
+            '--animix-transform-origin': 'center center',
             '--animix-delay': '0ms',
-            '--animix-stagger-delay': '0ms',
-            '--animix-motion-intensity': '0',
+            '--animix-stagger-delay': '75ms',
+            '--animix-stagger-index': '0',
+            '--animix-fill-mode': 'both',
+            '--animix-iteration': '1',
+            '--animix-skeleton-base': 'hsl(0, 0%, 88%)',
+            '--animix-skeleton-highlight': 'hsl(0, 0%, 96%)',
           },
-        },
-        '.dark, [data-theme="dark"]': {
-          '--animix-skeleton-base': 'hsl(0, 0%, 18%)',
-          '--animix-skeleton-highlight': 'hsl(0, 0%, 26%)',
-        },
-        '.animix-no-motion, .animix-no-motion *, .animix-no-motion *::before, .animix-no-motion *::after':
-          {
-            'animation-duration': '0ms !important',
-            'animation-delay': '0ms !important',
-            'transition-duration': '0ms !important',
-            'transition-delay': '0ms !important',
-          },
-      });
-
-      /* 2. Dynamic animate-* utilities driven by theme values */
-      const themeAnimations = theme('animation') as Record<string, string>;
-      const animateUtils: Record<string, Record<string, string>> = {};
-      for (const [key, value] of Object.entries(themeAnimations)) {
-        if (key.startsWith('animix-') || key in animations) {
-          animateUtils[`.animate-${key}`] = { animation: value };
-        }
-      }
-      addUtilities(animateUtils);
-
-      /* 3. Delay utilities: delay-{n} */
-      matchUtilities(
-        { 'animix-delay': (value) => ({ 'animation-delay': value }) },
-        { values: theme('transitionDelay') as Record<string, string> },
-      );
-
-      /* 4. Stagger utilities */
-      addUtilities({
-        '.animix-stagger > *': {
-          'animation-delay':
-            'calc(var(--animix-stagger-delay, 75ms) * var(--animix-stagger-index, 0))',
-        },
-        '.animix-stagger-25': { '--animix-stagger-delay': '25ms' },
-        '.animix-stagger-50': { '--animix-stagger-delay': '50ms' },
-        '.animix-stagger-75': { '--animix-stagger-delay': '75ms' },
-        '.animix-stagger-100': { '--animix-stagger-delay': '100ms' },
-        '.animix-stagger-150': { '--animix-stagger-delay': '150ms' },
-      });
-
-      /* 5. Play-state utilities */
-      addUtilities({
-        '.animix-paused': { 'animation-play-state': 'paused' },
-        '.animix-running': { 'animation-play-state': 'running' },
-      });
-
-      /* 6. Hover / focus triggers */
-      addUtilities({
-        '.animix-on-hover [class*="animix-"], .animix-on-hover [class*="animate-"]': {
-          'animation-play-state': 'paused',
-        },
-        '@media (hover: hover) and (pointer: fine)': {
-          '.animix-on-hover:hover [class*="animix-"], .animix-on-hover:hover [class*="animate-"]': {
-            'animation-play-state': 'running',
-          },
-        },
-        '.animix-on-focus [class*="animix-"], .animix-on-focus [class*="animate-"]': {
-          'animation-play-state': 'paused',
-        },
-        '.animix-on-focus:focus-visible [class*="animix-"], .animix-on-focus:focus-visible [class*="animate-"]':
-          {
-            'animation-play-state': 'running',
-          },
-      });
-
-      /* 7. Modern CSS animation utilities */
-      addUtilities({
-        '.animix-scroll-reveal-up, .animate-animix-scroll-reveal-up': {
-          opacity: '1',
-          transform: 'none',
-        },
-        '.animix-scroll-reveal-scale, .animate-animix-scroll-reveal-scale': {
-          opacity: '1',
-          transform: 'none',
-        },
-        '.animix-enter-fade, .animate-animix-enter-fade': {
-          opacity: '1',
-          'transition-property': 'opacity',
-          'transition-duration': 'var(--animix-duration-base,240ms)',
-          'transition-delay': 'var(--animix-delay,0ms)',
-          'transition-timing-function': 'var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
-        },
-        '.animix-enter-up, .animate-animix-enter-up': {
-          opacity: '1',
-          transform: 'translateY(0)',
-          'transition-property': 'opacity, transform',
-          'transition-duration': 'var(--animix-duration-base,240ms)',
-          'transition-delay': 'var(--animix-delay,0ms)',
-          'transition-timing-function': 'var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
-        },
-        '.animix-enter-scale, .animate-animix-enter-scale': {
-          opacity: '1',
-          transform: 'scale(1)',
-          'transition-property': 'opacity, transform',
-          'transition-duration': 'var(--animix-duration-base,240ms)',
-          'transition-delay': 'var(--animix-delay,0ms)',
-          'transition-timing-function': 'var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
-        },
-        '@supports (animation-timeline: view())': {
-          '.animix-scroll-reveal-up, .animate-animix-scroll-reveal-up': {
-            animation: 'animix-reveal-up 1ms linear both',
-            'animation-timeline': 'view()',
-            'animation-range': 'entry 10% cover 35%',
-            'will-change': 'transform, opacity',
-          },
-          '.animix-scroll-reveal-scale, .animate-animix-scroll-reveal-scale': {
-            animation: 'animix-reveal-scale 1ms linear both',
-            'animation-timeline': 'view()',
-            'animation-range': 'entry 15% cover 45%',
-            'will-change': 'transform, opacity',
-          },
-          '.animix-scroll-progress, .animate-animix-scroll-progress': {
-            'transform-origin': '0 50%',
-            animation: 'animix-scroll-progress 1ms linear both',
-            'animation-timeline': 'scroll(block)',
-          },
-        },
-        '@media (prefers-reduced-motion: reduce)': {
-          '.animix-scroll-reveal-up, .animate-animix-scroll-reveal-up, .animix-scroll-reveal-scale, .animate-animix-scroll-reveal-scale, .animix-scroll-progress, .animate-animix-scroll-progress':
-            {
-              animation: 'none !important',
+          '@media (prefers-reduced-motion: reduce)': {
+            ':root': {
+              '--animix-duration-micro': '0ms',
+              '--animix-duration-fast': '0ms',
+              '--animix-duration-base': '0ms',
+              '--animix-duration-slow': '0ms',
+              '--animix-duration-slower': '0ms',
+              '--animix-delay': '0ms',
+              '--animix-stagger-delay': '0ms',
+              '--animix-motion-intensity': '0',
             },
-          '.animix-enter-fade, .animate-animix-enter-fade, .animix-enter-up, .animate-animix-enter-up, .animix-enter-scale, .animate-animix-enter-scale':
+          },
+          '.dark, [data-theme="dark"]': {
+            '--animix-skeleton-base': 'hsl(0, 0%, 18%)',
+            '--animix-skeleton-highlight': 'hsl(0, 0%, 26%)',
+          },
+          '.animix-no-motion, .animix-no-motion *, .animix-no-motion *::before, .animix-no-motion *::after':
             {
+              'animation-duration': '0ms !important',
+              'animation-delay': '0ms !important',
               'transition-duration': '0ms !important',
+              'transition-delay': '0ms !important',
             },
-        },
-      });
+        });
 
-      /* 8a. Smoothness primitives — keep flips/seekers/spinners on the
-         compositor and prevent 3D back-face flicker at rotation milestones. */
-      addUtilities({
-        '.animix-in-flip-x, .animix-in-flip-y, .animix-out-flip-x, .animix-out-flip-y, .animate-animix-flip-x, .animate-animix-flip-y, .animate-animix-flip-x-out, .animate-animix-flip-y-out':
-          {
-            'backface-visibility': 'hidden',
-            '-webkit-backface-visibility': 'hidden',
-            'transform-style': 'preserve-3d',
-            'will-change': 'transform, opacity',
-          },
-        '.animix-shake, .animix-head-shake, .animix-rubber-band, .animix-jello, .animix-tada, .animix-swing, .animix-wobble, .animate-animix-shake, .animate-animix-head-shake, .animate-animix-rubber-band, .animate-animix-jello, .animate-animix-tada, .animate-animix-swing, .animate-animix-wobble':
-          {
-            'will-change': 'transform',
-          },
-        '.animix-loader-spin, .animix-icon-spin, .animate-animix-spin, .animate-animix-icon-spin': {
-          'transform-origin': 'center center',
-          'will-change': 'transform',
-        },
-      });
+        /* 2. Dynamic animate-* utilities driven by theme values */
+        const themeAnimations = theme('animation') as Record<string, string>;
+        const animateUtils: Record<string, Record<string, string>> = {};
+        for (const [key, value] of Object.entries(themeAnimations)) {
+          if (key.startsWith('animix-') || key in animations) {
+            animateUtils[`.animate-${key}`] = { animation: value };
+          }
+        }
+        addUtilities(animateUtils);
 
-      /* 8b. Micro interactions + icon/text/image + state patterns (parity) */
-      addUtilities({
-        '.animix-hover-lift, .animate-animix-hover-lift': {
-          transition:
-            'transform var(--animix-duration-micro,140ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
-          'will-change': 'transform',
-        },
-        '.animix-hover-lift:active, .animate-animix-hover-lift:active': {
-          transform: 'translateY(0) scale(var(--animix-press-scale,0.97))',
-        },
-        '.animix-press-in, .animate-animix-press-in': {
-          transition:
-            'transform var(--animix-duration-micro,180ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1))',
-        },
-        '.animix-press-in:active, .animate-animix-press-in:active': {
-          transform: 'scale(var(--animix-press-scale,0.97))',
-        },
-        '.animix-focus-soft, .animate-animix-focus-soft': {
-          transition:
-            'outline-color var(--animix-duration-micro,140ms) ease, outline-offset var(--animix-duration-micro,140ms) ease, box-shadow var(--animix-duration-micro,140ms) ease',
-          outline: 'var(--animix-focus-ring-width,2px) solid transparent',
-          'outline-offset': 'var(--animix-focus-ring-offset,2px)',
-        },
-        '.animix-focus-soft:focus-visible, .animate-animix-focus-soft:focus-visible': {
-          'outline-style': 'solid',
-          'outline-width': 'var(--animix-focus-ring-width,2px)',
-          'outline-color': 'currentColor',
-          'outline-offset': 'var(--animix-focus-ring-offset,2px)',
-        },
-        '.animix-active-pop, .animate-animix-active-pop': {
-          transition:
-            'transform var(--animix-duration-micro,140ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1))',
-        },
-        '.animix-active-pop:active, .animate-animix-active-pop:active': {
-          transform: 'scale(var(--animix-press-scale,0.97))',
-        },
-        '.animix-icon-chevron, .animate-animix-icon-chevron': {
-          display: 'inline-block',
-          transition:
-            'transform var(--animix-icon-duration,160ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1))',
-          'transform-origin': 'center center',
-        },
-        '.animix-icon-chevron[aria-expanded="true"], .animix-icon-chevron[data-state="open"], [aria-expanded="true"] .animix-icon-chevron, [data-state="open"] .animix-icon-chevron, .animate-animix-icon-chevron[aria-expanded="true"], .animate-animix-icon-chevron[data-state="open"], [aria-expanded="true"] .animate-animix-icon-chevron':
-          {
-            transform: 'rotate(180deg)',
+        /* 3. Delay utilities: delay-{n} */
+        matchUtilities(
+          { 'animix-delay': (value) => ({ 'animation-delay': value }) },
+          { values: theme('transitionDelay') as Record<string, string> },
+        );
+
+        /* 4. Stagger utilities */
+        addUtilities({
+          '.animix-stagger > *': {
+            'animation-delay':
+              'calc(var(--animix-stagger-delay, 75ms) * var(--animix-stagger-index, 0))',
           },
-        '.animix-img-zoom-wrap, .animate-animix-img-zoom-wrap': {
-          overflow: 'hidden',
-          'border-radius': 'inherit',
-        },
-        '.animix-img-zoom-wrap > img, .animix-img-zoom-wrap > picture > img, .animate-animix-img-zoom-wrap > img, .animate-animix-img-zoom-wrap > picture > img':
-          {
-            display: 'block',
-            width: '100%',
-            height: 'auto',
-            transition:
-              'transform var(--animix-duration-slow,280ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
-            'transform-origin': 'center center',
-            'will-change': 'transform',
+          '.animix-stagger-25': { '--animix-stagger-delay': '25ms' },
+          '.animix-stagger-50': { '--animix-stagger-delay': '50ms' },
+          '.animix-stagger-75': { '--animix-stagger-delay': '75ms' },
+          '.animix-stagger-100': { '--animix-stagger-delay': '100ms' },
+          '.animix-stagger-150': { '--animix-stagger-delay': '150ms' },
+        });
+
+        /* 5. Play-state utilities */
+        addUtilities({
+          '.animix-paused': { 'animation-play-state': 'paused' },
+          '.animix-running': { 'animation-play-state': 'running' },
+        });
+
+        /* 6. Hover / focus triggers */
+        addUtilities({
+          '.animix-on-hover [class*="animix-"], .animix-on-hover [class*="animate-"]': {
+            'animation-play-state': 'paused',
           },
-        '.animix-img-zoom-wrap:focus-within > img, .animix-img-zoom-wrap:focus-within > picture > img, .animate-animix-img-zoom-wrap:focus-within > img, .animate-animix-img-zoom-wrap:focus-within > picture > img':
-          {
-            transform: 'scale(var(--animix-image-zoom,1.04))',
+          '@media (hover: hover) and (pointer: fine)': {
+            '.animix-on-hover:hover [class*="animix-"], .animix-on-hover:hover [class*="animate-"]':
+              {
+                'animation-play-state': 'running',
+              },
           },
-        '@media (hover: hover) and (pointer: fine)': {
-          '.animix-hover-lift:hover, .animate-animix-hover-lift:hover': {
-            transform:
-              'translateY(calc(var(--animix-hover-lift,-2px) * var(--animix-motion-intensity,1)))',
+          '.animix-on-focus [class*="animix-"], .animix-on-focus [class*="animate-"]': {
+            'animation-play-state': 'paused',
           },
-          '.animix-active-pop:hover, .animate-animix-active-pop:hover': {
-            transform: 'scale(var(--animix-active-pop-scale,1.02))',
-          },
-          '.animix-img-zoom-wrap:hover > img, .animix-img-zoom-wrap:hover > picture > img, .animate-animix-img-zoom-wrap:hover > img, .animate-animix-img-zoom-wrap:hover > picture > img':
+          '.animix-on-focus:focus-visible [class*="animix-"], .animix-on-focus:focus-visible [class*="animate-"]':
             {
-              transform: 'scale(var(--animix-image-zoom,1.04))',
+              'animation-play-state': 'running',
             },
-        },
-        '.animix-img-shimmer, .animate-animix-img-shimmer': {
-          background:
-            'linear-gradient(110deg, var(--animix-skeleton-base,hsl(0,0%,88%)) 0%, var(--animix-skeleton-highlight,hsl(0,0%,96%)) 45%, var(--animix-skeleton-base,hsl(0,0%,88%)) 90%)',
-          'background-size': '200% 100%',
-          animation: 'animix-skeleton-shimmer 1.4s ease-in-out infinite',
-        },
-        '@supports (animation-timeline: view())': {
-          '.animix-img-parallax-lite, .animate-animix-img-parallax-lite': {
-            'will-change': 'transform',
-            'animation-timeline': 'view()',
-            'animation-range': 'entry 0% cover 60%',
-          },
-        },
-        '@media (prefers-reduced-motion: reduce)': {
-          '.animix-badge-pulse-soft, .animate-animix-badge-pulse-soft': {
-            animation: 'none',
+        });
+
+        /* 7. Modern CSS animation utilities */
+        addUtilities({
+          '.animix-scroll-reveal-up, .animate-animix-scroll-reveal-up': {
             opacity: '1',
             transform: 'none',
           },
-          '.animix-hover-lift:hover, .animix-hover-lift:active, .animate-animix-hover-lift:hover, .animate-animix-hover-lift:active, .animix-press-in:active, .animate-animix-press-in:active, .animix-active-pop:hover, .animix-active-pop:active, .animate-animix-active-pop:hover, .animate-animix-active-pop:active':
-            {
-              transform: 'none',
-            },
-          '.animix-icon-chevron[aria-expanded="true"], .animix-icon-chevron[data-state="open"], [aria-expanded="true"] .animix-icon-chevron, [data-state="open"] .animix-icon-chevron, .animate-animix-icon-chevron[aria-expanded="true"], .animate-animix-icon-chevron[data-state="open"], [aria-expanded="true"] .animate-animix-icon-chevron':
-            {
-              transform: 'none',
-            },
-          '.animix-img-zoom-wrap > img, .animix-img-zoom-wrap > picture > img, .animate-animix-img-zoom-wrap > img, .animate-animix-img-zoom-wrap > picture > img':
-            {
-              'transition-duration': '0ms',
-            },
-          '.animix-img-zoom-wrap:hover > img, .animix-img-zoom-wrap:hover > picture > img, .animix-img-zoom-wrap:focus-within > img, .animix-img-zoom-wrap:focus-within > picture > img, .animate-animix-img-zoom-wrap:hover > img, .animate-animix-img-zoom-wrap:hover > picture > img, .animate-animix-img-zoom-wrap:focus-within > img, .animate-animix-img-zoom-wrap:focus-within > picture > img':
-            {
-              transform: 'none',
-            },
-          '.animix-img-shimmer, .animate-animix-img-shimmer': { animation: 'none' },
-          '.animix-img-parallax-lite, .animate-animix-img-parallax-lite': {
-            animation: 'none',
+          '.animix-scroll-reveal-scale, .animate-animix-scroll-reveal-scale': {
+            opacity: '1',
             transform: 'none',
           },
-        },
-      });
-    },
+          '.animix-enter-fade, .animate-animix-enter-fade': {
+            opacity: '1',
+            'transition-property': 'opacity',
+            'transition-duration': 'var(--animix-duration-base,240ms)',
+            'transition-delay': 'var(--animix-delay,0ms)',
+            'transition-timing-function': 'var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
+          },
+          '.animix-enter-up, .animate-animix-enter-up': {
+            opacity: '1',
+            transform: 'translateY(0)',
+            'transition-property': 'opacity, transform',
+            'transition-duration': 'var(--animix-duration-base,240ms)',
+            'transition-delay': 'var(--animix-delay,0ms)',
+            'transition-timing-function': 'var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
+          },
+          '.animix-enter-scale, .animate-animix-enter-scale': {
+            opacity: '1',
+            transform: 'scale(1)',
+            'transition-property': 'opacity, transform',
+            'transition-duration': 'var(--animix-duration-base,240ms)',
+            'transition-delay': 'var(--animix-delay,0ms)',
+            'transition-timing-function': 'var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
+          },
+          '@supports (animation-timeline: view())': {
+            '.animix-scroll-reveal-up, .animate-animix-scroll-reveal-up': {
+              animation: 'animix-reveal-up 1ms linear both',
+              'animation-timeline': 'view()',
+              'animation-range': 'entry 10% cover 35%',
+              'will-change': 'transform, opacity',
+            },
+            '.animix-scroll-reveal-scale, .animate-animix-scroll-reveal-scale': {
+              animation: 'animix-reveal-scale 1ms linear both',
+              'animation-timeline': 'view()',
+              'animation-range': 'entry 15% cover 45%',
+              'will-change': 'transform, opacity',
+            },
+            '.animix-scroll-progress, .animate-animix-scroll-progress': {
+              'transform-origin': '0 50%',
+              animation: 'animix-scroll-progress 1ms linear both',
+              'animation-timeline': 'scroll(block)',
+            },
+          },
+          '@media (prefers-reduced-motion: reduce)': {
+            '.animix-scroll-reveal-up, .animate-animix-scroll-reveal-up, .animix-scroll-reveal-scale, .animate-animix-scroll-reveal-scale, .animix-scroll-progress, .animate-animix-scroll-progress':
+              {
+                animation: 'none !important',
+              },
+            '.animix-enter-fade, .animate-animix-enter-fade, .animix-enter-up, .animate-animix-enter-up, .animix-enter-scale, .animate-animix-enter-scale':
+              {
+                'transition-duration': '0ms !important',
+              },
+          },
+        });
 
-  /* ── Theme extension ─────────────────────────────────────────── */
-  (_options = {}) => ({
-    theme: {
-      extend: {
-        keyframes,
-        animation: Object.fromEntries(
-          Object.entries(animations).map(([k, v]) => [`animix-${k}`, v]),
-        ),
-        transitionTimingFunction,
+        /* 8a. Smoothness primitives — keep flips/seekers/spinners on the
+         compositor and prevent 3D back-face flicker at rotation milestones. */
+        addUtilities({
+          '.animix-in-flip-x, .animix-in-flip-y, .animix-out-flip-x, .animix-out-flip-y, .animate-animix-flip-x, .animate-animix-flip-y, .animate-animix-flip-x-out, .animate-animix-flip-y-out':
+            {
+              'backface-visibility': 'hidden',
+              '-webkit-backface-visibility': 'hidden',
+              'transform-style': 'preserve-3d',
+              'will-change': 'transform, opacity',
+            },
+          '.animix-shake, .animix-head-shake, .animix-rubber-band, .animix-jello, .animix-tada, .animix-swing, .animix-wobble, .animate-animix-shake, .animate-animix-head-shake, .animate-animix-rubber-band, .animate-animix-jello, .animate-animix-tada, .animate-animix-swing, .animate-animix-wobble':
+            {
+              'will-change': 'transform',
+            },
+          '.animix-loader-spin, .animix-icon-spin, .animate-animix-spin, .animate-animix-icon-spin':
+            {
+              'transform-origin': 'center center',
+              'will-change': 'transform',
+            },
+        });
+
+        /* 8b. Micro interactions + icon/text/image + state patterns (parity) */
+        addUtilities({
+          '.animix-hover-lift, .animate-animix-hover-lift': {
+            transition:
+              'transform var(--animix-duration-micro,140ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
+            'will-change': 'transform',
+          },
+          '.animix-hover-lift:active, .animate-animix-hover-lift:active': {
+            transform: 'translateY(0) scale(var(--animix-press-scale,0.97))',
+          },
+          '.animix-press-in, .animate-animix-press-in': {
+            transition:
+              'transform var(--animix-duration-micro,180ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1))',
+          },
+          '.animix-press-in:active, .animate-animix-press-in:active': {
+            transform: 'scale(var(--animix-press-scale,0.97))',
+          },
+          '.animix-focus-soft, .animate-animix-focus-soft': {
+            transition:
+              'outline-color var(--animix-duration-micro,140ms) ease, outline-offset var(--animix-duration-micro,140ms) ease, box-shadow var(--animix-duration-micro,140ms) ease',
+            outline: 'var(--animix-focus-ring-width,2px) solid transparent',
+            'outline-offset': 'var(--animix-focus-ring-offset,2px)',
+          },
+          '.animix-focus-soft:focus-visible, .animate-animix-focus-soft:focus-visible': {
+            'outline-style': 'solid',
+            'outline-width': 'var(--animix-focus-ring-width,2px)',
+            'outline-color': 'currentColor',
+            'outline-offset': 'var(--animix-focus-ring-offset,2px)',
+          },
+          '.animix-active-pop, .animate-animix-active-pop': {
+            transition:
+              'transform var(--animix-duration-micro,140ms) var(--animix-ease-spring,cubic-bezier(0.34,1.56,0.64,1))',
+          },
+          '.animix-active-pop:active, .animate-animix-active-pop:active': {
+            transform: 'scale(var(--animix-press-scale,0.97))',
+          },
+          '.animix-icon-chevron, .animate-animix-icon-chevron': {
+            display: 'inline-block',
+            transition:
+              'transform var(--animix-icon-duration,160ms) var(--animix-ease-out,cubic-bezier(0,0,0.2,1))',
+            'transform-origin': 'center center',
+          },
+          '.animix-icon-chevron[aria-expanded="true"], .animix-icon-chevron[data-state="open"], [aria-expanded="true"] .animix-icon-chevron, [data-state="open"] .animix-icon-chevron, .animate-animix-icon-chevron[aria-expanded="true"], .animate-animix-icon-chevron[data-state="open"], [aria-expanded="true"] .animate-animix-icon-chevron':
+            {
+              transform: 'rotate(180deg)',
+            },
+          '.animix-img-zoom-wrap, .animate-animix-img-zoom-wrap': {
+            overflow: 'hidden',
+            'border-radius': 'inherit',
+          },
+          '.animix-img-zoom-wrap > img, .animix-img-zoom-wrap > picture > img, .animate-animix-img-zoom-wrap > img, .animate-animix-img-zoom-wrap > picture > img':
+            {
+              display: 'block',
+              width: '100%',
+              height: 'auto',
+              transition:
+                'transform var(--animix-duration-slow,280ms) var(--animix-ease-out,cubic-bezier(0.23,1,0.32,1))',
+              'transform-origin': 'center center',
+              'will-change': 'transform',
+            },
+          '.animix-img-zoom-wrap:focus-within > img, .animix-img-zoom-wrap:focus-within > picture > img, .animate-animix-img-zoom-wrap:focus-within > img, .animate-animix-img-zoom-wrap:focus-within > picture > img':
+            {
+              transform: 'scale(var(--animix-image-zoom,1.04))',
+            },
+          '@media (hover: hover) and (pointer: fine)': {
+            '.animix-hover-lift:hover, .animate-animix-hover-lift:hover': {
+              transform:
+                'translateY(calc(var(--animix-hover-lift,-2px) * var(--animix-motion-intensity,1)))',
+            },
+            '.animix-active-pop:hover, .animate-animix-active-pop:hover': {
+              transform: 'scale(var(--animix-active-pop-scale,1.02))',
+            },
+            '.animix-img-zoom-wrap:hover > img, .animix-img-zoom-wrap:hover > picture > img, .animate-animix-img-zoom-wrap:hover > img, .animate-animix-img-zoom-wrap:hover > picture > img':
+              {
+                transform: 'scale(var(--animix-image-zoom,1.04))',
+              },
+          },
+          '.animix-img-shimmer, .animate-animix-img-shimmer': {
+            background:
+              'linear-gradient(110deg, var(--animix-skeleton-base,hsl(0,0%,88%)) 0%, var(--animix-skeleton-highlight,hsl(0,0%,96%)) 45%, var(--animix-skeleton-base,hsl(0,0%,88%)) 90%)',
+            'background-size': '200% 100%',
+            animation: 'animix-skeleton-shimmer 1.4s ease-in-out infinite',
+          },
+          '@supports (animation-timeline: view())': {
+            '.animix-img-parallax-lite, .animate-animix-img-parallax-lite': {
+              'will-change': 'transform',
+              'animation-timeline': 'view()',
+              'animation-range': 'entry 0% cover 60%',
+            },
+          },
+          '@media (prefers-reduced-motion: reduce)': {
+            '.animix-badge-pulse-soft, .animate-animix-badge-pulse-soft': {
+              animation: 'none',
+              opacity: '1',
+              transform: 'none',
+            },
+            '.animix-hover-lift:hover, .animix-hover-lift:active, .animate-animix-hover-lift:hover, .animate-animix-hover-lift:active, .animix-press-in:active, .animate-animix-press-in:active, .animix-active-pop:hover, .animix-active-pop:active, .animate-animix-active-pop:hover, .animate-animix-active-pop:active':
+              {
+                transform: 'none',
+              },
+            '.animix-icon-chevron[aria-expanded="true"], .animix-icon-chevron[data-state="open"], [aria-expanded="true"] .animix-icon-chevron, [data-state="open"] .animix-icon-chevron, .animate-animix-icon-chevron[aria-expanded="true"], .animate-animix-icon-chevron[data-state="open"], [aria-expanded="true"] .animate-animix-icon-chevron':
+              {
+                transform: 'none',
+              },
+            '.animix-img-zoom-wrap > img, .animix-img-zoom-wrap > picture > img, .animate-animix-img-zoom-wrap > img, .animate-animix-img-zoom-wrap > picture > img':
+              {
+                'transition-duration': '0ms',
+              },
+            '.animix-img-zoom-wrap:hover > img, .animix-img-zoom-wrap:hover > picture > img, .animix-img-zoom-wrap:focus-within > img, .animix-img-zoom-wrap:focus-within > picture > img, .animate-animix-img-zoom-wrap:hover > img, .animate-animix-img-zoom-wrap:hover > picture > img, .animate-animix-img-zoom-wrap:focus-within > img, .animate-animix-img-zoom-wrap:focus-within > picture > img':
+              {
+                transform: 'none',
+              },
+            '.animix-img-shimmer, .animate-animix-img-shimmer': { animation: 'none' },
+            '.animix-img-parallax-lite, .animate-animix-img-parallax-lite': {
+              animation: 'none',
+              transform: 'none',
+            },
+          },
+        });
       },
-    },
-  }),
-);
+
+    /* ── Theme extension ─────────────────────────────────────────── */
+    (_options = {}) => ({
+      theme: {
+        extend: {
+          keyframes,
+          animation: Object.fromEntries(
+            Object.entries(animations).map(([k, v]) => [`animix-${k}`, v]),
+          ),
+          transitionTimingFunction,
+        },
+      },
+    }),
+  );
 
 export default animixPlugin;

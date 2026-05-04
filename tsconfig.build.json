@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false,
+    "outDir": "dist",
+    "rootDir": "."
+  },
+  "files": ["index.ts", "classes.ts", "tailwind/plugin.ts", "react/index.ts"],
+  "exclude": ["node_modules", "dist", "docs", "playground"]
+}
