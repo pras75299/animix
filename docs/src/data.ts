@@ -3,7 +3,8 @@
 
 export type InstallMode = 'npm' | 'pnpm' | 'yarn';
 export type ReactMode = 'animate' | 'exit' | 'server' | 'stagger' | 'hooks';
-export type RecipeMode = 'command' | 'toast' | 'popover';
+export type MigrationMode = 'animate-css' | 'tailwindcss-animate' | 'motion' | 'gsap';
+export type RecipeMode = 'dialog' | 'popover' | 'toast' | 'command' | 'list' | 'route';
 
 export type SnippetTab = {
   id: string;
@@ -57,7 +58,9 @@ export const navItems = [
   { id: 'view-transitions', label: 'View Transitions' },
   { id: 'shadcn', label: 'shadcn/ui' },
   { id: 'tokens', label: 'Tokens' },
-  { id: 'compare', label: 'Compare' },
+  { id: 'choose', label: 'Choose the Right Tool' },
+  { id: 'pairing', label: 'Pairing Guide' },
+  { id: 'migrations', label: 'Migrations' },
   { id: 'catalog', label: 'Catalog' },
   { id: 'accessibility', label: 'Accessibility' },
   { id: 'recipes', label: 'Recipes' },
@@ -86,7 +89,7 @@ export const searchItems: SearchItem[] = [
   {
     href: '#react',
     title: 'React bindings',
-    body: 'Animate, AnimateStagger, exit orchestration, App Router boundaries, and reduced-motion hooks.',
+    body: 'Animate, AnimateStagger, parent-managed exits, wrapper versus asChild behavior, App Router boundaries, and reduced-motion hooks.',
     keywords: [
       'react',
       'animate',
@@ -94,6 +97,8 @@ export const searchItems: SearchItem[] = [
       'useanimation',
       'useinview',
       'exit',
+      'aschild',
+      'wrapper',
       'next.js',
       'server components',
     ],
@@ -123,18 +128,31 @@ export const searchItems: SearchItem[] = [
     keywords: ['tokens', 'duration', 'easing', 'distance', 'scale', 'hover'],
   },
   {
-    href: '#compare',
-    title: 'animix vs alternatives',
-    body: 'Compare animix with animate.css, tailwindcss-animate, Motion, GSAP, and Anime.js.',
+    href: '#choose',
+    title: 'Choose the right tool',
+    body: 'Decide between animix, Motion, GSAP, Anime.js, and tailwindcss-animate by job shape.',
     keywords: [
+      'choose',
       'compare',
-      'animate.css',
       'tailwindcss-animate',
       'motion',
       'gsap',
       'anime.js',
       'comparison',
+      'tooling',
     ],
+  },
+  {
+    href: '#pairing',
+    title: 'Pairing guide',
+    body: 'Split responsibilities cleanly when animix ships alongside Motion, GSAP, or Anime.js.',
+    keywords: ['pairing', 'motion', 'gsap', 'anime.js', 'hybrid', 'integration'],
+  },
+  {
+    href: '#migrations',
+    title: 'Migration guides',
+    body: 'Move over from Animate.css, tailwindcss-animate, Motion, or GSAP without throwing away the pieces that still fit.',
+    keywords: ['migration', 'animate.css', 'tailwindcss-animate', 'motion', 'gsap', 'adoption'],
   },
   {
     href: '#catalog',
@@ -151,8 +169,21 @@ export const searchItems: SearchItem[] = [
   {
     href: '#recipes',
     title: 'Implementation recipes',
-    body: 'Ship command menus, toast stacks, and trigger-aware popovers correctly.',
-    keywords: ['recipes', 'command palette', 'toast', 'popover', 'overlay'],
+    body: 'Ship dialogs, sheets, popovers, toasts, command menus, list updates, and route shells correctly.',
+    keywords: [
+      'recipes',
+      'dialog',
+      'sheet',
+      'drawer',
+      'popover',
+      'tooltip',
+      'dropdown',
+      'toast',
+      'command palette',
+      'route transitions',
+      'list animation',
+      'table animation',
+    ],
   },
   {
     href: '#changelog',
@@ -250,14 +281,68 @@ export default {
   {
     id: 'usage',
     label: 'Usage',
-    title: 'Use animate-animix-* utilities in markup',
+    title: 'Choose named presets first, then reach for parametric utilities',
     description:
-      'Reach for aliases when the rest of your UI is already authored through Tailwind utilities.',
+      'Named presets keep teams aligned. Parametric utilities are for exact opacity, scale, and distance tuning once the motion family is already chosen.',
     code: `<div class="animate-animix-slide-up">Visible on mount</div>
 <div class="animate-animix-toast-in-bottom">Profile updated</div>
 <button class="animate-animix-focus-soft animate-animix-press-in">
   Open invite dialog
-</button>`,
+</button>
+
+<div class="animate-animix-fade-in-0">Starts fully hidden</div>
+<div class="animate-animix-fade-in-50">Starts at 50% opacity</div>
+<div class="animate-animix-zoom-in-85">Scales from 0.85</div>
+<div class="animate-animix-slide-in-from-top-4">Slides in from 1rem away</div>`,
+  },
+  {
+    id: 'state',
+    label: 'data-state',
+    title: 'Compose enter and exit with Tailwind variants and data attributes',
+    description:
+      'This is the sweet spot for Radix-style surfaces: state attributes decide which animix alias runs, while Tailwind still owns layout and spacing.',
+    code: `<div
+  data-state={open ? 'open' : 'closed'}
+  class="
+    data-[state=open]:animate-animix-fade-in
+    data-[state=open]:animate-animix-slide-in-from-top-4
+    data-[state=closed]:animate-animix-fade-out-0
+    data-[state=closed]:animate-animix-slide-out-to-top-4
+  "
+>
+  Lifecycle-aware popover content
+</div>`,
+  },
+  {
+    id: 'sequence',
+    label: 'Sequencing',
+    title: 'Sequence utilities with duration, delay, easing, repeat, and direction',
+    description:
+      'Use Tailwind modifiers for timing and iteration; keep the animation utility focused on what moves, not on every timing tweak.',
+    code: `<li
+  class="
+    animate-animix-slide-up
+    duration-300
+    delay-150
+    ease-spring
+    repeat-1
+    fill-mode-both
+  "
+>
+  First list item
+</li>
+
+<span
+  class="
+    animate-animix-pulse
+    duration-[420ms]
+    ease-linear
+    repeat-infinite
+    direction-alternate
+  "
+>
+  Live
+</span>`,
   },
   {
     id: 'tokens',
@@ -280,7 +365,7 @@ export const reactTabs: Record<ReactMode, SnippetTab> = {
     label: 'Animate',
     title: 'Mount, hover, focus, in-view, or exit with one component',
     description:
-      'Use Animate when you want ergonomic composition while keeping the motion CSS-driven.',
+      'Use Animate when you want ergonomic composition while keeping the motion CSS-driven, and decide up front whether the default wrapper or `asChild` is the better fit.',
     code: `import { Animate } from '@pras75299/animix/react';
 
 <Animate animation="slide-up">
@@ -304,7 +389,7 @@ export const reactTabs: Record<ReactMode, SnippetTab> = {
     label: 'Exit flow',
     title: 'Animate unmounts by holding mount state outside the child',
     description:
-      'This is animix’s clean answer to React unmount animation: the parent flips `exiting`, then removes the subtree after the exit completes.',
+      'This is animix’s clean answer to React unmount animation: the parent owns mount state, flips `exiting`, then removes the subtree only after the exit completes.',
     code: `import { useState } from 'react';
 import { Animate } from '@pras75299/animix/react';
 
@@ -373,7 +458,7 @@ export function CommandMenu({ open }: { open: boolean }) {
     label: 'AnimateStagger',
     title: 'Stagger list items without hand-authored nth-child rules',
     description:
-      'AnimateStagger handles the progressive delay and optional viewport trigger for you.',
+      'AnimateStagger handles the progressive delay and optional viewport trigger for you while still letting you preserve semantic markup with `as` or `asChild`.',
     code: `import { AnimateStagger } from '@pras75299/animix/react';
 
 <AnimateStagger animation="slide-up" delay={80} inView inViewThreshold={0.1}>
@@ -412,7 +497,15 @@ function Bell() {
 export const reactNotes = [
   {
     title: 'Exit orchestration stays parent-controlled',
-    body: 'The child only knows whether it is exiting. The parent decides when to finally remove the node after `onEnd` or `animix:exit-complete`.',
+    body: 'The child only knows whether it is exiting. The parent decides when to finally remove the node after `onEnd` or `animix:exit-complete`, so keep `open` and `exiting` separate when the UI can dismiss itself.',
+  },
+  {
+    title: 'Animate renders a wrapper unless you opt out',
+    body: 'The default wrapper is useful when the motion container should own refs, observers, and event wiring. If an extra DOM node would break layout or semantics, reach for `asChild`.',
+  },
+  {
+    title: '`asChild` only works when the child forwards the contract',
+    body: 'Use `asChild` with a single DOM-bearing child that accepts forwarded `ref`, `className`, `style`, and event props. Fragments or components that swallow those props cannot host the animation correctly.',
   },
   {
     title: 'Server Components can own the CSS import',
@@ -421,6 +514,21 @@ export const reactNotes = [
   {
     title: 'Typed class exports close the autocomplete gap',
     body: 'Use `@pras75299/animix/classes` when you want string-safe class references in shared helpers, constants, or variant maps.',
+  },
+] as const;
+
+export const reactCaveats = [
+  {
+    title: 'Parent-managed exits are still the contract',
+    body: 'Plain `<Animate>` does not hold a disappearing subtree in the tree for you. Keep the parent mounted, flip `exiting`, then remove the child after the exit finishes.',
+  },
+  {
+    title: 'Wrappers are the default behavior',
+    body: '`<Animate>` and `<AnimateStagger>` render a wrapper unless you pass `as` or `asChild`. Keep that in mind for flex, grid, list, and semantic markup.',
+  },
+  {
+    title: '`asChild` expects one real element',
+    body: 'The child needs to accept `className`, `style`, refs, and composed event handlers. Fragments or components that swallow props will break the merge.',
   },
 ] as const;
 
@@ -461,34 +569,361 @@ function swapPanel(nextPanel: string) {
   },
 ];
 
+export const comparisonColumns = [
+  'Feature',
+  'animix',
+  'tailwindcss-animate',
+  'Motion',
+  'GSAP',
+  'Anime.js',
+] as const;
+
+export const toolChoiceCards = [
+  {
+    title: 'Choose animix',
+    body: 'Use it when lifecycle motion, design-system tokens, Tailwind aliases, and shadcn-ready overlays need to stay aligned from one package.',
+  },
+  {
+    title: 'Choose Motion',
+    body: 'Reach for Motion when layout animation, gestures, shared-element transitions, or drag interactions are first-class requirements.',
+  },
+  {
+    title: 'Choose GSAP or Anime.js',
+    body: 'Use a runtime timeline engine when sequencing, scroll choreography, SVG work, or imperative orchestration matters more than zero-runtime CSS.',
+  },
+] as const;
+
+export const tokenOverrideTabs: SnippetTab[] = [
+  {
+    id: 'before-after',
+    label: 'Before / after',
+    title: 'Replace one-off timing forks with scoped token overrides',
+    description:
+      'The goal is not to invent a new keyframe for every product area. Keep the preset, then tune the feel at the container boundary.',
+    code: `.settings-modal {
+  animation: animix-modal-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.settings-toast {
+  animation: animix-toast-in-right 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.settings-surface {
+  --animix-duration-base: 320ms;
+  --animix-duration-fast: 200ms;
+  --animix-slide-distance: 20px;
+  --animix-scale-start: 0.97;
+}
+
+
+<div class="settings-surface">
+  <div class="animix-modal-in">Preferences</div>
+  <div class="animix-toast-in-right">Saved</div>
+</div>`,
+  },
+  {
+    id: 'component-scope',
+    label: 'Component scope',
+    title: 'Tune one surface family without changing the whole product',
+    description:
+      'Set tokens on the card cluster, panel shell, or route wrapper so related children inherit the same motion profile automatically.',
+    code: `.billing-shell {
+  --animix-duration-base: 280ms;
+  --animix-duration-slow: 360ms;
+  --animix-slide-distance: 12px;
+}
+
+.billing-shell .animix-stagger {
+  --animix-stagger-delay: 45ms;
+}
+
+.billing-shell .upsell {
+  --animix-scale-start: 0.98;
+}`,
+  },
+  {
+    id: 'tailwind-inline',
+    label: 'Tailwind / inline',
+    title: 'Keep the preset name, override the tokens next to the surface',
+    description:
+      'This works well when one product area needs a different feel but the team still wants the same named motion vocabulary in templates.',
+    code: `<aside
+  class="animate-animix-drawer-in-right"
+  style="
+    --animix-duration-slow: 340ms;
+    --animix-slide-distance: 22px;
+  "
+>
+  ...
+</aside>
+
+<ul
+  class="animix-stagger"
+  style="--animix-stagger-delay: 40ms"
+>
+  <li class="animate-animix-slide-up">Overview</li>
+  <li class="animate-animix-slide-up">Invoices</li>
+  <li class="animate-animix-slide-up">People</li>
+</ul>`,
+  },
+];
+
 export const comparisonRows = [
   [
     'Primary strength',
     'Lifecycle motion across CSS, Tailwind, React, and shadcn/ui',
-    'Large grab-bag of drop-in keyframes',
-    'Small Tailwind-friendly component transitions',
-    'Gestures, layout animation, shared-element transitions, and timelines',
+    'Small Tailwind-friendly enter/exit utilities',
+    'Gestures, layout animation, shared-element transitions, and React orchestration',
+    'Timelines, scroll choreography, SVG, and imperative control',
+    'Compact JS timelines with WAAPI-friendly sequencing',
   ],
   [
     'Runtime cost',
     '0 kB for CSS/Tailwind, small optional React helper layer',
     '0 kB',
-    '0 kB',
     'React runtime orchestration and larger JS payload',
+    'JS runtime orchestration',
+    'JS runtime orchestration',
   ],
   [
     'Exit / unmount story',
-    'Yes: `exiting={...}` on `<Animate>`',
-    'Manual React orchestration',
+    'Yes: parent-managed `exiting` on `<Animate>`',
     'Manual React orchestration',
     'Yes',
+    'Manual unless you build the lifecycle shell',
+    'Manual unless you build the lifecycle shell',
   ],
-  ['Layout / FLIP / drag', 'Deliberately no', 'No', 'No', 'Yes'],
-  ['Tailwind alias layer', 'Yes', 'No', 'Yes', 'No'],
-  ['View Transitions recipes', 'Yes', 'No', 'No', 'Possible, but not the core abstraction'],
+  [
+    'Layout / FLIP / drag',
+    'Deliberately no',
+    'No',
+    'Yes',
+    'Possible, but not ergonomic by default',
+    'Possible, but not ergonomic by default',
+  ],
+  ['Tailwind alias layer', 'Yes', 'Yes', 'No', 'No', 'No'],
+  [
+    'View Transitions recipes',
+    'Yes',
+    'No',
+    'Possible, but not the core abstraction',
+    'Possible, but not the core abstraction',
+    'Possible, but not the core abstraction',
+  ],
+] as const;
+
+export const pairingTabs: SnippetTab[] = [
+  {
+    id: 'motion',
+    label: 'animix + Motion',
+    title: 'Let animix own shells and Motion own layout',
+    description:
+      'This pairing works best when page shells, overlays, and tokens stay CSS-first, but one surface still needs layout or gesture choreography.',
+    code: `import '@pras75299/animix/css';
+import { motion } from 'motion/react';
+
+<aside className="animix-drawer-in-right">
+  <motion.ul layout>
+    {items.map((item) => (
+      <motion.li key={item.id} layout />
+    ))}
+  </motion.ul>
+</aside>`,
+  },
+  {
+    id: 'gsap',
+    label: 'animix + GSAP',
+    title: 'Keep product motion declarative, reserve GSAP for sequences',
+    description:
+      'Use animix for app-shell surfaces and GSAP only where scroll, timelines, or SVG choreography justify a runtime.',
+    code: `import '@pras75299/animix/css';
+import gsap from 'gsap';
+
+<div className="animix-overlay-in" />
+<section ref={heroRef} className="animix-in-fade">
+  ...
+</section>
+
+gsap.timeline().from('.hero-word', { y: 32, opacity: 0, stagger: 0.05 });`,
+  },
+  {
+    id: 'anime',
+    label: 'animix + Anime.js',
+    title: 'Use Anime.js for targeted imperative sequences',
+    description:
+      'Anime.js fits when you want a small timeline engine for one feature, while animix still covers the broader lifecycle language.',
+    code: `import '@pras75299/animix/css';
+import anime from 'animejs';
+
+<div className="animix-modal-in">
+  <svg className="chart-rings">...</svg>
+</div>
+
+anime({
+  targets: '.chart-rings path',
+  strokeDashoffset: [anime.setDashoffset, 0],
+  duration: 900,
+  easing: 'easeOutExpo',
+});`,
+  },
+];
+
+export const pairingNotes = [
+  {
+    title: 'Keep ownership explicit',
+    body: 'Pick one layer to own lifecycle shells, one layer to own choreography, and keep token overrides in animix so products still feel consistent.',
+  },
+  {
+    title: 'Do not double-animate the same element',
+    body: 'If Motion, GSAP, or Anime.js owns transform and opacity on a node, keep animix on the container or backdrop instead of stacking competing animation systems.',
+  },
+] as const;
+
+export const migrationTabs: Record<MigrationMode, SnippetTab> = {
+  'animate-css': {
+    id: 'animate-css',
+    label: 'Animate.css',
+    title: 'Migrate from generic keyframes to named lifecycle surfaces',
+    description:
+      'Animate.css is broad and familiar, but it does not give you product-level tokens or surface conventions. Keep the simple wins, then remap by UI job.',
+    code: `/* Before */
+<div class="animate__animated animate__fadeInUp">Modal body</div>
+<div class="animate__animated animate__fadeOut">Toast</div>
+
+/* After */
+<div class="animix-modal-in">Modal body</div>
+<div class="animix-toast-out-right">Toast</div>
+
+/* Migration rule of thumb
+fadeInUp      -> animix-in-slide-up
+fadeIn        -> animix-in-fade
+fadeOut       -> animix-out-fade
+bounceIn      -> animix-in-bounce
+heartBeat     -> animix-heartbeat
+ */
+
+/* Then tune the feel with tokens, not copied keyframes */
+.marketing-shell {
+  --animix-duration-base: 280ms;
+  --animix-slide-distance: 20px;
+}`,
+  },
+  'tailwindcss-animate': {
+    id: 'tailwindcss-animate',
+    label: 'tailwindcss-animate',
+    title: 'Swap low-level enter/exit combinations for shared animix aliases',
+    description:
+      'Keep Tailwind as the authoring surface, but move repeated combinations like modal, drawer, or toast motion into named animix presets first.',
+    code: `<!-- Before -->
+<div class="animate-in fade-in zoom-in-95 duration-200">Dialog</div>
+<div class="slide-in-from-right-full fade-in duration-300">Sheet</div>
+
+<!-- After -->
+<div class="animate-animix-modal-in">Dialog</div>
+<div class="animate-animix-drawer-in-right">Sheet</div>
+
+<!-- Keep parametric utilities when the surface truly needs them -->
+<div class="animate-animix-fade-in-50 animate-animix-slide-in-from-top-4">
+  Lightweight popover
+</div>`,
+  },
+  motion: {
+    id: 'motion',
+    label: 'Motion',
+    title: 'Remove runtime orchestration only where CSS lifecycle motion is enough',
+    description:
+      'Do not rip Motion out of places where layout, drag, or shared-element work matters. Migrate only the surfaces that are really just overlays, entrances, exits, and staggered lists.',
+    code: `/* Before */
+import { AnimatePresence, motion } from 'motion/react';
+
+<AnimatePresence>
+  {open ? (
+    <motion.aside
+      initial={{ opacity: 0, x: 24 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 24 }}
+    />
+  ) : null}
+</AnimatePresence>
+
+/* After */
+import { Animate } from '@pras75299/animix/react';
+
+function Drawer({ open, closing }: { open: boolean; closing: boolean }) {
+  if (!open) return null;
+
+  return (
+    <Animate animation="drawer-in-right" exitAnimation="drawer-out-right" exiting={closing}>
+      <aside className="animix-drawer-in-right" />
+    </Animate>
+  );
+}
+
+/* Keep Motion for layout-driven children inside the shell */
+<motion.ul layout>{/* rows */}</motion.ul>`,
+  },
+  gsap: {
+    id: 'gsap',
+    label: 'GSAP',
+    title: 'Keep GSAP where sequencing matters, move shells and overlays to animix',
+    description:
+      'The clean migration is not GSAP versus animix. It is GSAP for bespoke timelines, animix for repeatable product surfaces and token ownership.',
+    code: `/* Before: GSAP owns both shell and content */
+gsap.from('.drawer', { xPercent: 100, opacity: 0, duration: 0.32 });
+gsap.from('.drawer-item', { y: 20, opacity: 0, stagger: 0.05 });
+
+/* After: animix owns the shell, GSAP keeps the inner sequence */
+<aside class="animix-drawer-in-right">
+  <ul class="drawer-items">...</ul>
+</aside>
+
+gsap.from('.drawer-items > *', {
+  y: 16,
+  opacity: 0,
+  stagger: 0.05,
+  duration: 0.24,
+});
+
+/* Product feel now lives in tokens */
+.drawer-surface {
+  --animix-duration-slow: 320ms;
+}`,
+  },
+};
+
+export const migrationNotes = [
+  {
+    title: 'Migrate by surface, not by library logo',
+    body: 'Start with dialogs, sheets, toasts, menus, and route shells. Those are where animix reduces code fastest without giving up expressive control elsewhere.',
+  },
+  {
+    title: 'Keep named presets stable, customize with tokens second',
+    body: 'The preset name should describe the motion family. The product-specific feel should come from scoped duration, easing, distance, and stagger tokens.',
+  },
+  {
+    title: 'Do not delete the runtime where it still earns its cost',
+    body: 'Motion and GSAP should remain in place for layout animation, gestures, scroll choreography, SVG work, and timeline-heavy hero sequences.',
+  },
 ] as const;
 
 export const recipeTabs: Record<RecipeMode, SnippetTab> = {
+  dialog: {
+    id: 'dialog',
+    label: 'Dialog / sheet',
+    title: 'Treat dialog and sheet motion as shell choreography, not content choreography',
+    description:
+      'The overlay should fade quickly, the panel should land cleanly, and the content inside should only stagger if the density justifies it.',
+    code: `<div class="animix-overlay-in"></div>
+<div class="animix-modal-in">Centered dialog</div>
+<aside class="animix-drawer-in-right">Right sheet</aside>
+
+<!-- For denser content -->
+<ul class="animix-stagger" style="--animix-stagger-delay:45ms">
+  <li class="animix-in-fade">Profile</li>
+  <li class="animix-in-fade">Notifications</li>
+  <li class="animix-in-fade">Billing</li>
+</ul>`,
+  },
   command: {
     id: 'command',
     label: 'Command UI',
@@ -498,12 +933,27 @@ export const recipeTabs: Record<RecipeMode, SnippetTab> = {
     code: `<div class="animix-overlay-in"></div>
 <div class="animix-in-fade">
   <input aria-label="Search commands" />
-  <ul class="animix-stagger animix-slide-up">
-    <li>Go to Dashboard</li>
-    <li>Invite teammate</li>
-    <li>Toggle theme</li>
+  <ul class="animix-stagger" style="--animix-stagger-delay:45ms">
+    <li class="animix-in-slide-up">Go to Dashboard</li>
+    <li class="animix-in-slide-up">Invite teammate</li>
+    <li class="animix-in-slide-up">Toggle theme</li>
   </ul>
 </div>`,
+  },
+  route: {
+    id: 'route',
+    label: 'Route transitions',
+    title: 'Animate the route shell, not every child on the page',
+    description:
+      'Route transitions should stabilize the app shell first. Keep the page container consistent, then stagger only the first meaningful cluster if needed.',
+    code: `<main class="animix-page-slide-in">
+  <header class="animix-in-fade">People</header>
+  <section class="animix-stagger" style="--animix-stagger-delay:50ms">
+    <article class="animix-in-slide-up">Owner</article>
+    <article class="animix-in-slide-up">Admin</article>
+    <article class="animix-in-slide-up">Member</article>
+  </section>
+</main>`,
   },
   toast: {
     id: 'toast',
@@ -526,6 +976,29 @@ export const recipeTabs: Record<RecipeMode, SnippetTab> = {
 >
   Roles, permissions, and invite options
 </div>`,
+  },
+  list: {
+    id: 'list',
+    label: 'List / table',
+    title: 'Use stagger for inserts, quiet fades for remove paths',
+    description:
+      'Dense collections should not bounce. Favor short slide or fade entrances on insert and short fade or directional exits on remove.',
+    code: `<tbody class="animix-stagger" style="--animix-stagger-delay:35ms">
+  <tr class="animix-in-fade">
+    <td>Invoice #1042</td>
+    <td>Paid</td>
+  </tr>
+  <tr class="animix-in-fade">
+    <td>Invoice #1043</td>
+    <td>Pending</td>
+  </tr>
+</tbody>
+
+<!-- Remove path -->
+<tr class="animix-out-fade">
+  <td>Invite revoked</td>
+  <td>Archived</td>
+</tr>`,
   },
 };
 
@@ -561,16 +1034,16 @@ export const cssSteps = [
 
 export const tailwindNotes = [
   {
-    title: 'Keep alias and core CSS together',
-    body: 'The plugin only works well if the underlying CSS bundle remains the source of truth for tokens and keyframes.',
+    title: 'Named presets are the default',
+    body: 'Use animate-animix-slide-up or animate-animix-toast-in-bottom when you want a shared product language. Reach for fade/zoom/slide parametrics only when a surface needs finer calibration.',
   },
   {
-    title: 'Prefer exact utilities',
-    body: 'Reach for animate-animix-slide-up instead of broad transition-all patterns that blur intent.',
+    title: 'State attributes beat ad-hoc booleans',
+    body: 'Pair data-[state=*] and data-[side=*] variants with animix aliases so enter and exit decisions stay readable in markup.',
   },
   {
-    title: 'Override tokens, not keyframes',
-    body: 'Arbitrary values are for local tuning. The core animation names should stay shared across the product.',
+    title: 'Sequence with Tailwind, customize with tokens',
+    body: 'Use duration-*, delay-*, ease-*, repeat-*, and direction-* for timing, then scope token overrides when a component family needs a different feel.',
   },
 ];
 
@@ -703,6 +1176,9 @@ export const changelogHighlights = [
   'Typed class-name exports for autocomplete-friendly string composition.',
   'Documented View Transitions and Next.js App Router adoption patterns.',
   'shadcn/ui presets for Dialog, Sheet, Dropdown, Tooltip, Accordion, Toast, and Command.',
+  'Migration guides from Animate.css, tailwindcss-animate, Motion, and GSAP.',
+  'Surface-first recipe docs for dialogs, popovers, toasts, command palettes, list updates, and route shells.',
+  'Token-first customization examples that show when to scope variables instead of forking keyframes.',
 ];
 
 export const proofItems = [

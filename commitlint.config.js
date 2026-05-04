@@ -44,6 +44,8 @@ export default {
     'subject-case': [2, 'always', 'lower-case'],
     'subject-max-length': [2, 'always', 100],
     'header-max-length': [2, 'always', 120],
+    'body-empty': [2, 'always'],
     'body-max-line-length': [2, 'always', 200],
+    'footer-empty': [2, 'always'],
   },
 };

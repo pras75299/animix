@@ -1,0 +1,185 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`motion surface snapshots > matches reduced-motion end-state snapshots 1`] = `
+{
+  "drawerEndState": "animix-drawer-in-right to {
+transform: translateX(0);
+}",
+  "listItemEndState": "animix-fade-in to {
+opacity: 1;
+}",
+  "modalEndState": "animix-modal-in to {
+opacity: 1;
+    transform: scale(1);
+}",
+  "reducedMotionTokens": "@media (prefers-reduced-motion: reduce) {
+  :root {
+--animix-duration-micro: 0ms;
+    --animix-duration-fast: 0ms;
+    --animix-duration-base: 0ms;
+    --animix-duration-slow: 0ms;
+    --animix-duration-slower: 0ms;
+    --animix-delay: 0ms;
+    --animix-stagger-delay: 0ms;
+    --animix-motion-intensity: 0;
+  }
+}",
+  "toastEndState": "animix-toast-in-right to {
+opacity: 1;
+    transform: translateX(0);
+}",
+  "tooltipEndState": "animix-tooltip-in to {
+opacity: 1;
+    transform: scale(1);
+}",
+}
+`;
+
+exports[`motion surface snapshots > matches the default rendered surfaces for modal, drawer, tooltip, toast, and stagger 1`] = `
+<DocumentFragment>
+  <section
+    data-motion="default"
+  >
+    <div
+      class="animix-modal-in"
+      data-surface="modal"
+    >
+      Modal
+    </div>
+    <aside
+      class="animix-drawer-in-right"
+      data-surface="drawer"
+    >
+      Drawer
+    </aside>
+    <div
+      class="animix-tooltip-in"
+      data-surface="tooltip"
+    >
+      Tooltip
+    </div>
+    <div
+      class="animix-toast-in-right"
+      data-surface="toast"
+    >
+      Toast
+    </div>
+    <ul
+      class="animix-stagger"
+      data-surface="stagger"
+    >
+      <li
+        class="animix-in-fade"
+      >
+        Alpha
+      </li>
+      <li
+        class="animix-in-fade"
+      >
+        Beta
+      </li>
+      <li
+        class="animix-in-fade"
+      >
+        Gamma
+      </li>
+    </ul>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`motion surface snapshots > matches the reduced-motion rendered end states for modal, drawer, tooltip, toast, and stagger 1`] = `
+<DocumentFragment>
+  <section
+    data-motion="reduced"
+    style="--animix-duration-micro: 0ms; --animix-duration-fast: 0ms; --animix-duration-base: 0ms; --animix-duration-slow: 0ms; --animix-duration-slower: 0ms; --animix-delay: 0ms; --animix-stagger-delay: 0ms; --animix-motion-intensity: 0;"
+  >
+    <div
+      class="animix-modal-in"
+      data-surface="modal"
+    >
+      Modal
+    </div>
+    <aside
+      class="animix-drawer-in-right"
+      data-surface="drawer"
+    >
+      Drawer
+    </aside>
+    <div
+      class="animix-tooltip-in"
+      data-surface="tooltip"
+    >
+      Tooltip
+    </div>
+    <div
+      class="animix-toast-in-right"
+      data-surface="toast"
+    >
+      Toast
+    </div>
+    <ul
+      class="animix-stagger"
+      data-surface="stagger"
+    >
+      <li
+        class="animix-in-fade"
+      >
+        Alpha
+      </li>
+      <li
+        class="animix-in-fade"
+      >
+        Beta
+      </li>
+      <li
+        class="animix-in-fade"
+      >
+        Gamma
+      </li>
+    </ul>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`motion surface snapshots > matches the surface motion contract snapshots 1`] = `
+{
+  "drawer": ".animix-drawer-in-right {
+animation: animix-drawer-in-right var(--animix-duration-slow, 280ms) var(--animix-ease-out) both;
+}",
+  "listItemEntrance": ".animix-in-fade {
+animation-name: animix-fade-in;
+  animation-duration: var(--animix-duration-base, 300ms);
+  animation-timing-function: var(--animix-ease-out, cubic-bezier(0, 0, 0.2, 1));
+  animation-delay: var(--animix-delay, 0ms);
+  animation-fill-mode: var(--animix-fill-mode, both);
+  animation-iteration-count: var(--animix-iteration, 1);
+}",
+  "modal": ".animix-modal-in {
+animation: animix-modal-in var(--animix-duration-base, 240ms) var(--animix-ease-out) both;
+  transform-origin: center center;
+}",
+  "staggerContainer": ".animix-stagger > * {
+animation-delay: calc(var(--animix-stagger-delay, 75ms) * var(--animix-stagger-index, 0));
+}",
+  "staggerFirstItem": ".animix-stagger > *:nth-child(1) {
+--animix-stagger-index: 0;
+}",
+  "staggerSecondItem": ".animix-stagger > *:nth-child(2) {
+--animix-stagger-index: 1;
+}",
+  "staggerThirdItem": ".animix-stagger > *:nth-child(3) {
+--animix-stagger-index: 2;
+}",
+  "toast": ".animix-toast-in-right {
+animation: animix-toast-in-right var(--animix-duration-base, 240ms) var(--animix-ease-out) both;
+}",
+  "tooltip": ".animix-tooltip-in {
+animation: animix-tooltip-in var(--animix-duration-fast, 180ms) var(--animix-ease-out) both;
+  transform-origin: var(
+    --radix-popover-content-transform-origin,
+    var(--transform-origin, var(--animix-transform-origin, center center))
+  );
+}",
+}
+`;

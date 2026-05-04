@@ -2,6 +2,17 @@
 
 # animix pre-commit hook
 # Runs lint-staged on all staged files.
-# Blocked files will prevent the commit with an actionable error.
+# Block staged Markdown except for the repo-level docs we intentionally ship.
+
+blocked_markdown=$(
+  git diff --cached --name-only -- '*.md' | grep -vE '^(README.md|CHANGELOG.md|CONTRIBUTING.md)$' || true
+)
+
+if [ -n "$blocked_markdown" ]; then
+  echo "These Markdown files are blocked from commits:"
+  echo "$blocked_markdown"
+  echo "Only README.md, CHANGELOG.md, and CONTRIBUTING.md are allowed."
+  exit 1
+fi
 
 npx lint-staged

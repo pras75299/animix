@@ -1189,11 +1189,20 @@ kbd {
   align-items: start;
 }
 
+.docs-split > * {
+  min-width: 0;
+}
+
 @media (min-width: 960px) {
   .docs-split {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: var(--sp-6);
   }
+
+  .docs-split-token {
+    grid-template-columns: minmax(0, 1.14fr) minmax(0, 0.86fr);
+  }
+
   .docs-split-aside {
     grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   }
@@ -1504,17 +1513,20 @@ kbd {
   display: flex;
   flex-direction: column;
   gap: var(--sp-3);
+  min-width: 0;
 }
 
 .docs-tab-list {
-  display: inline-flex;
+  display: flex;
   flex-wrap: wrap;
   gap: 0;
   padding: 4px;
   border: 1px solid var(--c-rule);
   border-radius: var(--r-md);
   background: var(--c-surface);
-  width: max-content;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .docs-tab-list button {
@@ -1541,6 +1553,20 @@ kbd {
 .docs-tab-panel {
   display: grid;
   gap: var(--sp-3);
+  min-width: 0;
+}
+
+.docs-token-tabs .docs-tab-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.docs-token-tabs .docs-tab-list button {
+  width: 100%;
+  min-width: 0;
+  padding-inline: 10px;
+  text-align: center;
 }
 
 .docs-tab-copy h3 {
@@ -1681,6 +1707,11 @@ kbd {
   overflow: hidden;
   display: grid;
   place-items: center;
+  --animix-duration-micro: 1500ms;
+  --animix-duration-fast: 1500ms;
+  --animix-duration-base: 1500ms;
+  --animix-duration-slow: 1500ms;
+  --animix-duration-slower: 1500ms;
 }
 
 .docs-tile-stage::after {
@@ -1700,6 +1731,24 @@ kbd {
   border-radius: 8px;
   background: var(--c-ink);
   position: relative;
+  z-index: 1;
+  animation-duration: 1500ms !important;
+}
+
+.docs-tile-shape::before,
+.docs-tile-shape::after {
+  animation-duration: 1500ms !important;
+}
+
+.docs-loader-preview,
+.docs-loader-preview::before,
+.docs-loader-preview::after,
+.docs-loader-preview > * {
+  animation-duration: 1500ms !important;
+}
+
+.docs-loader-preview {
+  color: var(--c-ink);
   z-index: 1;
 }
 

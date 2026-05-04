@@ -49,6 +49,69 @@ const featureCards = [
   },
 ] as const;
 
+const motionBenchmarkItems = [
+  {
+    title: 'Checkout review',
+    meta: '2 blockers · final confirmation',
+    detail:
+      'Modal should feel substantial on desktop, but degrade to fade-only when blur starts to stutter.',
+  },
+  {
+    title: 'Team inbox',
+    meta: '5 queued invites · side context',
+    detail:
+      'Drawers can travel a bit more than modals, but keep the offset short on lower-end GPUs.',
+  },
+  {
+    title: 'Bulk pricing',
+    meta: '14 hovered cells · repeated trigger',
+    detail: 'Tooltips fire constantly, so prefer opacity-only or no animation in dense tables.',
+  },
+  {
+    title: 'Release feed',
+    meta: '3 stacked notices · transient surface',
+    detail:
+      'Toasts are a good place to compare blur-heavy glass against a lighter fade-and-slide preset.',
+  },
+] as const;
+
+const motionBenchmarkToasts = [
+  {
+    title: 'Preview deploy ready',
+    meta: 'modal + overlay blur fits here',
+    tone: 'neutral',
+  },
+  {
+    title: 'Search index synced',
+    meta: 'fade + 12px slide is safer on weaker phones',
+    tone: 'success',
+  },
+  {
+    title: 'Tooltip loop detected',
+    meta: 'high-frequency interactions should stay minimal',
+    tone: 'warning',
+  },
+] as const;
+
+const staggerBenchmarkItems = [
+  {
+    title: 'Webhook backlog',
+    meta: 'Replay list insertions with a readable 60-90ms cadence.',
+  },
+  {
+    title: 'Fraud review queue',
+    meta: 'Reduced motion collapses delay to zero and keeps cards in the same resting position.',
+  },
+  {
+    title: 'Partner invites',
+    meta: 'Low-end mode swaps blur out before it touches every row.',
+  },
+  {
+    title: 'Content moderation',
+    meta: 'Animate semantic chunks, not the whole container, so the list stays legible.',
+  },
+] as const;
+
 const anchoredPopoverStyle = {
   '--transform-origin': '1.5rem top',
   transformOrigin: 'var(--transform-origin)',
@@ -72,8 +135,20 @@ export function App() {
   const [accordionOpen, setAccordionOpen] = useState(true);
   const [formError, setFormError] = useState(false);
   const [swapSuccess, setSwapSuccess] = useState(false);
+  const [simulateReducedMotion, setSimulateReducedMotion] = useState(false);
+  const [preferLightweightMotion, setPreferLightweightMotion] = useState(false);
+  const [benchmarkModalOpen, setBenchmarkModalOpen] = useState(true);
+  const [benchmarkDrawerOpen, setBenchmarkDrawerOpen] = useState(false);
+  const [benchmarkTooltipOpen, setBenchmarkTooltipOpen] = useState(false);
+  const [benchmarkToastCount, setBenchmarkToastCount] = useState(2);
+  const [staggerReplayKey, setStaggerReplayKey] = useState(0);
 
   const intensityClass = intensityBold ? 'animix-intensity-bold' : 'animix-intensity-quiet';
+  const benchmarkReducedMotion = prefersReducedMotion || simulateReducedMotion;
+  const benchmarkBlurEnabled = !benchmarkReducedMotion && !preferLightweightMotion;
+  const staggerDelay = benchmarkReducedMotion ? 0 : preferLightweightMotion ? 45 : 90;
+  const staggerAnimation = benchmarkReducedMotion ? 'fade' : 'slide-up';
+  const benchmarkToasts = motionBenchmarkToasts.slice(0, benchmarkToastCount);
 
   return (
     <div className="min-h-screen bg-zinc-50 px-4 py-10 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
@@ -531,6 +606,355 @@ export function App() {
                   </div>
                 </div>
               </div>
+            </div>
+          </section>
+
+          <section className="space-y-5">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+              <div className="space-y-2">
+                <h2 className="text-lg font-semibold">P1 Motion Quality Bench</h2>
+                <p className="max-w-3xl text-sm text-zinc-600 dark:text-zinc-400">
+                  Benchmark common UI surfaces without changing the rest of the landing screen. Use
+                  the toggles to compare the default profile against reduced motion and a low-end
+                  fallback that swaps blur out for fade and short slide distances.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSimulateReducedMotion((value) => !value)}
+                  className={`animix-press-in animix-focus-soft rounded-full px-3 py-1.5 text-xs font-medium ${
+                    simulateReducedMotion
+                      ? 'bg-amber-500 text-zinc-950'
+                      : 'bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200'
+                  }`}
+                >
+                  {simulateReducedMotion ? 'Reduced motion demo: on' : 'Reduced motion demo'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPreferLightweightMotion((value) => !value)}
+                  className={`animix-press-in animix-focus-soft rounded-full px-3 py-1.5 text-xs font-medium ${
+                    preferLightweightMotion
+                      ? 'bg-sky-500 text-white'
+                      : 'bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200'
+                  }`}
+                >
+                  {preferLightweightMotion ? 'Low-end profile: on' : 'Low-end profile'}
+                </button>
+              </div>
+            </div>
+
+            <div className="grid gap-5 xl:grid-cols-2">
+              <article className="motion-demo-card">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1">
+                    <h3 className="text-base font-semibold">Modal benchmark</h3>
+                    <p className="motion-demo-note">{motionBenchmarkItems[0].detail}</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBenchmarkModalOpen((value) => !value)}
+                    className="animix-press-in animix-focus-soft rounded-md border border-zinc-200 px-3 py-2 text-xs font-medium dark:border-zinc-600"
+                  >
+                    {benchmarkModalOpen ? 'Hide modal' : 'Show modal'}
+                  </button>
+                </div>
+                <div className="motion-demo-viewport mt-4">
+                  <div className="absolute inset-4 rounded-2xl border border-dashed border-zinc-300 bg-white/80 p-4 dark:border-zinc-700 dark:bg-zinc-900/70">
+                    <p className="text-xs font-medium uppercase tracking-[0.2em] text-zinc-400">
+                      {motionBenchmarkItems[0].title}
+                    </p>
+                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                      <div className="rounded-xl bg-zinc-900/5 p-3 text-sm dark:bg-zinc-100/5">
+                        Confirm line items
+                      </div>
+                      <div className="rounded-xl bg-zinc-900/5 p-3 text-sm dark:bg-zinc-100/5">
+                        Save payment state
+                      </div>
+                    </div>
+                  </div>
+                  {benchmarkModalOpen ? (
+                    <>
+                      <div
+                        className={`motion-demo-backdrop ${benchmarkBlurEnabled ? 'motion-demo-backdrop-blur' : ''} animate-animix-overlay-in`}
+                      />
+                      <div
+                        className={`motion-demo-panel ${
+                          benchmarkReducedMotion
+                            ? 'animate-animix-fade-in'
+                            : benchmarkBlurEnabled
+                              ? 'animix-enter-scale motion-demo-glass'
+                              : 'animix-enter-up'
+                        }`}
+                      >
+                        <p className="text-xs font-medium uppercase tracking-[0.24em] text-violet-500 dark:text-violet-300">
+                          {motionBenchmarkItems[0].meta}
+                        </p>
+                        <h4 className="mt-3 text-lg font-semibold">Confirm refund window</h4>
+                        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">
+                          {benchmarkBlurEnabled
+                            ? 'Decorative blur is enabled because this is an isolated overlay.'
+                            : 'Blur is disabled here. Fade plus a short upward settle is the safer baseline on low-end devices.'}
+                        </p>
+                        <div className="mt-4 flex gap-2">
+                          <button
+                            type="button"
+                            className="animix-press-in animix-focus-soft rounded-md bg-violet-600 px-3 py-2 text-sm font-medium text-white"
+                          >
+                            Confirm
+                          </button>
+                          <button
+                            type="button"
+                            className="animix-press-in animix-focus-soft rounded-md border border-zinc-200 px-3 py-2 text-sm font-medium dark:border-zinc-600"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  ) : null}
+                </div>
+              </article>
+
+              <article className="motion-demo-card">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1">
+                    <h3 className="text-base font-semibold">Drawer benchmark</h3>
+                    <p className="motion-demo-note">{motionBenchmarkItems[1].detail}</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBenchmarkDrawerOpen((value) => !value)}
+                    className="animix-press-in animix-focus-soft rounded-md border border-zinc-200 px-3 py-2 text-xs font-medium dark:border-zinc-600"
+                  >
+                    {benchmarkDrawerOpen ? 'Hide drawer' : 'Show drawer'}
+                  </button>
+                </div>
+                <div className="motion-demo-viewport mt-4">
+                  <div className="absolute inset-4 rounded-2xl border border-dashed border-zinc-300 bg-white/80 p-4 dark:border-zinc-700 dark:bg-zinc-900/70">
+                    <p className="text-xs font-medium uppercase tracking-[0.2em] text-zinc-400">
+                      {motionBenchmarkItems[1].title}
+                    </p>
+                    <div className="mt-4 space-y-2">
+                      <div className="rounded-xl bg-zinc-900/5 p-3 text-sm dark:bg-zinc-100/5">
+                        Invite 3 teammates
+                      </div>
+                      <div className="rounded-xl bg-zinc-900/5 p-3 text-sm dark:bg-zinc-100/5">
+                        Compare pending roles
+                      </div>
+                    </div>
+                  </div>
+                  {benchmarkDrawerOpen ? (
+                    <>
+                      <div
+                        className={`motion-demo-backdrop ${benchmarkBlurEnabled ? 'motion-demo-backdrop-blur' : ''} animate-animix-overlay-in`}
+                      />
+                      <aside
+                        className={`motion-demo-drawer ${
+                          benchmarkReducedMotion
+                            ? 'animate-animix-fade-in'
+                            : benchmarkBlurEnabled
+                              ? 'animate-motion-demo-drawer-in motion-demo-glass'
+                              : 'animate-motion-demo-drawer-lite'
+                        }`}
+                      >
+                        <p className="text-xs font-medium uppercase tracking-[0.24em] text-sky-500 dark:text-sky-300">
+                          {motionBenchmarkItems[1].meta}
+                        </p>
+                        <h4 className="mt-3 text-lg font-semibold">Assign invitation owner</h4>
+                        <div className="mt-4 space-y-2 text-sm text-zinc-600 dark:text-zinc-300">
+                          <div className="rounded-xl bg-zinc-900/5 p-3 dark:bg-zinc-100/5">
+                            Keep drawer travel short and let the content do the explaining.
+                          </div>
+                          <div className="rounded-xl bg-zinc-900/5 p-3 dark:bg-zinc-100/5">
+                            When this panel opens repeatedly, treat blur as optional, not default.
+                          </div>
+                        </div>
+                      </aside>
+                    </>
+                  ) : null}
+                </div>
+              </article>
+
+              <article className="motion-demo-card">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1">
+                    <h3 className="text-base font-semibold">Tooltip benchmark</h3>
+                    <p className="motion-demo-note">{motionBenchmarkItems[2].detail}</p>
+                  </div>
+                  <span className="motion-demo-chip">High-frequency</span>
+                </div>
+                <div className="motion-demo-viewport mt-4 flex items-center justify-center">
+                  <div className="relative inline-flex">
+                    <button
+                      type="button"
+                      onClick={() => setBenchmarkTooltipOpen((value) => !value)}
+                      onMouseEnter={() => setBenchmarkTooltipOpen(true)}
+                      onMouseLeave={() => setBenchmarkTooltipOpen(false)}
+                      onFocus={() => setBenchmarkTooltipOpen(true)}
+                      onBlur={() => setBenchmarkTooltipOpen(false)}
+                      className="animix-press-in animix-focus-soft rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium shadow-sm dark:border-zinc-600 dark:bg-zinc-900"
+                    >
+                      Hover pricing hint
+                    </button>
+                    {benchmarkTooltipOpen ? (
+                      <div
+                        className={`motion-demo-tooltip ${
+                          benchmarkReducedMotion
+                            ? ''
+                            : benchmarkBlurEnabled
+                              ? 'animate-animix-tooltip-in motion-demo-glass'
+                              : 'animate-animix-fade-in'
+                        }`}
+                      >
+                        Prefer opacity-only here when users may trigger dozens of tooltips in one
+                        sweep.
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              </article>
+
+              <article className="motion-demo-card">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1">
+                    <h3 className="text-base font-semibold">Toast benchmark</h3>
+                    <p className="motion-demo-note">{motionBenchmarkItems[3].detail}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setBenchmarkToastCount((count) =>
+                          count >= motionBenchmarkToasts.length ? 1 : count + 1,
+                        )
+                      }
+                      className="animix-press-in animix-focus-soft rounded-md border border-zinc-200 px-3 py-2 text-xs font-medium dark:border-zinc-600"
+                    >
+                      Cycle stack
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBenchmarkToastCount(0)}
+                      className="animix-press-in animix-focus-soft rounded-md border border-zinc-200 px-3 py-2 text-xs font-medium dark:border-zinc-600"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                </div>
+                <div className="motion-demo-viewport mt-4">
+                  <div className="absolute inset-4 rounded-2xl border border-dashed border-zinc-300 bg-gradient-to-br from-zinc-50 via-white to-zinc-100 dark:border-zinc-700 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-900" />
+                  <div className="absolute inset-x-4 bottom-4 flex flex-col gap-2">
+                    {benchmarkToasts.map((toast) => (
+                      <div
+                        key={toast.title}
+                        className={`motion-demo-toast ${
+                          benchmarkReducedMotion
+                            ? ''
+                            : benchmarkBlurEnabled
+                              ? 'animate-animix-toast-in motion-demo-glass'
+                              : 'animate-animix-toast-in-bottom'
+                        } ${
+                          toast.tone === 'success'
+                            ? 'border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-100'
+                            : toast.tone === 'warning'
+                              ? 'border-amber-200 bg-amber-50 text-amber-950 dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-100'
+                              : 'border-zinc-200 bg-white text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100'
+                        }`}
+                      >
+                        <p className="text-sm font-medium">{toast.title}</p>
+                        <p className="mt-1 text-xs opacity-75">{toast.meta}</p>
+                      </div>
+                    ))}
+                    {benchmarkToastCount === 0 ? (
+                      <div className="rounded-xl border border-dashed border-zinc-300 bg-white/80 px-4 py-3 text-xs text-zinc-500 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-400">
+                        Empty stack. Re-add one toast first, then compare blur-heavy glass versus a
+                        lighter fade-and-slide profile.
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              </article>
+
+              <article className="motion-demo-card xl:col-span-2">
+                <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                  <div className="space-y-1">
+                    <h3 className="text-base font-semibold">Staggered list benchmark</h3>
+                    <p className="motion-demo-note">
+                      Replay a list insert sequence with normal motion, reduced motion, or the
+                      low-end profile. The resting layout stays constant across all three modes.
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setStaggerReplayKey((key) => key + 1)}
+                      className="animix-press-in animix-focus-soft rounded-md border border-zinc-200 px-3 py-2 text-xs font-medium dark:border-zinc-600"
+                    >
+                      Replay stagger
+                    </button>
+                    <span className="motion-demo-chip">
+                      {benchmarkReducedMotion
+                        ? 'Reduced: no delay'
+                        : preferLightweightMotion
+                          ? 'Low-end: 45ms cadence'
+                          : 'Default: 90ms cadence'}
+                    </span>
+                  </div>
+                </div>
+                <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,0.9fr)]">
+                  <div className="motion-demo-viewport min-h-[17rem]">
+                    <AnimateStagger
+                      key={`${staggerReplayKey}-${benchmarkReducedMotion}-${preferLightweightMotion}`}
+                      animation={staggerAnimation}
+                      delay={staggerDelay}
+                      className="absolute inset-4 flex flex-col gap-2"
+                    >
+                      {staggerBenchmarkItems.map((item) => (
+                        <div
+                          key={item.title}
+                          className="rounded-2xl border border-zinc-200 bg-white px-4 py-3 shadow-sm dark:border-zinc-700 dark:bg-zinc-900"
+                        >
+                          <div className="flex items-center justify-between gap-3">
+                            <p className="text-sm font-medium">{item.title}</p>
+                            <span className="text-xs text-zinc-400">ready</span>
+                          </div>
+                          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+                            {item.meta}
+                          </p>
+                        </div>
+                      ))}
+                    </AnimateStagger>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="motion-guidance-card">
+                      <h4 className="text-sm font-semibold">Blur vs fade/slide</h4>
+                      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+                        Use blur for isolated overlays or one-off toasts on stronger devices. If a
+                        surface stacks, scrolls, or overlaps with backdrop filters, switch to fade
+                        plus an 8-16px slide before frame drops become visible.
+                      </p>
+                    </div>
+                    <div className="motion-guidance-card">
+                      <h4 className="text-sm font-semibold">Reduced motion end state</h4>
+                      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+                        Reduced mode removes stagger delay and avoids scale or blur, but it keeps
+                        the exact same spacing, hierarchy, and resting positions so nothing feels
+                        broken.
+                      </p>
+                    </div>
+                    <div className="motion-guidance-card">
+                      <h4 className="text-sm font-semibold">High-frequency interactions</h4>
+                      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+                        For hover tooltips, inline validation, dense row actions, and repeated
+                        keyboard surfaces, prefer no animation or a quick opacity change. Save
+                        slide, blur, and scale for lower-frequency transitions.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </article>
             </div>
           </section>
 
