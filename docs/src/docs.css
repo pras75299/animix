@@ -1740,6 +1740,18 @@ kbd {
   animation-duration: 1500ms !important;
 }
 
+.docs-loader-preview,
+.docs-loader-preview::before,
+.docs-loader-preview::after,
+.docs-loader-preview > * {
+  animation-duration: 1500ms !important;
+}
+
+.docs-loader-preview {
+  color: var(--c-ink);
+  z-index: 1;
+}
+
 .docs-tile-meta {
   display: flex;
   flex-direction: column;

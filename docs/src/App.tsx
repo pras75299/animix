@@ -480,6 +480,24 @@ function CatalogTile({ item }: { item: CatalogItem }) {
   const [pulse, setPulse] = useState(0);
   const [copied, setCopied] = useState(false);
   const shapeClass = useMemo(() => `${item.className} docs-tile-shape`, [item.className]);
+  const preview = useMemo(() => {
+    switch (item.className) {
+      case 'animix-loader-spin':
+        return (
+          <span key={pulse} className="animix-loader-spin docs-loader-preview" aria-hidden="true" />
+        );
+      case 'animix-loader-dots':
+        return (
+          <div key={pulse} className="animix-loader-dots docs-loader-preview" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
+        );
+      default:
+        return <span key={pulse} className={shapeClass} aria-hidden="true" />;
+    }
+  }, [item.className, pulse, shapeClass]);
 
   useEffect(() => {
     if (!copied) return;
@@ -521,9 +539,7 @@ function CatalogTile({ item }: { item: CatalogItem }) {
       >
         <Icon name={copied ? 'check' : 'copy'} size={12} />
       </span>
-      <div className="docs-tile-stage">
-        <span key={pulse} className={shapeClass} aria-hidden="true" />
-      </div>
+      <div className="docs-tile-stage">{preview}</div>
       <div className="docs-tile-meta">
         <span className="docs-tile-cat">{item.category}</span>
         <span className="docs-tile-name">.{item.className}</span>
