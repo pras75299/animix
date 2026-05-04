@@ -11,6 +11,7 @@ import React, {
   Children,
   cloneElement,
   type ElementType,
+  Fragment,
   forwardRef,
   isValidElement,
   useCallback,
@@ -458,6 +459,12 @@ type AnimixChildProps = {
 
 type AnimixChildElement = ReactElement<AnimixChildProps & { ref?: Ref<HTMLElement> }>;
 
+function isAnimixChildElement(node: ReactNode): node is AnimixChildElement {
+  return (
+    isValidElement<AnimixChildProps & { ref?: Ref<HTMLElement> }>(node) && node.type !== Fragment
+  );
+}
+
 export function AnimateStagger({
   children,
   animation = 'fade',
@@ -497,9 +504,7 @@ export function AnimateStagger({
 
   const animClass = getAnimationClass(animation, 'in');
   const childRefForMerge =
-    asChild && isValidElement<AnimixChildProps & { ref?: Ref<HTMLElement> }>(children)
-      ? getChildElementRef(children as ReactElement)
-      : undefined;
+    asChild && isAnimixChildElement(children) ? getChildElementRef(children) : undefined;
 
   const mapStaggerChildren = useCallback(
     (nodes: ReactNode) =>
@@ -523,8 +528,8 @@ export function AnimateStagger({
     [animClass, delay, triggered],
   );
 
-  if (asChild && isValidElement<AnimixChildProps & { ref?: Ref<HTMLElement> }>(children)) {
-    const child = children as AnimixChildElement;
+  if (asChild && isAnimixChildElement(children)) {
+    const child = children;
     const existingClass = child.props.className ?? '';
     return cloneElement<AnimixChildProps & { ref?: Ref<HTMLElement> }>(child, {
       ...child.props,
