@@ -12,11 +12,17 @@ updates:
       prefix: chore
       include: scope
     groups:
+      react-stack:
+        patterns:
+          - 'react'
+          - 'react-dom'
+          - '@types/react'
+          - '@types/react-dom'
       dev-toolchain:
         patterns:
           - '@commitlint/*'
           - '@testing-library/*'
-          - '@types/*'
+          - '@types/node'
           - '@typescript-eslint/*'
           - '@vitejs/*'
           - 'autoprefixer'

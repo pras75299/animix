@@ -4,7 +4,6 @@
     "jsx": "react-jsx",
     "types": ["vite/client"],
     "noEmit": true,
-    "baseUrl": ".",
     "paths": {
       "@pras75299/animix/react": ["../react/index.ts"],
       "@pras75299/animix/css": ["../src/index.css"],

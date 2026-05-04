@@ -11,6 +11,7 @@ import React, {
   Children,
   cloneElement,
   type ElementType,
+  Fragment,
   forwardRef,
   isValidElement,
   useCallback,
@@ -450,6 +451,20 @@ export interface AnimateStaggerProps {
   className?: string;
 }
 
+type AnimixChildProps = {
+  children?: ReactNode;
+  className?: string;
+  style?: CSSProperties;
+};
+
+type AnimixChildElement = ReactElement<AnimixChildProps & { ref?: Ref<HTMLElement> }>;
+
+function isAnimixChildElement(node: ReactNode): node is AnimixChildElement {
+  return (
+    isValidElement<AnimixChildProps & { ref?: Ref<HTMLElement> }>(node) && node.type !== Fragment
+  );
+}
+
 export function AnimateStagger({
   children,
   animation = 'fade',
@@ -489,32 +504,34 @@ export function AnimateStagger({
 
   const animClass = getAnimationClass(animation, 'in');
   const childRefForMerge =
-    asChild && isValidElement(children) ? getChildElementRef(children as ReactElement) : undefined;
+    asChild && isAnimixChildElement(children) ? getChildElementRef(children) : undefined;
 
   const mapStaggerChildren = useCallback(
     (nodes: ReactNode) =>
-      Children.map(nodes, (node, index) =>
-        isValidElement(node)
-          ? cloneElement(node as ReactElement<Record<string, unknown>>, {
-              ...node.props,
-              style: {
-                ...(node.props.style as CSSProperties),
-                '--animix-stagger-index': index,
-                animationDelay: `calc(${delay}ms * ${index})`,
-              } as CSSProperties,
-              className: [node.props.className as string, triggered ? animClass : '']
-                .filter(Boolean)
-                .join(' '),
-            })
-          : node,
-      ),
+      Children.map(nodes, (node, index) => {
+        if (!isValidElement<AnimixChildProps>(node)) {
+          return node;
+        }
+
+        return cloneElement(node, {
+          ...node.props,
+          style: {
+            ...node.props.style,
+            '--animix-stagger-index': index,
+            animationDelay: `calc(${delay}ms * ${index})`,
+          } as CSSProperties,
+          className: [node.props.className ?? '', triggered ? animClass : '']
+            .filter(Boolean)
+            .join(' '),
+        });
+      }),
     [animClass, delay, triggered],
   );
 
-  if (asChild && isValidElement(children)) {
-    const child = children as ReactElement<Record<string, unknown>>;
-    const existingClass = (child.props.className as string) ?? '';
-    return cloneElement(child, {
+  if (asChild && isAnimixChildElement(children)) {
+    const child = children;
+    const existingClass = child.props.className ?? '';
+    return cloneElement<AnimixChildProps & { ref?: Ref<HTMLElement> }>(child, {
       ...child.props,
       ref: (node: HTMLElement | null) => {
         containerRef.current = node;
@@ -522,10 +539,10 @@ export function AnimateStagger({
       },
       className: [existingClass, className].filter(Boolean).join(' '),
       style: {
-        ...(child.props.style as CSSProperties),
+        ...child.props.style,
         '--animix-stagger-delay': `${delay}ms`,
       } as CSSProperties,
-      children: mapStaggerChildren(child.props.children as ReactNode),
+      children: mapStaggerChildren(child.props.children),
     });
   }
 

@@ -1,4 +1,5 @@
 dist/
+.tsup/
 node_modules/
 *.min.css
 *.min.js

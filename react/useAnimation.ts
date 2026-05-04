@@ -251,7 +251,10 @@ export interface UseInViewOptions {
  *   const inView = useInView(ref);
  *   // <div ref={ref} className={inView ? 'animix-in-fade' : ''} />
  */
-export function useInView(ref: RefObject<HTMLElement>, options: UseInViewOptions = {}): boolean {
+export function useInView<T extends HTMLElement>(
+  ref: RefObject<T | null>,
+  options: UseInViewOptions = {},
+): boolean {
   const { threshold = 0.1, once = true, rootMargin = '0px' } = options;
   const [inView, setInView] = useState(false);
 

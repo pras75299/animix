@@ -17,14 +17,14 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18, 20, 22]
+        node-version: [22, 24]
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -48,24 +48,18 @@ jobs:
         run: npm run audit:high
 
       - name: React, snippet, and snapshot tests
-        # Vitest 4 / Vite 8 tooling requires newer Node APIs than the library runtime.
-        if: matrix.node-version != 18
         run: npm run test:react
 
       - name: Build
         run: npm run build
 
       - name: Build docs
-        # Vite 8 requires Node >=20.19; library itself still supports Node 18.
-        if: matrix.node-version != 18
         run: npm run build:docs
 
       - name: Build playground
-        if: matrix.node-version != 18
         run: npm run build:playground
 
       - name: Preview assertions
-        if: matrix.node-version != 18
         run: npm run test:preview
 
       - name: Verify exports exist
@@ -86,14 +80,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
           cache: 'npm'
 
       - name: Install dependencies
