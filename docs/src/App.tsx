@@ -22,6 +22,8 @@ import {
   cssTabs,
   fallbackMetrics,
   installTabs,
+  migrationNotes,
+  migrationTabs,
   navItems,
   pairingNotes,
   pairingTabs,
@@ -36,6 +38,7 @@ import {
   shadcnRows,
   tailwindNotes,
   tailwindTabs,
+  tokenOverrideTabs,
   tokenRows,
   toolChoiceCards,
   viewTransitionTabs,
@@ -1014,7 +1017,7 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
           {/* 08 — Tokens */}
           <section id="tokens" className="docs-section">
             <SectionHead
-              num="08 / 14"
+              num="08 / 15"
               eyebrow="Token System"
               title={
                 <>
@@ -1022,53 +1025,54 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
                   keyframes.
                 </>
               }
-              body="Token overrides are what make the library feel product-ready. They let one interface feel tighter, softer, or calmer without drifting away from the shared animation language."
+              body="Token overrides are the primary customization path. Keep the preset family stable, then scope timing, distance, and stagger changes at the surface boundary."
             />
 
-            <div className="docs-split">
+            <div className="docs-split docs-split-token">
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
-                <CodeBlock
-                  title="Scoped token override"
-                  code={`.pricing-grid {
-  --animix-duration-base: 320ms;
-  --animix-slide-distance: 24px;
-  --animix-hover-lift: -4px;
-}
-
-.feature-card {
-  --animix-scale-start: 0.96;
-}`}
-                />
+                <div className="docs-token-tabs">
+                  <SnippetTabs tabs={tokenOverrideTabs} initialId="before-after" />
+                </div>
                 <div className="docs-card">
-                  <strong>Where to override</strong>
+                  <strong>Customization rule</strong>
                   <p>
-                    Prefer setting tokens on a section wrapper, card cluster, or component root so
-                    related motion stays coherent across children.
+                    Prefer tokens over new keyframes when the motion family is already right. Fork
+                    the keyframe only when the actual movement pattern is different, not when the
+                    product just needs calmer timing or shorter travel.
                   </p>
                 </div>
               </div>
 
-              <div className="docs-table-wrap">
-                <table className="docs-table">
-                  <thead>
-                    <tr>
-                      <th>Token</th>
-                      <th>Default</th>
-                      <th>Use</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tokenRows.map(([token, value, use]) => (
-                      <tr key={token}>
-                        <td>{token}</td>
-                        <td>{value}</td>
-                        <td style={{ fontFamily: 'var(--f-sans)', color: 'var(--c-ink-3)' }}>
-                          {use}
-                        </td>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
+                <div className="docs-table-wrap">
+                  <table className="docs-table">
+                    <thead>
+                      <tr>
+                        <th>Token</th>
+                        <th>Default</th>
+                        <th>Use</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {tokenRows.map(([token, value, use]) => (
+                        <tr key={token}>
+                          <td>{token}</td>
+                          <td>{value}</td>
+                          <td style={{ fontFamily: 'var(--f-sans)', color: 'var(--c-ink-3)' }}>
+                            {use}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="docs-card">
+                  <strong>Where to override</strong>
+                  <p>
+                    Set tokens on a route shell, section wrapper, panel root, or list container so
+                    related motion stays coherent across children.
+                  </p>
+                </div>
               </div>
             </div>
           </section>
@@ -1076,7 +1080,7 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
           {/* 09 — Choose */}
           <section id="choose" className="docs-section">
             <SectionHead
-              num="09 / 14"
+              num="09 / 15"
               eyebrow="Choose the Right Tool"
               title={
                 <>
@@ -1145,7 +1149,7 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
           {/* 10 — Pairing */}
           <section id="pairing" className="docs-section">
             <SectionHead
-              num="10 / 14"
+              num="10 / 15"
               eyebrow="Pairing Guide"
               title={
                 <>
@@ -1168,13 +1172,39 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
             </div>
           </section>
 
-          {/* 11 — Catalog */}
+          {/* 11 — Migrations */}
+          <section id="migrations" className="docs-section">
+            <SectionHead
+              num="11 / 15"
+              eyebrow="Migration Guides"
+              title={
+                <>
+                  Migrate by <em>surface ownership</em>, not by ideological rewrite.
+                </>
+              }
+              body="animix adoption works best when you move overlays, drawers, toasts, menus, and route shells first, while leaving layout, gesture, and timeline-heavy work in the tools that already own it well."
+            />
+
+            <div className="docs-split docs-split-aside">
+              <SnippetTabs tabs={Object.values(migrationTabs)} initialId="animate-css" />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
+                {migrationNotes.map((note) => (
+                  <article key={note.title} className="docs-card">
+                    <strong>{note.title}</strong>
+                    <p>{note.body}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* 12 — Catalog */}
           <Catalog />
 
-          {/* 12 — Accessibility */}
+          {/* 13 — Accessibility */}
           <section id="accessibility" className="docs-section">
             <SectionHead
-              num="12 / 14"
+              num="13 / 15"
               eyebrow="Accessibility"
               title={
                 <>
@@ -1240,17 +1270,17 @@ document.documentElement.classList.toggle('animix-no-motion', prefersNoMotion);`
             </div>
           </section>
 
-          {/* 13 — Recipes */}
+          {/* 14 — Recipes */}
           <section id="recipes" className="docs-section">
             <SectionHead
-              num="13 / 14"
+              num="14 / 15"
               eyebrow="Implementation Recipes"
               title={
                 <>
                   Patterns that <em>make product UI feel grounded.</em>
                 </>
               }
-              body="These are the patterns most teams need immediately: command surfaces, anchored popovers, and feedback stacks that behave consistently."
+              body="These recipes are organized by UI surface: dialogs and sheets, anchored popovers and dropdowns, toast stacks, command palettes, list or table updates, and route-shell transitions."
             />
 
             <div className="docs-recipes" style={{ marginBottom: 'var(--sp-5)' }}>
@@ -1290,13 +1320,13 @@ document.documentElement.classList.toggle('animix-no-motion', prefersNoMotion);`
               </div>
             </div>
 
-            <SnippetTabs tabs={Object.values(recipeTabs)} initialId="command" />
+            <SnippetTabs tabs={Object.values(recipeTabs)} initialId="dialog" />
           </section>
 
-          {/* 14 — Changelog */}
+          {/* 15 — Changelog */}
           <section id="changelog" className="docs-section">
             <SectionHead
-              num="14 / 14"
+              num="15 / 15"
               eyebrow="Changelog Highlights"
               title={
                 <>
