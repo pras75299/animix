@@ -813,6 +813,8 @@ const animixPlugin = plugin.withOptions<AnimixOptions>(
             '--animix-duration-base': '0ms',
             '--animix-duration-slow': '0ms',
             '--animix-duration-slower': '0ms',
+            '--animix-delay': '0ms',
+            '--animix-stagger-delay': '0ms',
             '--animix-motion-intensity': '0',
           },
         },

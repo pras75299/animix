@@ -568,7 +568,7 @@ function Catalog() {
   return (
     <section id="catalog" className="docs-section">
       <SectionHead
-        num="11 / 14"
+        num="12 / 15"
         eyebrow="Animation Catalog"
         title={
           <>

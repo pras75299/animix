@@ -44,7 +44,12 @@ jobs:
       - name: Test
         run: npm test
 
+      - name: Audit high-severity vulnerabilities
+        run: npm run audit:high
+
       - name: React, snippet, and snapshot tests
+        # Vitest 4 / Vite 8 tooling requires newer Node APIs than the library runtime.
+        if: matrix.node-version != 18
         run: npm run test:react
 
       - name: Build

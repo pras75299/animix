@@ -9,10 +9,12 @@ import { describe, expect, it } from 'vitest';
 import {
   cssTabs,
   installTabs,
+  migrationTabs,
   pairingTabs,
   reactTabs,
   recipeTabs,
   tailwindTabs,
+  tokenOverrideTabs,
   viewTransitionTabs,
 } from '../docs/src/data';
 
@@ -164,7 +166,9 @@ function collectDocsSnippets(): SnippetFixture[] {
     ...tailwindTabs,
     ...Object.values(reactTabs),
     ...viewTransitionTabs,
+    ...tokenOverrideTabs,
     ...pairingTabs,
+    ...Object.values(migrationTabs),
     ...Object.values(recipeTabs),
   ].map((tab) => ({
     label: `docs:${tab.id}`,

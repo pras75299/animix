@@ -1141,12 +1141,14 @@ import { AnimatePresence, motion } from 'motion/react';
 // After
 import { Animate } from '@pras75299/animix/react';
 
-{
-  open ? (
+function Drawer({ open, closing }: { open: boolean; closing: boolean }) {
+  if (!open) return null;
+
+  return (
     <Animate animation="drawer-in-right" exitAnimation="drawer-out-right" exiting={closing}>
       <aside className="animix-drawer-in-right" />
     </Animate>
-  ) : null;
+  );
 }
 ```
 

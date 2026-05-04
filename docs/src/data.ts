@@ -600,8 +600,7 @@ export const tokenOverrideTabs: SnippetTab[] = [
     title: 'Replace one-off timing forks with scoped token overrides',
     description:
       'The goal is not to invent a new keyframe for every product area. Keep the preset, then tune the feel at the container boundary.',
-    code: `/* Before: duplicated motion rules per component */
-.settings-modal {
+    code: `.settings-modal {
   animation: animix-modal-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -609,13 +608,13 @@ export const tokenOverrideTabs: SnippetTab[] = [
   animation: animix-toast-in-right 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* After: one scoped motion profile */
 .settings-surface {
   --animix-duration-base: 320ms;
   --animix-duration-fast: 200ms;
   --animix-slide-distance: 20px;
   --animix-scale-start: 0.97;
 }
+
 
 <div class="settings-surface">
   <div class="animix-modal-in">Preferences</div>
@@ -850,11 +849,15 @@ import { AnimatePresence, motion } from 'motion/react';
 /* After */
 import { Animate } from '@pras75299/animix/react';
 
-{open ? (
-  <Animate animation="drawer-in-right" exitAnimation="drawer-out-right" exiting={closing}>
-    <aside className="animix-drawer-in-right" />
-  </Animate>
-) : null}
+function Drawer({ open, closing }: { open: boolean; closing: boolean }) {
+  if (!open) return null;
+
+  return (
+    <Animate animation="drawer-in-right" exitAnimation="drawer-out-right" exiting={closing}>
+      <aside className="animix-drawer-in-right" />
+    </Animate>
+  );
+}
 
 /* Keep Motion for layout-driven children inside the shell */
 <motion.ul layout>{/* rows */}</motion.ul>`,
