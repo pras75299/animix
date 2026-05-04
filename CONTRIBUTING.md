@@ -376,6 +376,15 @@ PRs are reviewed against these criteria:
 5. Existing Tailwind utilities are not broken
 6. shadcn presets do not conflict with shadcn variables
 
+### Release checklist
+
+Before `npm publish` or cutting a release tag:
+
+1. Run the publish gate locally: `npm run build && npm run typecheck && npm run lint && npm test && npm run test:react`
+2. Run the security audit gate: `npm run audit:high`
+3. Review pending dependency updates and decide whether any open toolchain/security PRs must land before publish
+4. If `npm audit` reports a high/critical issue that cannot be fixed immediately, document the risk and defer the release
+
 ---
 
 ## Pre-commit Hooks

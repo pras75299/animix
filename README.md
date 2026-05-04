@@ -50,9 +50,13 @@ Published tarball: **46 kB compressed / 264 kB unpacked / 32 files** — source 
 - [Mode 3: React Bindings](#mode-3--react-bindings)
 - [shadcn/ui Integration](#shadcnui-integration)
 - [CSS Token Reference](#css-token-reference)
+- [Recipes by UI Surface](#recipes-by-ui-surface)
 - [Animation Catalog](#animation-catalog)
 - [Accessibility](#accessibility)
 - [Browser Support](#browser-support)
+- [Choose the Right Tool](#choose-the-right-tool)
+- [Pairing Guide](#pairing-guide)
+- [Migration Guides](#migration-guides)
 - [FAQ](#faq)
 - [Versioning & changelog](#versioning--changelog)
 - [Contributing](#contributing)
@@ -167,7 +171,7 @@ Classes prefixed `.animix-out-*` — use `fill-mode: both` so the element stays 
 <div class="animix-out-blur">Blur + scale out</div>
 ```
 
-> **All exits** use `ease-in` timing (accelerate as they leave) — the asymmetric pair to entrances.
+> **Most exits** use the fast `ease-out` teardown curve for responsive UI dismissal. More emphatic exits such as `light-speed`, `roll`, and `hinge` switch to `ease-in`.
 
 ---
 
@@ -444,7 +448,7 @@ Now use `animate-animix-*` utilities alongside standard Tailwind duration/delay/
 Override tokens inline with Tailwind's arbitrary value syntax or inline styles:
 
 ```html
-<div class="animate-animix-slide-up" style="--animix-slide-distance:32px; --animix-duration-base:500ms">
+<div class="animate-animix-slide-up" style="--animix-slide-distance:32px; --animix-duration-base:420ms">
   Big custom slide
 </div>
 ```
@@ -548,6 +552,13 @@ function ToastWithExit() {
 }
 ```
 
+#### React caveats
+
+- **Parent-managed exits only.** `Animate` cannot stop React from unmounting a child. Keep mount state in the parent, flip `exiting` first, then remove the subtree in `onEnd` or after `animix:exit-complete`.
+- **Wrapper behavior is the default.** `Animate` renders a wrapper element unless you opt into `asChild`. Use the wrapper when it is acceptable for the motion container to own refs, observers, and event wiring.
+- **`asChild` needs a real host element contract.** The child must render a single DOM-bearing element and forward `ref`, `className`, `style`, and event props. Fragments or components that swallow those props cannot host the animation correctly.
+- **Keep semantic containers stable.** For lists, tables, or Radix primitives where an extra wrapper changes layout or semantics, use `asChild` or place `Animate` inside an existing semantic node instead of around it.
+
 #### Blur presets and performance
 
 Entrance/exit presets such as `animix-in-blur` / `animate-animix-blur-in` animate the CSS **`filter`** (blur), not just `opacity` / `transform`. That can be **more expensive** (repaints, compositing) on low-end devices. Prefer fade or slide variants when you need maximum smoothness; rely on `prefers-reduced-motion` (token durations go to `0ms`) or `.animix-no-motion` for user-controlled reduction.
@@ -612,7 +623,7 @@ function NotificationBell() {
   const { play, pause, resume, reverse, reset, state } = useAnimation(ref, {
     animation: 'animix-wiggle',
     duration: 600,
-    easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    easing: 'cubic-bezier(0.23, 1, 0.32, 1)',
     repeat: 3,
     onEnd: () => console.log('wiggle finished'),
   });
@@ -714,24 +725,77 @@ This automatically wires animations onto Radix UI `data-state`/`data-side` attri
 
 All tokens are CSS custom properties on `:root`. Override them on any element or container.
 
+### Customize with tokens first
+
+The default customization path is:
+
+1. Keep the named preset that matches the surface.
+2. Scope token overrides on the surface wrapper.
+3. Fork a keyframe only if the movement pattern itself is wrong.
+
+**Before**: duplicated animation rules for one product area.
+
+```css
+.settings-modal {
+  animation: animix-modal-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.settings-toast {
+  animation: animix-toast-in-right 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+```
+
+**After**: one scoped motion profile, shared by all related surfaces.
+
+```css
+.settings-surface {
+  --animix-duration-base: 320ms;
+  --animix-duration-fast: 200ms;
+  --animix-slide-distance: 20px;
+  --animix-scale-start: 0.97;
+}
+```
+
+```html
+<section class="settings-surface">
+  <div class="animix-modal-in">Preferences</div>
+  <div class="animix-toast-in-right">Saved</div>
+</section>
+```
+
+**Tailwind / inline override** works the same way:
+
+```html
+<aside class="animate-animix-drawer-in-right" style="--animix-duration-slow: 340ms; --animix-slide-distance: 22px;">
+  ...
+</aside>
+
+<ul class="animix-stagger" style="--animix-stagger-delay: 40ms;">
+  <li class="animate-animix-slide-up">Overview</li>
+  <li class="animate-animix-slide-up">Invoices</li>
+  <li class="animate-animix-slide-up">People</li>
+</ul>
+```
+
 ### Timing Tokens
 
-| Token                      | Default | Notes                     |
-| -------------------------- | ------- | ------------------------- |
-| `--animix-duration-fast`   | `180ms` | Tooltips, hover feedback  |
-| `--animix-duration-base`   | `240ms` | Most UI entrances/exits   |
-| `--animix-duration-slow`   | `280ms` | Drawers, page transitions |
-| `--animix-duration-slower` | `420ms` | Attention animations      |
+| Token                      | Default | Notes                                  |
+| -------------------------- | ------- | -------------------------------------- |
+| `--animix-duration-micro`  | `140ms` | Press feedback and micro state changes |
+| `--animix-duration-fast`   | `180ms` | Tooltips, hover feedback               |
+| `--animix-duration-base`   | `240ms` | Most UI entrances/exits                |
+| `--animix-duration-slow`   | `280ms` | Drawers, page transitions              |
+| `--animix-duration-slower` | `420ms` | Attention animations                   |
 
 ### Easing Tokens
 
-| Token                   | Default                                 | Curve                  |
-| ----------------------- | --------------------------------------- | ---------------------- |
-| `--animix-ease-default` | `cubic-bezier(0.4, 0, 0.2, 1)`          | Smooth in-out          |
-| `--animix-ease-in`      | `cubic-bezier(0.4, 0, 1, 1)`            | Accelerate (exits)     |
-| `--animix-ease-out`     | `cubic-bezier(0, 0, 0.2, 1)`            | Decelerate (entrances) |
-| `--animix-ease-spring`  | `cubic-bezier(0.34, 1.56, 0.64, 1)`     | Overshoot spring       |
-| `--animix-ease-bounce`  | `cubic-bezier(0.68, -0.55, 0.27, 1.55)` | Elastic bounce         |
+| Token                   | Default                                 | Curve                |
+| ----------------------- | --------------------------------------- | -------------------- |
+| `--animix-ease-default` | `cubic-bezier(0.23, 1, 0.32, 1)`        | Primary UI easing    |
+| `--animix-ease-in`      | `cubic-bezier(0.64, 0, 0.78, 0)`        | Accelerate (exits)   |
+| `--animix-ease-out`     | `cubic-bezier(0.23, 1, 0.32, 1)`        | Responsive entrances |
+| `--animix-ease-spring`  | `cubic-bezier(0.34, 1.56, 0.64, 1)`     | Overshoot spring     |
+| `--animix-ease-bounce`  | `cubic-bezier(0.68, -0.55, 0.27, 1.55)` | Elastic bounce       |
 
 ### Motion Tokens
 
@@ -761,54 +825,60 @@ All tokens are CSS custom properties on `:root`. Override them on any element or
 
 ### Entrances (`.animix-in-*`)
 
-| Class                    | Keyframe                      | Default Duration | Default Easing |
-| ------------------------ | ----------------------------- | ---------------- | -------------- |
-| `.animix-in-fade`        | opacity 0→1                   | 300ms            | ease-out       |
-| `.animix-in-slide-up`    | translateY + opacity          | 300ms            | ease-out       |
-| `.animix-in-slide-down`  | translateY + opacity          | 300ms            | ease-out       |
-| `.animix-in-slide-left`  | translateX + opacity          | 300ms            | ease-out       |
-| `.animix-in-slide-right` | translateX + opacity          | 300ms            | ease-out       |
-| `.animix-in-scale-up`    | scale(0.95→1) + opacity       | 300ms            | spring         |
-| `.animix-in-scale-down`  | scale(1.05→1) + opacity       | 300ms            | spring         |
-| `.animix-in-flip-x`      | perspective rotateX           | 500ms            | ease-out       |
-| `.animix-in-flip-y`      | perspective rotateY           | 500ms            | ease-out       |
-| `.animix-in-rotate`      | rotate(-180→0) + scale        | 500ms            | spring         |
-| `.animix-in-bounce`      | multi-step scale bounce       | 500ms            | ease           |
-| `.animix-in-elastic`     | overshoot scale elastic       | 500ms            | ease           |
-| `.animix-in-blur`        | blur(8px→0) + scale + opacity | 300ms            | ease-out       |
+| Class                    | Keyframe                      | Token Default  | Default Easing |
+| ------------------------ | ----------------------------- | -------------- | -------------- |
+| `.animix-in-fade`        | opacity 0→1                   | 240ms (`base`) | ease-out       |
+| `.animix-in-slide-up`    | translateY + opacity          | 240ms (`base`) | ease-out       |
+| `.animix-in-slide-down`  | translateY + opacity          | 240ms (`base`) | ease-out       |
+| `.animix-in-slide-left`  | translateX + opacity          | 240ms (`base`) | ease-out       |
+| `.animix-in-slide-right` | translateX + opacity          | 240ms (`base`) | ease-out       |
+| `.animix-in-scale-up`    | scale(0.95→1) + opacity       | 240ms (`base`) | spring         |
+| `.animix-in-scale-down`  | scale(1.05→1) + opacity       | 240ms (`base`) | spring         |
+| `.animix-in-flip-x`      | perspective rotateX           | 240ms (`base`) | ease-out       |
+| `.animix-in-flip-y`      | perspective rotateY           | 240ms (`base`) | ease-out       |
+| `.animix-in-rotate`      | rotate(-180→0) + scale        | 240ms (`base`) | spring         |
+| `.animix-in-bounce`      | multi-step scale bounce       | 240ms (`base`) | default        |
+| `.animix-in-elastic`     | overshoot scale elastic       | 240ms (`base`) | bounce         |
+| `.animix-in-blur`        | blur(8px→0) + scale + opacity | 240ms (`base`) | ease-out       |
+| `.animix-in-light-speed` | skewed slide + opacity        | 280ms (`slow`) | ease-out       |
+| `.animix-in-roll`        | translated rotate + opacity   | 280ms (`slow`) | ease-out       |
 
 ### Exits (`.animix-out-*`)
 
-| Class                     | Keyframe                      | Default Duration | Default Easing |
+| Class                     | Keyframe                      | Token Default    | Default Easing |
 | ------------------------- | ----------------------------- | ---------------- | -------------- |
-| `.animix-out-fade`        | opacity 1→0                   | 300ms            | ease-in        |
-| `.animix-out-slide-up`    | translateY + opacity          | 300ms            | ease-in        |
-| `.animix-out-slide-down`  | translateY + opacity          | 300ms            | ease-in        |
-| `.animix-out-slide-left`  | translateX + opacity          | 300ms            | ease-in        |
-| `.animix-out-slide-right` | translateX + opacity          | 300ms            | ease-in        |
-| `.animix-out-scale-up`    | scale(1→1.05) + opacity       | 300ms            | ease-in        |
-| `.animix-out-scale-down`  | scale(1→0.95) + opacity       | 300ms            | ease-in        |
-| `.animix-out-flip-x`      | perspective rotateX           | 500ms            | ease-in        |
-| `.animix-out-flip-y`      | perspective rotateY           | 500ms            | ease-in        |
-| `.animix-out-rotate`      | rotate(0→180) + scale         | 500ms            | ease-in        |
-| `.animix-out-blur`        | blur(0→8px) + scale + opacity | 300ms            | ease-in        |
+| `.animix-out-fade`        | opacity 1→0                   | 180ms (`fast`)   | ease-out       |
+| `.animix-out-slide-up`    | translateY + opacity          | 180ms (`fast`)   | ease-out       |
+| `.animix-out-slide-down`  | translateY + opacity          | 180ms (`fast`)   | ease-out       |
+| `.animix-out-slide-left`  | translateX + opacity          | 180ms (`fast`)   | ease-out       |
+| `.animix-out-slide-right` | translateX + opacity          | 180ms (`fast`)   | ease-out       |
+| `.animix-out-scale-up`    | scale(1→1.05) + opacity       | 180ms (`fast`)   | ease-out       |
+| `.animix-out-scale-down`  | scale(1→0.95) + opacity       | 180ms (`fast`)   | ease-out       |
+| `.animix-out-flip-x`      | perspective rotateX           | 180ms (`fast`)   | ease-out       |
+| `.animix-out-flip-y`      | perspective rotateY           | 180ms (`fast`)   | ease-out       |
+| `.animix-out-rotate`      | rotate(0→180) + scale         | 180ms (`fast`)   | ease-out       |
+| `.animix-out-blur`        | blur(0→8px) + scale + opacity | 180ms (`fast`)   | ease-out       |
+| `.animix-out-light-speed` | skewed slide + opacity        | 180ms (`fast`)   | ease-in        |
+| `.animix-out-roll`        | translated rotate + opacity   | 180ms (`fast`)   | ease-in        |
+| `.animix-out-hinge`       | hinged drop + fade            | 420ms (`slower`) | ease-in        |
 
 ### Attention (`.animix-*`)
 
 | Class                 | Default Iteration | Default Duration |
 | --------------------- | ----------------- | ---------------- |
-| `.animix-pulse`       | infinite          | 800ms            |
-| `.animix-bounce`      | infinite          | 800ms            |
-| `.animix-shake`       | 1                 | 500ms            |
+| `.animix-pulse`       | infinite          | 420ms            |
+| `.animix-bounce`      | infinite          | 420ms            |
+| `.animix-shake`       | 1                 | 280ms            |
+| `.animix-head-shake`  | 1                 | 280ms            |
 | `.animix-wiggle`      | infinite          | 600ms            |
 | `.animix-ping`        | infinite          | 1s               |
 | `.animix-float`       | infinite          | 3s               |
 | `.animix-heartbeat`   | infinite          | 1.4s             |
-| `.animix-jello`       | 1                 | 800ms            |
-| `.animix-rubber-band` | 1                 | 800ms            |
-| `.animix-tada`        | 1                 | 800ms            |
-| `.animix-swing`       | 1                 | 800ms            |
-| `.animix-wobble`      | 1                 | 800ms            |
+| `.animix-jello`       | 1                 | 420ms            |
+| `.animix-rubber-band` | 1                 | 420ms            |
+| `.animix-tada`        | 1                 | 420ms            |
+| `.animix-swing`       | 1                 | 420ms            |
+| `.animix-wobble`      | 1                 | 420ms            |
 
 ### Loaders (`.animix-loader-*`)
 
@@ -886,13 +956,240 @@ Core presets animate `transform` and `opacity` only — both GPU-composited, no 
 
 ---
 
+## Choose the Right Tool
+
+Use this when deciding whether animix should be the only motion layer or one layer in a broader stack.
+
+| Tool                  | Reach for it when                                                                                                          | Not the right tool when                                                                                            |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `animix`              | You need lifecycle motion for mounts, exits, overlays, loaders, shadcn/ui primitives, or shared CSS/Tailwind/React tokens. | You need layout transitions, drag, FLIP, gesture physics, or arbitrary runtime timelines.                          |
+| `Motion`              | React owns the experience and you need layout animation, shared-element transitions, gestures, or runtime orchestration.   | You want zero-runtime CSS-first motion for common UI states.                                                       |
+| `GSAP`                | You need timeline choreography, ScrollTrigger, multi-step hero sequences, or imperative cross-component control.           | The problem is mostly app-shell lifecycle motion that CSS can already handle cleanly.                              |
+| `Anime.js`            | You want a compact imperative timeline engine or WAAPI-friendly sequencing for bespoke interactions.                       | You need design-system tokens, shadcn-ready presets, or a React exit helper.                                       |
+| `animate.css`         | You want quick generic keyframes on isolated elements with minimal setup.                                                  | You need tokenized product motion, lifecycle conventions, or framework integration.                                |
+| `tailwindcss-animate` | You want lightweight Tailwind-native helpers for simple component transitions.                                             | You want a larger preset catalog, React exit orchestration, or one package shared across CSS, Tailwind, and React. |
+
+The wedge is straightforward: animix owns repeatable lifecycle motion; runtime libraries still own choreography, layout, and interaction-heavy work.
+
+---
+
+## Pairing Guide
+
+animix pairs well with runtime libraries when each layer owns different elements or responsibilities.
+
+| Pairing              | Let animix own                                                                         | Let the partner own                                                                 | Handoff rule                                                                                                                   |
+| -------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `animix + Motion`    | Dialogs, sheets, toasts, route-shell entrances/exits, and reduced-motion token policy. | Shared-element transitions, drag, gesture state, and layout reflow animation.       | Do not let both libraries animate the same `transform` or `opacity` on the same element at the same time.                      |
+| `animix + GSAP`      | Product-wide tokens, overlays, loaders, and repeatable component lifecycle motion.     | Hero choreography, scroll scenes, SVG storytelling, and timeline-driven sequences.  | Keep GSAP on isolated stage elements or dedicated wrappers rather than on nodes already carrying animix lifecycle classes.     |
+| `animix + Anime.js`  | App-shell motion, reusable presets, and shadcn/ui surface behavior.                    | Small imperative sequences, WAAPI-synced effects, and bespoke one-off interactions. | Use animix for mount and exit; start Anime.js only after the element is in its stable entered state.                           |
+| `animix + shadcn/ui` | Radix `data-state` / `data-side` lifecycle motion and token consistency.               | Structure, accessibility, focus management, and primitive behavior.                 | Import `@pras75299/animix/shadcn` last and override individual presets only when the product genuinely needs a different feel. |
+
+The clean split is responsibility, not brand loyalty: animix handles repeatable lifecycle motion; partner runtimes handle exceptional choreography.
+
+---
+
+## Recipes by UI Surface
+
+These patterns are organized by surface, not by framework. Start with the surface, then choose CSS, Tailwind, React, or shadcn wiring.
+
+### Dialog / sheet / drawer
+
+Use the overlay for the atmosphere and the panel for the main movement.
+
+```html
+<div class="animix-overlay-in"></div>
+<div class="animix-modal-in">Centered dialog</div>
+<aside class="animix-drawer-in-right">Right sheet</aside>
+
+<ul class="animix-stagger" style="--animix-stagger-delay: 45ms;">
+  <li class="animix-in-fade">Profile</li>
+  <li class="animix-in-fade">Notifications</li>
+  <li class="animix-in-fade">Billing</li>
+</ul>
+```
+
+### Popover / tooltip / dropdown
+
+Keep anchored surfaces attached to the trigger with the correct transform origin.
+
+```html
+<button class="animix-focus-soft animix-press-in">Invite member</button>
+<div class="animix-tooltip-in" style="transform-origin: var(--radix-popover-content-transform-origin, left top);">
+  Roles, permissions, and invite options
+</div>
+```
+
+### Toasts
+
+Use the same direction for enter and exit so the stack feels spatially consistent.
+
+```html
+<div class="animix-toast-in-right">Project published</div>
+<div class="animix-toast-out-right">Project published</div>
+```
+
+### Command palette
+
+Animate the backdrop and shell softly. Keep keyboard-heavy content nearly instant.
+
+```html
+<div class="animix-overlay-in"></div>
+<div class="animix-in-fade">
+  <input aria-label="Search commands" />
+  <ul class="animix-stagger" style="--animix-stagger-delay: 45ms;">
+    <li class="animix-in-slide-up">Go to Dashboard</li>
+    <li class="animix-in-slide-up">Invite teammate</li>
+    <li class="animix-in-slide-up">Toggle theme</li>
+  </ul>
+</div>
+```
+
+### List / table insert-remove
+
+Dense collections should stay quiet. Prefer staggered insert motion and simple fades on remove.
+
+```html
+<tbody class="animix-stagger" style="--animix-stagger-delay: 35ms;">
+  <tr class="animix-in-fade">
+    <td>Invoice #1042</td>
+    <td>Paid</td>
+  </tr>
+  <tr class="animix-in-fade">
+    <td>Invoice #1043</td>
+    <td>Pending</td>
+  </tr>
+</tbody>
+
+<tr class="animix-out-fade">
+  <td>Invite revoked</td>
+  <td>Archived</td>
+</tr>
+```
+
+### Route transitions
+
+Animate the route shell first. Stagger one meaningful content cluster only if the page density justifies it.
+
+```html
+<main class="animix-page-slide-in">
+  <header class="animix-in-fade">People</header>
+  <section class="animix-stagger" style="--animix-stagger-delay: 50ms;">
+    <article class="animix-in-slide-up">Owner</article>
+    <article class="animix-in-slide-up">Admin</article>
+    <article class="animix-in-slide-up">Member</article>
+  </section>
+</main>
+```
+
+---
+
+## Migration Guides
+
+### From Animate.css
+
+Map generic keyframes to named lifecycle surfaces, then customize with tokens instead of copied animation rules.
+
+```html
+<!-- Before -->
+<div class="animate__animated animate__fadeInUp">Modal body</div>
+<div class="animate__animated animate__fadeOut">Toast</div>
+
+<!-- After -->
+<div class="animix-modal-in">Modal body</div>
+<div class="animix-toast-out-right">Toast</div>
+```
+
+Quick mapping:
+
+- `animate__fadeInUp` -> `animix-in-slide-up`
+- `animate__fadeIn` -> `animix-in-fade`
+- `animate__fadeOut` -> `animix-out-fade`
+- `animate__bounceIn` -> `animix-in-bounce`
+- `animate__heartBeat` -> `animix-heartbeat`
+
+### From tailwindcss-animate
+
+Keep Tailwind as the authoring layer, but migrate repeated surface combinations into named animix aliases first.
+
+```html
+<!-- Before -->
+<div class="animate-in fade-in zoom-in-95 duration-200">Dialog</div>
+<div class="slide-in-from-right-full fade-in duration-300">Sheet</div>
+
+<!-- After -->
+<div class="animate-animix-modal-in">Dialog</div>
+<div class="animate-animix-drawer-in-right">Sheet</div>
+
+<!-- Keep parametric utilities for finer tuning -->
+<div class="animate-animix-fade-in-50 animate-animix-slide-in-from-top-4">Lightweight popover</div>
+```
+
+### From Motion
+
+Migrate only the surfaces that are really lifecycle motion. Keep Motion for layout, gestures, and shared-element work.
+
+```tsx
+// Before
+import { AnimatePresence, motion } from 'motion/react';
+
+<AnimatePresence>
+  {open ? (
+    <motion.aside initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 24 }} />
+  ) : null}
+</AnimatePresence>;
+
+// After
+import { Animate } from '@pras75299/animix/react';
+
+{
+  open ? (
+    <Animate animation="drawer-in-right" exitAnimation="drawer-out-right" exiting={closing}>
+      <aside className="animix-drawer-in-right" />
+    </Animate>
+  ) : null;
+}
+```
+
+### From GSAP
+
+Move shells, overlays, and repeatable product surfaces to animix. Leave bespoke sequences and scroll choreography in GSAP.
+
+```js
+// Before: GSAP owns shell + content
+gsap.from('.drawer', { xPercent: 100, opacity: 0, duration: 0.32 });
+gsap.from('.drawer-item', { y: 20, opacity: 0, stagger: 0.05 });
+```
+
+```html
+<!-- After: animix owns the shell -->
+<aside class="animix-drawer-in-right">
+  <ul class="drawer-items">
+    ...
+  </ul>
+</aside>
+```
+
+```js
+// GSAP keeps the inner sequence
+gsap.from('.drawer-items > *', {
+  y: 16,
+  opacity: 0,
+  stagger: 0.05,
+  duration: 0.24,
+});
+```
+
+The safest migration rule is simple: move overlays, drawers, toasts, menus, and route shells first. Leave layout animation, drag, scroll choreography, and timeline-heavy hero work in Motion or GSAP until there is a clear reason not to.
+
+---
+
 ## FAQ
 
 **How do I choose between animix, Motion, GSAP, and Anime.js?**
-Use animix for CSS-first lifecycle motion (mount/exit/overlay/attention/loaders) with design-system tokens. Use Motion for React layout/shared-element/gesture-heavy orchestration. Use GSAP for timeline choreography, ScrollTrigger, and advanced interaction sequencing. Use Anime.js when you want a compact JS timeline engine with WAAPI sync.
+Start with [Choose the Right Tool](#choose-the-right-tool). Short version: animix is the lifecycle-motion layer; Motion, GSAP, and Anime.js take over when the work becomes layout-driven or choreography-heavy.
 
 **Can animix be paired with Motion/GSAP instead of replacing them?**
-Yes. Recommended split: animix owns app-shell lifecycle motion and token consistency; Motion/GSAP/Anime.js own specialized choreography and runtime interaction flows where imperative sequencing is required.
+Yes. See [Pairing Guide](#pairing-guide). The safe split is animix for shared lifecycle motion and partner runtimes for specialized orchestration on separate elements or wrappers.
 
 **Does it work without React?**
 Yes. The `@pras75299/animix/css` and `@pras75299/animix/tailwind` paths have no JS runtime at all. The React bindings are an optional layer.

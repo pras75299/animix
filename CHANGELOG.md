@@ -47,3 +47,14 @@ Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Husky pre-commit, commit-msg, and pre-push hooks
 - Conventional Commits enforcement via commitlint
 - GitHub Actions CI workflow (lint + typecheck + build + export verification)
+- Motion surface regression snapshots for modal, drawer, tooltip, toast, and staggered lists
+- Scheduled `npm audit` workflow with high/critical failure policy
+- Dependabot automation with grouped dev-toolchain updates
+- `SECURITY.md` with runtime vs toolchain threat model and disclosure path
+- Migration guides from Animate.css, tailwindcss-animate, Motion, and GSAP
+- Surface-first recipe docs for dialogs, sheets, popovers, toasts, command palettes, list updates, and route transitions
+- Token-first customization examples with before/after override patterns
+
+### Changed
+
+- Reduced-motion tokens now zero shared animation delay and stagger delay to avoid lingering sequences
