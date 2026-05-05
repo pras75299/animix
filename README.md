@@ -6,12 +6,12 @@
   <a href="https://www.npmjs.com/package/@pras75299/animix"><img src="https://img.shields.io/npm/v/@pras75299%2Fanimix?style=flat-square&label=npm&color=5B5BFF" alt="npm version" /></a>
   <a href="https://www.npmjs.com/package/@pras75299/animix"><img src="https://img.shields.io/npm/dm/@pras75299%2Fanimix?style=flat-square&label=downloads&color=5B5BFF" alt="downloads" /></a>
   <a href="https://bundlephobia.com/package/@pras75299/animix"><img src="https://img.shields.io/bundlephobia/minzip/@pras75299%2Fanimix?style=flat-square&label=gzip&color=5B5BFF" alt="bundle size" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-5B5BFF?style=flat-square" alt="MIT license" /></a>
+  <a href="https://github.com/pras75299/animix/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-5B5BFF?style=flat-square" alt="MIT license" /></a>
   <img src="https://img.shields.io/badge/types-included-5B5BFF?style=flat-square" alt="TypeScript" />
   <img src="https://img.shields.io/badge/tree--shaking-yes-5B5BFF?style=flat-square" alt="tree-shaking" />
 </p>
 
-**[Documentation](https://pras75299.github.io/animix)** · **[Live playground](https://pras75299.github.io/animix#overview)** · **[Changelog](./CHANGELOG.md)** · **[Issues](https://github.com/pras75299/animix/issues)**
+**[Documentation](https://pras75299.github.io/animix/)** · **[Live playground](https://pras75299.github.io/animix/#overview)** · **[Changelog](https://github.com/pras75299/animix/blob/main/CHANGELOG.md)** · **[Issues](https://github.com/pras75299/animix/issues)**
 
 ---
 
@@ -1218,7 +1218,7 @@ Zero. animix never animates dimensional properties — only `transform` and `opa
 
 ## Versioning & changelog
 
-This package follows [SemVer](https://semver.org/). See [CHANGELOG.md](./CHANGELOG.md) for release notes.
+This package follows [SemVer](https://semver.org/). See [CHANGELOG.md](https://github.com/pras75299/animix/blob/main/CHANGELOG.md) for release notes.
 
 Pre-1.0 means the public surface is still maturing — minor versions may rename CSS classes or React APIs. Pin exact versions if you need stability today.
 
