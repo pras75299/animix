@@ -292,7 +292,7 @@ export default {
 
 <div class="animate-animix-fade-in-0">Starts fully hidden</div>
 <div class="animate-animix-fade-in-50">Starts at 50% opacity</div>
-<div class="animate-animix-zoom-in-85">Scales from 0.85</div>
+<div class="animate-animix-zoom-in-75">Scales from 0.75</div>
 <div class="animate-animix-slide-in-from-top-4">Slides in from 1rem away</div>`,
   },
   {
