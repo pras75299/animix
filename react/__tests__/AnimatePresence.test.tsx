@@ -80,6 +80,19 @@ describe('AnimatePresence', () => {
       expect(wrapper).toHaveClass('animix-toast-in-right');
       expect(wrapper).not.toHaveClass('animix-toast-in');
     });
+
+    it('accepts transition exit animations documented for React usage', () => {
+      render(
+        <AnimatePresence>
+          <Animate animation="drawer-in-right" exitAnimation="drawer-out-right" exiting>
+            <aside data-testid="drawer">Drawer</aside>
+          </Animate>
+        </AnimatePresence>,
+      );
+
+      const wrapper = screen.getByTestId('drawer').parentElement;
+      expect(wrapper).toHaveClass('animix-drawer-out-right');
+    });
   });
 
   describe('delayed unmount', () => {

@@ -33,9 +33,10 @@ import { reactAnimationClassMap, reactIntentClassMap } from '../src/motion-manif
 type StringKey<T> = Extract<keyof T, string>;
 
 export type EntranceAnimation = StringKey<typeof reactAnimationClassMap.entrance>;
-export type ExitAnimation = StringKey<typeof reactAnimationClassMap.exit>;
 export type AttentionAnimation = StringKey<typeof reactAnimationClassMap.attention>;
 export type TransitionAnimation = StringKey<typeof reactAnimationClassMap.transition>;
+type TransitionExitAnimation = Extract<TransitionAnimation, `${string}-out${string}`>;
+export type ExitAnimation = StringKey<typeof reactAnimationClassMap.exit> | TransitionExitAnimation;
 
 export type AnimationName = EntranceAnimation | AttentionAnimation | TransitionAnimation;
 
@@ -56,19 +57,27 @@ function getAnimationClass(
   type: 'in' | 'out' | 'attention' | 'transition',
 ): string {
   if (type === 'out') {
-    return ANIMATE_REACT_ANIMATION_CLASS_MAP.exit[name as ExitAnimation];
+    if (hasOwn(ANIMATE_REACT_ANIMATION_CLASS_MAP.exit, name)) {
+      return ANIMATE_REACT_ANIMATION_CLASS_MAP.exit[name];
+    }
+
+    return ANIMATE_REACT_ANIMATION_CLASS_MAP.transition[name as TransitionExitAnimation];
   }
 
   if (type === 'transition' || hasOwn(ANIMATE_REACT_ANIMATION_CLASS_MAP.transition, name)) {
     return ANIMATE_REACT_ANIMATION_CLASS_MAP.transition[name as TransitionAnimation];
   }
 
-  if (type === 'in' && name === 'bounce') {
-    return ANIMATE_REACT_ANIMATION_CLASS_MAP.entrance.bounce;
+  if (type === 'in' && hasOwn(ANIMATE_REACT_ANIMATION_CLASS_MAP.entrance, name)) {
+    return ANIMATE_REACT_ANIMATION_CLASS_MAP.entrance[name];
   }
 
-  if (type === 'attention' || hasOwn(ANIMATE_REACT_ANIMATION_CLASS_MAP.attention, name)) {
-    return ANIMATE_REACT_ANIMATION_CLASS_MAP.attention[name as AttentionAnimation];
+  if (type === 'attention' && hasOwn(ANIMATE_REACT_ANIMATION_CLASS_MAP.attention, name)) {
+    return ANIMATE_REACT_ANIMATION_CLASS_MAP.attention[name];
+  }
+
+  if (hasOwn(ANIMATE_REACT_ANIMATION_CLASS_MAP.attention, name)) {
+    return ANIMATE_REACT_ANIMATION_CLASS_MAP.attention[name];
   }
 
   return ANIMATE_REACT_ANIMATION_CLASS_MAP.entrance[name as EntranceAnimation];
