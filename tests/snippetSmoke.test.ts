@@ -1,22 +1,14 @@
 /** @vitest-environment node */
 
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { JSDOM } from 'jsdom';
 import postcss from 'postcss';
 import ts from 'typescript';
 import { describe, expect, it } from 'vitest';
-import {
-  cssTabs,
-  installTabs,
-  migrationTabs,
-  pairingTabs,
-  reactTabs,
-  recipeTabs,
-  tailwindTabs,
-  tokenOverrideTabs,
-  viewTransitionTabs,
-} from '../docs/src/data';
+import * as docsData from '../docs/src/data';
+import { animateAnimix, animix } from '../src/classes';
+import { motionManifest } from '../src/motion-manifest';
 
 type SnippetFixture = {
   label: string;
@@ -26,6 +18,58 @@ type SnippetFixture = {
 
 const readmePath = resolve(process.cwd(), 'README.md');
 const readmeText = readFileSync(readmePath, 'utf8');
+const animixTokenPattern = /--animix-[a-z0-9-]+|animate-animix-[a-z0-9-]+|animix-[a-z0-9-]+/g;
+const animixCustomPropertyPattern = /--animix-[a-z0-9-]+/g;
+
+function flattenDeepValues(value: unknown): string[] {
+  if (typeof value === 'string') {
+    return [value];
+  }
+
+  if (!value || typeof value !== 'object') {
+    return [];
+  }
+
+  return Object.values(value as Record<string, unknown>).flatMap((nestedValue) =>
+    flattenDeepValues(nestedValue),
+  );
+}
+
+function collectCssSourcePaths() {
+  const animationsDir = resolve(process.cwd(), 'src/animations');
+  const animationFiles = readdirSync(animationsDir)
+    .filter((name) => name.endsWith('.css'))
+    .map((name) => resolve(animationsDir, name));
+
+  return [
+    resolve(process.cwd(), 'src/index.css'),
+    resolve(process.cwd(), 'src/tokens.css'),
+    resolve(process.cwd(), 'src/utilities.css'),
+    resolve(process.cwd(), 'shadcn-presets.css'),
+    ...animationFiles,
+  ];
+}
+
+function collectShippedAnimixTokens() {
+  const tokens = new Set<string>([
+    ...flattenDeepValues(animix),
+    ...flattenDeepValues(animateAnimix),
+    ...flattenDeepValues(motionManifest.shadcn),
+  ]);
+
+  for (const cssPath of collectCssSourcePaths()) {
+    const cssSource = readFileSync(cssPath, 'utf8');
+    for (const match of cssSource.matchAll(animixCustomPropertyPattern)) {
+      tokens.add(match[0]);
+    }
+  }
+
+  return tokens;
+}
+
+function extractAnimixTokens(source: string) {
+  return [...source.matchAll(animixTokenPattern)].map((match) => match[0]);
+}
 
 function transpileSnippet(code: string, label: string, allowSplitFallback = true) {
   const hasJsx = /<[A-Za-z]/.test(code) || code.includes('className=');
@@ -161,19 +205,43 @@ function isWholeProgramSnippet(code: string) {
 
 function collectDocsSnippets(): SnippetFixture[] {
   return [
-    ...Object.values(installTabs),
-    ...cssTabs,
-    ...tailwindTabs,
-    ...Object.values(reactTabs),
-    ...viewTransitionTabs,
-    ...tokenOverrideTabs,
-    ...pairingTabs,
-    ...Object.values(migrationTabs),
-    ...Object.values(recipeTabs),
+    ...Object.values(docsData.installTabs),
+    ...docsData.cssTabs,
+    ...docsData.tailwindTabs,
+    ...Object.values(docsData.reactTabs),
+    ...docsData.viewTransitionTabs,
+    ...docsData.tokenOverrideTabs,
+    ...docsData.pairingTabs,
+    ...Object.values(docsData.migrationTabs),
+    ...Object.values(docsData.recipeTabs),
   ].map((tab) => ({
     label: `docs:${tab.id}`,
     code: tab.code,
   }));
+}
+
+function collectStringFixtures(value: unknown, label: string): SnippetFixture[] {
+  if (typeof value === 'string') {
+    return [{ label, code: value }];
+  }
+
+  if (!value || typeof value !== 'object') {
+    return [];
+  }
+
+  if (Array.isArray(value)) {
+    return value.flatMap((entry, index) => collectStringFixtures(entry, `${label}[${index}]`));
+  }
+
+  return Object.entries(value as Record<string, unknown>).flatMap(([key, entry]) =>
+    collectStringFixtures(entry, `${label}.${key}`),
+  );
+}
+
+function collectDocsContentStrings(): SnippetFixture[] {
+  return Object.entries(docsData).flatMap(([key, value]) =>
+    collectStringFixtures(value, `docs-data:${key}`),
+  );
 }
 
 function collectReadmeFences(): SnippetFixture[] {
@@ -186,6 +254,16 @@ function collectReadmeFences(): SnippetFixture[] {
 }
 
 describe('docs snippet smoke tests', () => {
+  it('collects only published animix tokens from shipped surfaces', () => {
+    const shippedTokens = collectShippedAnimixTokens();
+
+    expect(shippedTokens).toContain('animix-accordion-down');
+    expect(shippedTokens).toContain('animix-accordion-up');
+
+    expect(shippedTokens).not.toContain('animix-fade-in');
+    expect(shippedTokens).not.toContain('animix-spin');
+  });
+
   it('keeps docs data snippets parseable', () => {
     for (const snippet of collectDocsSnippets()) {
       if (isWholeProgramSnippet(snippet.code)) {
@@ -202,6 +280,30 @@ describe('docs snippet smoke tests', () => {
   it('keeps README fenced snippets parseable', () => {
     for (const snippet of collectReadmeFences()) {
       validateSegment(snippet.code, snippet.label, snippet.lang);
+    }
+  });
+
+  it('keeps rendered docs content and README animix tokens on the shipped surface area', () => {
+    const shippedTokens = collectShippedAnimixTokens();
+    const docsContentFixtures = collectDocsContentStrings();
+    const fixtures = [...docsContentFixtures, ...collectReadmeFences()];
+
+    expect(
+      docsContentFixtures.some(
+        (snippet) =>
+          !snippet.label.endsWith('.code') &&
+          (snippet.code.includes('animix-no-motion') ||
+            snippet.code.includes('--animix-duration-base')),
+      ),
+      'docs surface coverage should include rendered content outside tab.code fields',
+    ).toBe(true);
+
+    for (const snippet of fixtures) {
+      const invalidTokens = [...new Set(extractAnimixTokens(snippet.code))].filter(
+        (token) => !shippedTokens.has(token),
+      );
+
+      expect(invalidTokens, `${snippet.label} contains unshipped animix tokens`).toEqual([]);
     }
   });
 });

@@ -26,134 +26,61 @@ import React, {
 } from 'react';
 
 import { assignRef, useComposedRefs } from './composeRefs';
+import { reactAnimationClassMap, reactIntentClassMap } from '../src/motion-manifest';
 
 /* ── Animation name catalog ─────────────────────────────────────── */
 
-export type EntranceAnimation =
-  | 'fade'
-  | 'slide-up'
-  | 'slide-down'
-  | 'slide-left'
-  | 'slide-right'
-  | 'scale-up'
-  | 'scale-down'
-  | 'flip-x'
-  | 'flip-y'
-  | 'rotate'
-  | 'bounce'
-  | 'elastic'
-  | 'blur'
-  | 'light-speed'
-  | 'roll';
+type StringKey<T> = Extract<keyof T, string>;
 
-export type ExitAnimation =
-  | 'fade'
-  | 'slide-up'
-  | 'slide-down'
-  | 'slide-left'
-  | 'slide-right'
-  | 'scale-up'
-  | 'scale-down'
-  | 'flip-x'
-  | 'flip-y'
-  | 'rotate'
-  | 'blur'
-  | 'light-speed'
-  | 'roll'
-  | 'hinge';
-
-export type AttentionAnimation =
-  | 'pulse'
-  | 'bounce'
-  | 'shake'
-  | 'head-shake'
-  | 'wiggle'
-  | 'ping'
-  | 'float'
-  | 'heartbeat'
-  | 'jello'
-  | 'rubber-band'
-  | 'tada'
-  | 'swing'
-  | 'wobble';
-
-export type TransitionAnimation =
-  | 'modal-in'
-  | 'modal-out'
-  | 'drawer-in-right'
-  | 'drawer-out-right'
-  | 'drawer-in-left'
-  | 'drawer-out-left'
-  | 'drawer-in-bottom'
-  | 'drawer-out-bottom'
-  | 'toast-in'
-  | 'toast-out'
-  | 'tooltip-in'
-  | 'tooltip-out';
+export type EntranceAnimation = StringKey<typeof reactAnimationClassMap.entrance>;
+export type AttentionAnimation = StringKey<typeof reactAnimationClassMap.attention>;
+export type TransitionAnimation = StringKey<typeof reactAnimationClassMap.transition>;
+type TransitionExitAnimation = Extract<TransitionAnimation, `${string}-out${string}`>;
+export type ExitAnimation = StringKey<typeof reactAnimationClassMap.exit> | TransitionExitAnimation;
 
 export type AnimationName = EntranceAnimation | AttentionAnimation | TransitionAnimation;
 
 /** Optional intent presets append subtle interaction utility classes. */
-export type MotionIntent = 'button' | 'icon' | 'text' | 'image';
+export type MotionIntent = StringKey<typeof reactIntentClassMap>;
 
-const INTENT_UTILITY_CLASSES: Record<MotionIntent, string> = {
-  button: 'animix-hover-lift animix-focus-soft animix-press-in',
-  icon: 'animix-origin-center',
-  text: 'animix-intensity-quiet',
-  image: 'animix-intensity-quiet animix-origin-center',
-};
+export const ANIMATE_INTENT_UTILITY_CLASSES: Record<MotionIntent, string> = reactIntentClassMap;
+export const ANIMATE_REACT_ANIMATION_CLASS_MAP = reactAnimationClassMap;
 
 /* ── Class name helpers ─────────────────────────────────────────── */
+
+function hasOwn<T extends object>(obj: T, key: PropertyKey): key is keyof T {
+  return Object.prototype.hasOwnProperty.call(obj, key);
+}
 
 function getAnimationClass(
   name: AnimationName | ExitAnimation,
   type: 'in' | 'out' | 'attention' | 'transition',
 ): string {
-  const transitionAliases: Partial<Record<TransitionAnimation, string>> = {
-    'toast-in': 'animix-toast-in-right',
-    'toast-out': 'animix-toast-out-right',
-  };
-
-  // Attention animations
-  const attentionNames: AttentionAnimation[] = [
-    'pulse',
-    'bounce',
-    'shake',
-    'head-shake',
-    'wiggle',
-    'ping',
-    'float',
-    'heartbeat',
-    'jello',
-    'rubber-band',
-    'tada',
-    'swing',
-    'wobble',
-  ];
-
-  if (type === 'in' && name === 'bounce') {
-    return 'animix-in-bounce';
-  }
-
-  if (type === 'attention' || attentionNames.includes(name as AttentionAnimation)) {
-    return `animix-${name}`;
-  }
-
-  const transitionPrefixes = ['modal', 'drawer', 'toast', 'tooltip'];
-  if (transitionPrefixes.some((p) => name.startsWith(p))) {
-    const aliasedTransition = transitionAliases[name as TransitionAnimation];
-    if (aliasedTransition) {
-      return aliasedTransition;
+  if (type === 'out') {
+    if (hasOwn(ANIMATE_REACT_ANIMATION_CLASS_MAP.exit, name)) {
+      return ANIMATE_REACT_ANIMATION_CLASS_MAP.exit[name];
     }
 
-    return `animix-${name}`;
+    return ANIMATE_REACT_ANIMATION_CLASS_MAP.transition[name as TransitionExitAnimation];
   }
 
-  if (type === 'out') {
-    return `animix-out-${name}`;
+  if (type === 'transition' || hasOwn(ANIMATE_REACT_ANIMATION_CLASS_MAP.transition, name)) {
+    return ANIMATE_REACT_ANIMATION_CLASS_MAP.transition[name as TransitionAnimation];
   }
 
-  return `animix-in-${name}`;
+  if (type === 'in' && hasOwn(ANIMATE_REACT_ANIMATION_CLASS_MAP.entrance, name)) {
+    return ANIMATE_REACT_ANIMATION_CLASS_MAP.entrance[name];
+  }
+
+  if (type === 'attention' && hasOwn(ANIMATE_REACT_ANIMATION_CLASS_MAP.attention, name)) {
+    return ANIMATE_REACT_ANIMATION_CLASS_MAP.attention[name];
+  }
+
+  if (hasOwn(ANIMATE_REACT_ANIMATION_CLASS_MAP.attention, name)) {
+    return ANIMATE_REACT_ANIMATION_CLASS_MAP.attention[name];
+  }
+
+  return ANIMATE_REACT_ANIMATION_CLASS_MAP.entrance[name as EntranceAnimation];
 }
 
 function getDurationClass(duration: 'fast' | 'base' | 'slow' | 'slower' | number): string {
@@ -288,7 +215,7 @@ export const Animate = forwardRef<HTMLElement, AnimateProps>(function Animate(
   const durationClass = getDurationClass(duration);
   const easingClass = getEasingClass(easing);
 
-  const intentClass = intent ? INTENT_UTILITY_CLASSES[intent] : '';
+  const intentClass = intent ? ANIMATE_INTENT_UTILITY_CLASSES[intent] : '';
 
   const composedClass = [animClass, durationClass, easingClass, intentClass, className]
     .filter(Boolean)
