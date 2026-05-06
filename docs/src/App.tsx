@@ -11,6 +11,7 @@ import {
 } from './components';
 import {
   type CatalogItem,
+  type HeroMode,
   type InstallMode,
   type RepoMetrics,
   accessibilityNotes,
@@ -21,10 +22,13 @@ import {
   cssSteps,
   cssTabs,
   fallbackMetrics,
+  heroTabs,
+  heroValuePoints,
   installTabs,
   migrationNotes,
   migrationTabs,
   navItems,
+  pathwayCards,
   pairingNotes,
   pairingTabs,
   proofItems,
@@ -58,32 +62,6 @@ function formatCompact(value: number) {
 const popoverStyle = {
   '--transform-origin': '1.25rem top',
 } as CSSProperties;
-
-/* Real bundle metrics (measured from dist/ + src/ at build time).
-   Update these only when measurements change. */
-const pathwayCards = [
-  {
-    title: 'Pure CSS',
-    href: '#css',
-    body: 'Fastest adoption. Import once, ship classes.',
-    snippet: '@pras75299/animix/css',
-    stats: ['0 kB runtime', '8.8 kB css', 'from 1 kB cherry-picked'],
-  },
-  {
-    title: 'Tailwind plugin',
-    href: '#tailwind',
-    body: 'Alias layer for utility-driven teams. Build-time only.',
-    snippet: 'plugins: [animix()]',
-    stats: ['0 kB runtime', 'build-time only', 'shared tokens'],
-  },
-  {
-    title: 'React bindings',
-    href: '#react',
-    body: 'Composition, stagger, hooks — no separate runtime.',
-    snippet: '@pras75299/animix/react',
-    stats: ['3.0 kB js', 'react peer only', '3 hooks included'],
-  },
-];
 
 /* -------------------------------------------------------------------------- */
 /* useScrollSpy                                                                */
@@ -190,7 +168,7 @@ function useRepoMetrics() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Hero — token playground                                                     */
+/* Hero — value, install speed, live proof                                     */
 /* -------------------------------------------------------------------------- */
 
 const easeOptions = [
@@ -200,11 +178,13 @@ const easeOptions = [
   { label: 'linear', value: 'linear' },
 ] as const;
 
-function Hero({ metrics }: { metrics: RepoMetrics }) {
+function Hero({ metrics, onOpenSearch }: { metrics: RepoMetrics; onOpenSearch: () => void }) {
+  const [heroMode, setHeroMode] = useState<HeroMode>('css');
   const [duration, setDuration] = useState(280);
   const [distance, setDistance] = useState(20);
   const [ease, setEase] = useState<string>(easeOptions[0].value);
   const [pulse, setPulse] = useState(0);
+  const heroTab = heroTabs[heroMode];
 
   const stageStyle = {
     '--animix-duration-base': `${duration}ms`,
@@ -219,30 +199,65 @@ function Hero({ metrics }: { metrics: RepoMetrics }) {
 
   return (
     <section id="overview" className="docs-hero">
-      <div className="docs-hero-eyebrow">A motion language for product UI</div>
+      <div className="docs-hero-eyebrow">Zero-runtime by default for CSS and Tailwind</div>
       <Animate animation="slide-up" trigger="mount">
         <h1 className="docs-hero-title">
-          Motion that ships, <em>not motion that demos.</em>
+          Animix gives Tailwind, React, and shadcn/ui an <em>honest motion baseline.</em>
         </h1>
       </Animate>
 
       <Animate animation="fade" trigger="mount">
         <p className="docs-hero-lede">
-          animix is a CSS-first animation system spanning Tailwind, React, and shadcn/ui. Tune the
-          motion below — every token here flows through to every consumption mode.
+          animix is a CSS-first animation library for app UI. Install one package, get zero-runtime
+          CSS or Tailwind motion by default, and add the optional React helpers only where your
+          stack actually needs them.
         </p>
       </Animate>
 
+      <ul className="docs-hero-points" aria-label="Why use animix">
+        {heroValuePoints.map((point) => (
+          <li key={point}>{point}</li>
+        ))}
+      </ul>
+
+      <div className="docs-hero-install">
+        <span className="docs-hero-install-label">30-second install</span>
+        <code>npm install @pras75299/animix</code>
+      </div>
+      <p className="docs-hero-install-note">
+        Then import the CSS, register the Tailwind plugin, or use the React bindings without
+        changing the motion language.
+      </p>
+
       <div className="docs-hero-actions">
         <a className="docs-btn docs-btn-primary" href="#install">
-          Install animix
+          Get Started
           <Icon name="arrow-up-right" size={14} />
         </a>
         <a className="docs-btn docs-btn-secondary" href="#catalog">
-          Browse the catalog
+          View Animations
+        </a>
+        <a
+          className="docs-btn docs-btn-secondary"
+          href={repoLinks.github}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Icon name="github" size={14} />
+          GitHub
+        </a>
+        <a
+          className="docs-btn docs-btn-secondary"
+          href={repoLinks.npm}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Icon name="npm" size={14} />
+          npm
         </a>
       </div>
 
+      <p className="docs-hero-proof-label">Signals from GitHub and npm</p>
       <AnimateStagger animation="fade" delay={50} className="docs-metrics">
         <a className="docs-metric" href={repoLinks.github} target="_blank" rel="noreferrer">
           <span className="docs-metric-label">Stars</span>
@@ -270,7 +285,7 @@ function Hero({ metrics }: { metrics: RepoMetrics }) {
         <Animate animation="slide-up" trigger="mount">
           <div className="docs-playground" style={stageStyle}>
             <div className="docs-playground-head">
-              <span>token playground · live</span>
+              <span>live hero demo</span>
               <span className="docs-playground-dots" aria-hidden="true">
                 <span />
                 <span />
@@ -278,17 +293,54 @@ function Hero({ metrics }: { metrics: RepoMetrics }) {
               </span>
             </div>
 
+            <div className="docs-playground-topbar">
+              <span className="docs-hero-demo-note">
+                Live surface preview using the shipped motion classes and helpers
+              </span>
+
+              <button type="button" className="docs-playground-replay" onClick={replay}>
+                <Icon name="play" size={11} /> Replay
+              </button>
+            </div>
+
             <div className="docs-playground-stage">
-              <AnimateStagger
-                key={pulse}
-                animation="slide-up"
-                delay={70}
-                className="docs-playground-stack"
-              >
-                <div className="docs-playground-card">animix-in-slide-up</div>
-                <div className="docs-playground-card">--animix-slide-distance · {distance}px</div>
-                <div className="docs-playground-card">--animix-duration-base · {duration}ms</div>
-              </AnimateStagger>
+              <div className="docs-hero-demo-shell" key={pulse}>
+                <div className="docs-hero-demo-command animix-in-slide-down">
+                  <span className="docs-hero-demo-command-kbd">⌘/Ctrl K</span>
+                  Search docs, components, and motion patterns
+                </div>
+
+                <div className="docs-hero-demo-surface animix-modal-in">
+                  <div className="docs-hero-demo-surface-head">
+                    <strong>Ship product motion, not isolated effects</strong>
+                    <span>Same tokens, three authoring paths</span>
+                  </div>
+
+                  <div className="docs-hero-demo-actions">
+                    <button
+                      type="button"
+                      className="docs-hero-demo-btn animix-press-in"
+                      onClick={onOpenSearch}
+                    >
+                      Open command menu
+                    </button>
+                    <div className="docs-hero-demo-badge animix-toast-in-bottom">Saved to npm</div>
+                  </div>
+                </div>
+
+                <AnimateStagger
+                  animation="slide-up"
+                  delay={70}
+                  className="docs-hero-demo-list"
+                  key={`list-${pulse}`}
+                >
+                  <div className="docs-motion-card">Command palette shell</div>
+                  <div className="docs-motion-card">Dialog, sheet, toast, and route surfaces</div>
+                  <div className="docs-motion-card">
+                    Duration {duration}ms · distance {distance}px
+                  </div>
+                </AnimateStagger>
+              </div>
             </div>
 
             <div className="docs-playground-controls">
@@ -335,49 +387,40 @@ function Hero({ metrics }: { metrics: RepoMetrics }) {
                 </select>
               </label>
             </div>
-
-            <button type="button" className="docs-playground-replay" onClick={replay}>
-              <Icon name="play" size={11} /> Replay
-            </button>
           </div>
         </Animate>
 
         <Animate animation="fade" trigger="mount">
-          <div>
-            <p
-              style={{
-                margin: 0,
-                fontFamily: 'var(--f-mono)',
-                fontSize: '0.72rem',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                color: 'var(--c-muted)',
-              }}
-            >
-              what you change here
-            </p>
-            <h3
-              style={{
-                margin: '8px 0 16px',
-                fontWeight: 600,
-                fontSize: 'var(--fs-xl)',
-                lineHeight: 1.2,
-                letterSpacing: '-0.02em',
-              }}
-            >
-              Works the same in every consumption mode.
+          <div className="docs-hero-code">
+            <p className="docs-hero-code-label">Choose your code path</p>
+            <h3 className="docs-hero-code-title">
+              One live surface, three ways to author the same motion language.
             </h3>
-            <CodeBlock
-              title="Same tokens, three integrations"
-              code={`/* CSS */
-.card { animation: animix-slide-up-in var(--animix-duration-base) var(--animix-ease-out); }
+            <p className="docs-hero-code-body">
+              The token controls on the left affect the same motion language. Pick the stack you
+              want to author with, and the snippet below shows the matching entry path.
+            </p>
 
-/* Tailwind */
-<div class="animate-animix-slide-up" />
+            <div className="docs-tab-list" role="group" aria-label="Hero code path examples">
+              {(Object.keys(heroTabs) as HeroMode[]).map((mode) => (
+                <button
+                  key={mode}
+                  type="button"
+                  aria-pressed={mode === heroMode}
+                  onClick={() => setHeroMode(mode)}
+                  className={mode === heroMode ? 'is-active' : ''}
+                >
+                  {heroTabs[mode].label}
+                </button>
+              ))}
+            </div>
 
-/* React */
-<Animate animation="slide-up">{children}</Animate>`}
-            />
+            <CodeBlock title={heroTab.title} code={heroTab.code} />
+
+            <div className="docs-hero-note">
+              <strong>{heroTab.title}</strong>
+              <p>{heroTab.description}</p>
+            </div>
           </div>
         </Animate>
       </div>
@@ -702,16 +745,16 @@ export function App() {
 
           <div className="docs-sidebar-aside">
             <strong>Heads up</strong>
-            Live metrics, command-palette search, and the token playground are part of these docs.
-            Press <span className="docs-kbd">⌘K</span> to jump anywhere.
+            Live metrics, command-palette search, and the hero demo all run inside these docs. Press{' '}
+            <span className="docs-kbd">⌘K</span> to jump anywhere.
           </div>
         </aside>
 
         <div className="docs-main">
-          <Hero metrics={metrics} />
+          <Hero metrics={metrics} onOpenSearch={() => setCmdkOpen(true)} />
 
           {/* Proof strip */}
-          <section className="docs-proof" aria-label="Library highlights">
+          <section className="docs-proof" aria-label="Value and proof highlights">
             {proofItems.map((p) => (
               <div key={p.num} className="docs-proof-cell">
                 <span className="docs-proof-num">{p.num}</span>
@@ -728,13 +771,60 @@ export function App() {
               eyebrow="Getting Started"
               title={
                 <>
-                  Install once, then <em>choose the authoring model</em> that matches your stack.
+                  Install in 30 seconds, then <em>choose the authoring mode</em> that fits your
+                  stack.
                 </>
               }
-              body="animix is intentionally CSS-first. The other integrations build on the same primitives instead of inventing separate motion systems."
+              body="The package starts CSS-first. Tailwind and React stay additive so you can adopt only the layer your app actually needs."
             />
 
-            <div className="docs-tabs">
+            <div className="docs-install-quick">
+              <div className="docs-install-copy">
+                <p className="docs-install-kicker">Default install</p>
+                <h3>Start with the package. Add peers only when your chosen mode needs them.</h3>
+                <p>
+                  That keeps the entry point honest: pure CSS first, Tailwind at build time, React
+                  only when component orchestration matters.
+                </p>
+                <p className="docs-install-meta">
+                  Recommended first step: <code>npm install @pras75299/animix</code>
+                </p>
+              </div>
+              <CodeBlock title="30-second install" code={`npm install @pras75299/animix`} />
+            </div>
+
+            <AnimateStagger animation="slide-up" delay={80} inView className="docs-pathways">
+              {pathwayCards.map((card, idx) => (
+                <a
+                  key={card.title}
+                  href={card.href}
+                  className="docs-pathway"
+                  aria-label={`${card.title} — jump to section`}
+                >
+                  <header className="docs-pathway-head">
+                    <span className="docs-pathway-num">{String(idx + 1).padStart(2, '0')}</span>
+                    <h4>{card.title}</h4>
+                    <span className="docs-pathway-arrow" aria-hidden="true">
+                      <Icon name="arrow-up-right" size={14} />
+                    </span>
+                  </header>
+                  <p className="docs-pathway-body">{card.body}</p>
+                  <code className="docs-pathway-snippet">{card.snippet}</code>
+                  <ul className="docs-pathway-stats">
+                    {card.stats.map((stat) => (
+                      <li key={stat}>{stat}</li>
+                    ))}
+                  </ul>
+                </a>
+              ))}
+            </AnimateStagger>
+
+            <div className="docs-tabs docs-install-alt">
+              <div className="docs-install-alt-head">
+                <h3>Prefer pnpm or yarn?</h3>
+                <p>Same package, same three modes, different install command.</p>
+              </div>
+
               <div className="docs-tab-list" role="tablist">
                 {(Object.keys(installTabs) as InstallMode[]).map((mode) => (
                   <button
@@ -755,38 +845,12 @@ export function App() {
                   <h3>{installTab.title}</h3>
                   <p>{installTab.description}</p>
                   <p className="docs-install-meta">
-                    Same package, three authoring modes — pick whichever fits your stack and keep
-                    them aligned through shared tokens.
+                    Same package, three authoring modes. Start with one and add the others only if
+                    your product surface needs them.
                   </p>
                 </div>
                 <CodeBlock title={installTab.title} code={installTab.code} />
               </div>
-
-              <AnimateStagger animation="slide-up" delay={80} inView className="docs-pathways">
-                {pathwayCards.map((card, idx) => (
-                  <a
-                    key={card.title}
-                    href={card.href}
-                    className="docs-pathway"
-                    aria-label={`${card.title} — jump to section`}
-                  >
-                    <header className="docs-pathway-head">
-                      <span className="docs-pathway-num">{String(idx + 1).padStart(2, '0')}</span>
-                      <h4>{card.title}</h4>
-                      <span className="docs-pathway-arrow" aria-hidden="true">
-                        <Icon name="arrow-up-right" size={14} />
-                      </span>
-                    </header>
-                    <p className="docs-pathway-body">{card.body}</p>
-                    <code className="docs-pathway-snippet">{card.snippet}</code>
-                    <ul className="docs-pathway-stats">
-                      {card.stats.map((stat) => (
-                        <li key={stat}>{stat}</li>
-                      ))}
-                    </ul>
-                  </a>
-                ))}
-              </AnimateStagger>
             </div>
           </section>
 
