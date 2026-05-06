@@ -765,6 +765,8 @@ kbd {
   background: color-mix(in oklab, var(--c-paper) 84%, transparent);
   border: 1px solid var(--c-rule);
   box-shadow: var(--sh-1);
+  max-width: 100%;
+  min-width: 0;
 }
 
 .docs-hero-install-label {
@@ -778,6 +780,8 @@ kbd {
 .docs-hero-install code {
   font-size: var(--fs-sm);
   color: var(--c-ink);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .docs-hero-install-note {
@@ -1300,14 +1304,6 @@ kbd {
   border-radius: var(--r-lg);
   border: 1px solid var(--c-rule);
   background: var(--c-surface);
-}
-
-.docs-hero-note strong {
-  display: block;
-  margin-bottom: 6px;
-  font-size: var(--fs-base);
-  letter-spacing: -0.015em;
-  color: var(--c-ink);
 }
 
 .docs-hero-note p {

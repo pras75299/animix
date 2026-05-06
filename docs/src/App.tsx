@@ -1,4 +1,4 @@
-import { type CSSProperties, useEffect, useMemo, useState } from 'react';
+import { type CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
 import { Animate, AnimateStagger } from '@pras75299/animix/react';
 import {
   CodeBlock,
@@ -184,7 +184,15 @@ function Hero({ metrics, onOpenSearch }: { metrics: RepoMetrics; onOpenSearch: (
   const [distance, setDistance] = useState(20);
   const [ease, setEase] = useState<string>(easeOptions[0].value);
   const [pulse, setPulse] = useState(0);
+  const heroModes = Object.keys(heroTabs) as HeroMode[];
   const heroTab = heroTabs[heroMode];
+  const heroTabRefs = useRef<Record<HeroMode, HTMLButtonElement | null>>({
+    css: null,
+    tailwind: null,
+    react: null,
+  });
+  const heroTabId = `hero-code-tab-${heroMode}`;
+  const heroPanelId = `hero-code-panel-${heroMode}`;
 
   const stageStyle = {
     '--animix-duration-base': `${duration}ms`,
@@ -195,6 +203,32 @@ function Hero({ metrics, onOpenSearch }: { metrics: RepoMetrics; onOpenSearch: (
 
   function replay() {
     setPulse((p) => p + 1);
+  }
+
+  function handleHeroTabKeyDown(event: React.KeyboardEvent<HTMLButtonElement>, mode: HeroMode) {
+    const currentIndex = heroModes.indexOf(mode);
+    if (currentIndex === -1) {
+      return;
+    }
+
+    let nextMode: HeroMode | null = null;
+    if (event.key === 'ArrowRight') {
+      nextMode = heroModes[(currentIndex + 1) % heroModes.length];
+    } else if (event.key === 'ArrowLeft') {
+      nextMode = heroModes[(currentIndex - 1 + heroModes.length) % heroModes.length];
+    } else if (event.key === 'Home') {
+      nextMode = heroModes[0];
+    } else if (event.key === 'End') {
+      nextMode = heroModes[heroModes.length - 1];
+    }
+
+    if (!nextMode) {
+      return;
+    }
+
+    event.preventDefault();
+    setHeroMode(nextMode);
+    heroTabRefs.current[nextMode]?.focus();
   }
 
   return (
@@ -328,12 +362,7 @@ function Hero({ metrics, onOpenSearch }: { metrics: RepoMetrics; onOpenSearch: (
                   </div>
                 </div>
 
-                <AnimateStagger
-                  animation="slide-up"
-                  delay={70}
-                  className="docs-hero-demo-list"
-                  key={`list-${pulse}`}
-                >
+                <AnimateStagger animation="slide-up" delay={70} className="docs-hero-demo-list">
                   <div className="docs-motion-card">Command palette shell</div>
                   <div className="docs-motion-card">Dialog, sheet, toast, and route surfaces</div>
                   <div className="docs-motion-card">
@@ -401,13 +430,21 @@ function Hero({ metrics, onOpenSearch }: { metrics: RepoMetrics; onOpenSearch: (
               want to author with, and the snippet below shows the matching entry path.
             </p>
 
-            <div className="docs-tab-list" role="group" aria-label="Hero code path examples">
-              {(Object.keys(heroTabs) as HeroMode[]).map((mode) => (
+            <div className="docs-tab-list" role="tablist" aria-label="Hero code path examples">
+              {heroModes.map((mode) => (
                 <button
                   key={mode}
+                  id={`hero-code-tab-${mode}`}
                   type="button"
-                  aria-pressed={mode === heroMode}
+                  role="tab"
+                  tabIndex={mode === heroMode ? 0 : -1}
+                  aria-selected={mode === heroMode}
+                  aria-controls={`hero-code-panel-${mode}`}
                   onClick={() => setHeroMode(mode)}
+                  onKeyDown={(event) => handleHeroTabKeyDown(event, mode)}
+                  ref={(node) => {
+                    heroTabRefs.current[mode] = node;
+                  }}
                   className={mode === heroMode ? 'is-active' : ''}
                 >
                   {heroTabs[mode].label}
@@ -415,11 +452,12 @@ function Hero({ metrics, onOpenSearch }: { metrics: RepoMetrics; onOpenSearch: (
               ))}
             </div>
 
-            <CodeBlock title={heroTab.title} code={heroTab.code} />
+            <div id={heroPanelId} role="tabpanel" aria-labelledby={heroTabId}>
+              <CodeBlock title={heroTab.title} code={heroTab.code} />
 
-            <div className="docs-hero-note">
-              <strong>{heroTab.title}</strong>
-              <p>{heroTab.description}</p>
+              <div className="docs-hero-note">
+                <p>{heroTab.description}</p>
+              </div>
             </div>
           </div>
         </Animate>

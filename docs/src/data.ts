@@ -305,21 +305,21 @@ export const pathwayCards: PathwayCard[] = [
     href: '#css',
     body: 'Import the stylesheet, add classes, and ship mount, exit, and feedback motion immediately.',
     snippet: "import '@pras75299/animix/css'",
-    stats: ['0 kB runtime', '8.8 kB css', 'fastest start'],
+    stats: ['zero runtime', 'css-first', 'fastest start'],
   },
   {
     title: 'Tailwind plugin',
     href: '#tailwind',
     body: 'Stay inside utilities with animate-animix-* aliases powered by the same underlying tokens.',
     snippet: 'plugins: [animix()]',
-    stats: ['0 kB runtime', 'build-time only', 'utility-first'],
+    stats: ['zero runtime', 'build-time only', 'utility-first'],
   },
   {
     title: 'React bindings',
     href: '#react',
     body: 'Use Animate and AnimateStagger when component state needs mount, exit, or stagger control.',
     snippet: "<Animate animation='slide-up' />",
-    stats: ['3.0 kB js', 'react peer only', 'exit + stagger'],
+    stats: ['optional helper runtime', 'react peer only', 'exit + stagger'],
   },
 ];
 
