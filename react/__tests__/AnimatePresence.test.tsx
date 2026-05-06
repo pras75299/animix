@@ -66,6 +66,20 @@ describe('AnimatePresence', () => {
       expect(screen.getByTestId('b')).toBeInTheDocument();
       expect(screen.getByTestId('c')).toBeInTheDocument();
     });
+
+    it('maps toast-in to a shipped transition class', () => {
+      render(
+        <AnimatePresence>
+          <Animate animation="toast-in">
+            <div data-testid="toast">Toast</div>
+          </Animate>
+        </AnimatePresence>,
+      );
+
+      const wrapper = screen.getByTestId('toast').parentElement;
+      expect(wrapper).toHaveClass('animix-toast-in-right');
+      expect(wrapper).not.toHaveClass('animix-toast-in');
+    });
   });
 
   describe('delayed unmount', () => {

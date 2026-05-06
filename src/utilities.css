@@ -156,13 +156,15 @@
 
 .animix-on-focus [class*="animix-in-"],
 .animix-on-focus [class*="animix-out-"],
-.animix-on-focus [class*="animix-"] {
+.animix-on-focus [class*="animix-"],
+.animix-on-focus[class*="animix-"] {
   animation-play-state: paused;
 }
 
 .animix-on-focus:focus-visible [class*="animix-in-"],
 .animix-on-focus:focus-visible [class*="animix-out-"],
-.animix-on-focus:focus-visible [class*="animix-"] {
+.animix-on-focus:focus-visible [class*="animix-"],
+.animix-on-focus:focus-visible[class*="animix-"] {
   animation-play-state: running;
 }
 
