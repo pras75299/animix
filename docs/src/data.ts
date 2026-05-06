@@ -36,6 +36,15 @@ export type PathwayCard = {
   stats: string[];
 };
 
+export type ShadcnExample = {
+  id: 'dialog' | 'sheet' | 'popover' | 'toast' | 'command';
+  name: string;
+  summary: string;
+  open: string;
+  close: string;
+  tabs: [SnippetTab, SnippetTab, SnippetTab];
+};
+
 export const repoLinks = {
   github: 'https://github.com/pras75299/animix',
   issues: 'https://github.com/pras75299/animix/issues',
@@ -1167,15 +1176,269 @@ export const reactApiCards = [
   },
 ];
 
-export const shadcnRows = [
-  ['Dialog / AlertDialog', 'animix-modal-in', 'animix-modal-out'],
-  ['Sheet', 'Directional drawer enter by side', 'Directional drawer exit by side'],
-  ['DropdownMenu / Popover', 'Fast scale + directional slide', 'Scale down exit'],
-  ['Tooltip', 'animix-tooltip-in', 'animix-tooltip-out'],
-  ['Accordion / Collapsible', 'Height expand + opacity', 'Height collapse + opacity'],
-  ['Toast / Sonner', 'animix-toast-in-right or bottom', 'animix-toast-out-right'],
-  ['Command / CMDk', 'animix-scale-up-in', 'Depends on dialog lifecycle'],
-] as const;
+export const shadcnExamples: ShadcnExample[] = [
+  {
+    id: 'dialog',
+    name: 'Dialog / AlertDialog',
+    summary:
+      'Use the overlay for atmosphere and keep the panel motion direct. This is the baseline pattern most teams paste first.',
+    open: 'animix-overlay-in + animix-modal-in',
+    close: 'animix-overlay-out + animix-modal-out',
+    tabs: [
+      {
+        id: 'css',
+        label: 'CSS',
+        title: 'Pure CSS dialog lifecycle',
+        description:
+          'Use the preset stylesheet and let Radix data-state decide which overlay and panel classes run.',
+        code: `<DialogOverlay className="animix-overlay-in data-[state=closed]:animix-overlay-out" />
+<DialogContent className="animix-modal-in data-[state=closed]:animix-modal-out">
+  Invite member
+</DialogContent>`,
+      },
+      {
+        id: 'tailwind',
+        label: 'Tailwind',
+        title: 'Tailwind dialog lifecycle',
+        description:
+          'Keep the component in utility space while reusing the same overlay and panel motion families.',
+        code: `<DialogOverlay
+  className="
+    data-[state=open]:animate-animix-overlay-in
+    data-[state=closed]:animate-animix-overlay-out
+  "
+/>
+<DialogContent
+  className="
+    data-[state=open]:animate-animix-modal-in
+    data-[state=closed]:animate-animix-modal-out
+  "
+/>`,
+      },
+      {
+        id: 'react',
+        label: 'React',
+        title: 'React dialog with a staged body',
+        description:
+          'Use the CSS preset for the shell, then add AnimateStagger only when the dialog body is dense enough to justify sequencing.',
+        code: `import '@pras75299/animix/shadcn';
+import { AnimateStagger } from '@pras75299/animix/react';
+
+<DialogContent className="animix-modal-in data-[state=closed]:animix-modal-out">
+  <AnimateStagger animation="slide-up" delay={45} as="ul">
+    <li>Profile</li>
+    <li>Permissions</li>
+    <li>Billing</li>
+  </AnimateStagger>
+</DialogContent>`,
+      },
+    ],
+  },
+  {
+    id: 'sheet',
+    name: 'Sheet',
+    summary:
+      'Directional drawers should enter and leave in the same direction. Tokens tune the feel; the preset owns the movement.',
+    open: 'animix-drawer-in-right',
+    close: 'animix-drawer-out-right',
+    tabs: [
+      {
+        id: 'css',
+        label: 'CSS',
+        title: 'Pure CSS sheet lifecycle',
+        description:
+          'Pick the direction once and keep it consistent for both open and close states.',
+        code: `<SheetContent side="right" className="animix-drawer-in-right data-[state=closed]:animix-drawer-out-right">
+  Filters
+</SheetContent>`,
+      },
+      {
+        id: 'tailwind',
+        label: 'Tailwind',
+        title: 'Tailwind sheet lifecycle',
+        description:
+          'The Tailwind alias keeps the direction explicit and co-locates lifecycle motion with side-specific layout utilities.',
+        code: `<SheetContent
+  side="right"
+  className="
+    data-[state=open]:animate-animix-drawer-in-right
+    data-[state=closed]:animate-animix-drawer-out-right
+  "
+/>`,
+      },
+      {
+        id: 'react',
+        label: 'React',
+        title: 'React sheet with token tuning',
+        description:
+          'Leave the sheet shell in CSS and scope tokens on the content when one surface needs slower travel.',
+        code: `<SheetContent
+  side="right"
+  className="animix-drawer-in-right data-[state=closed]:animix-drawer-out-right"
+  style={{ '--animix-duration-slow': '340ms', '--animix-slide-distance': '22px' }}
+>
+  <SheetHeader>Filters</SheetHeader>
+</SheetContent>`,
+      },
+    ],
+  },
+  {
+    id: 'popover',
+    name: 'Popover / DropdownMenu',
+    summary:
+      'Anchored surfaces should feel attached to the trigger. Let data-side pick the direction and keep the scale subtle.',
+    open: 'animix-tooltip-in',
+    close: 'animix-tooltip-out',
+    tabs: [
+      {
+        id: 'css',
+        label: 'CSS',
+        title: 'Pure CSS popover lifecycle',
+        description:
+          'Use the shared preset and preserve Radix transform-origin so the surface grows from the trigger instead of the viewport.',
+        code: `<PopoverContent
+  className="animix-tooltip-in data-[state=closed]:animix-tooltip-out"
+  style="transform-origin: var(--radix-popover-content-transform-origin, left top)"
+>
+  Invite member
+</PopoverContent>`,
+      },
+      {
+        id: 'tailwind',
+        label: 'Tailwind',
+        title: 'Tailwind popover lifecycle',
+        description:
+          'Compose side-aware motion with the alias layer and leave spacing, width, and theme styles to your normal utilities.',
+        code: `<PopoverContent
+  className="
+    data-[state=open]:animate-animix-tooltip-in
+    data-[state=closed]:animate-animix-tooltip-out
+  "
+/>`,
+      },
+      {
+        id: 'react',
+        label: 'React',
+        title: 'React popover with a staged menu',
+        description:
+          'Keep the anchored shell in CSS and use AnimateStagger only for the menu rows if the list needs a softer arrival.',
+        code: `import { AnimateStagger } from '@pras75299/animix/react';
+
+<PopoverContent className="animix-tooltip-in data-[state=closed]:animix-tooltip-out">
+  <AnimateStagger animation="slide-up" delay={35} as="ul">
+    <li>Viewer</li>
+    <li>Editor</li>
+    <li>Admin</li>
+  </AnimateStagger>
+</PopoverContent>`,
+      },
+    ],
+  },
+  {
+    id: 'toast',
+    name: 'Toast / Sonner',
+    summary:
+      'Pick one direction and keep it for both entry and dismissal. Spatial consistency matters more than flair in repeated feedback.',
+    open: 'animix-toast-in-right',
+    close: 'animix-toast-out-right',
+    tabs: [
+      {
+        id: 'css',
+        label: 'CSS',
+        title: 'Pure CSS toast lifecycle',
+        description:
+          'This is the lightest path: one class for entry, one class for dismissal, both moving the same way.',
+        code: `<div class="animix-toast-in-right">Project published</div>
+<div class="animix-toast-out-right">Project published</div>`,
+      },
+      {
+        id: 'tailwind',
+        label: 'Tailwind',
+        title: 'Tailwind toast lifecycle',
+        description:
+          'Keep the alias on the toast node and use the surrounding stack layout however your app already prefers.',
+        code: `<div
+  className="
+    data-[state=open]:animate-animix-toast-in
+    data-[state=closed]:animate-animix-toast-out
+  "
+>
+  Project published
+</div>`,
+      },
+      {
+        id: 'react',
+        label: 'React',
+        title: 'React toast exit handoff',
+        description:
+          'Use Animate when the parent controls the mount lifecycle and the toast should stay mounted until the exit ends.',
+        code: `import { Animate } from '@pras75299/animix/react';
+
+{open && (
+  <Animate animation="toast-in" exitAnimation="toast-out" exiting={exiting} onEnd={handleDone}>
+    <div>Project published</div>
+  </Animate>
+)}`,
+      },
+    ],
+  },
+  {
+    id: 'command',
+    name: 'Command / CMDK',
+    summary:
+      'Command surfaces should feel immediate. Fade the overlay softly and keep the panel itself almost instant so repeated keyboard use stays crisp.',
+    open: 'animix-overlay-in + animix-scale-up-in',
+    close: 'animix-overlay-out + animix-scale-down-out',
+    tabs: [
+      {
+        id: 'css',
+        label: 'CSS',
+        title: 'Pure CSS command lifecycle',
+        description:
+          'Treat the overlay and panel as separate surfaces so the shortcut shell feels calm without making the palette sluggish.',
+        code: `<div class="animix-overlay-in data-[state=closed]:animix-overlay-out"></div>
+<div class="animix-scale-up-in data-[state=closed]:animix-scale-down-out">
+  <input aria-label="Search commands" />
+</div>`,
+      },
+      {
+        id: 'tailwind',
+        label: 'Tailwind',
+        title: 'Tailwind command lifecycle',
+        description:
+          'Pair the overlay alias with a scale-up panel and keep list-item staging separate so keyboard-first flows stay fast.',
+        code: `<CommandDialogOverlay
+  className="
+    data-[state=open]:animate-animix-overlay-in
+    data-[state=closed]:animate-animix-overlay-out
+  "
+/>
+<CommandDialogContent
+  className="
+    data-[state=open]:animate-animix-scale-up
+    data-[state=closed]:animate-animix-scale-down-out
+  "
+/>`,
+      },
+      {
+        id: 'react',
+        label: 'React',
+        title: 'React command palette with staggered results',
+        description:
+          'Use AnimateStagger for the result rows only. The panel shell should still feel close to instant when the user presses the shortcut repeatedly.',
+        code: `import { AnimateStagger } from '@pras75299/animix/react';
+
+<CommandDialogContent className="animix-scale-up-in data-[state=closed]:animix-scale-down-out">
+  <AnimateStagger animation="slide-up" delay={35} as="ul">
+    <li>Go to Dashboard</li>
+    <li>Invite teammate</li>
+    <li>Toggle theme</li>
+  </AnimateStagger>
+</CommandDialogContent>`,
+      },
+    ],
+  },
+];
 
 export const tokenRows = [
   ['--animix-duration-micro', '140ms', 'Press feedback and tiny state changes'],

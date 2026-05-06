@@ -1,6 +1,6 @@
-import { type ReactNode, useEffect, useRef, useState } from 'react';
+import { type CSSProperties, type ReactNode, useEffect, useId, useRef, useState } from 'react';
 import { Animate } from '@pras75299/animix/react';
-import { type SnippetTab, type SearchItem } from './data';
+import { type SearchItem, type ShadcnExample, type SnippetTab } from './data';
 
 /* -------------------------------------------------------------------------- */
 /* Icons — minimal stroke set, no emoji                                        */
@@ -158,9 +158,38 @@ export function CodeBlock({ code, title }: { code: string; title: string }) {
 
 export function SnippetTabs({ tabs, initialId }: { tabs: SnippetTab[]; initialId?: string }) {
   const [activeId, setActiveId] = useState(initialId ?? tabs[0]?.id ?? '');
+  const baseId = useId();
+  const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const activeTab = tabs.find((tab) => tab.id === activeId) ?? tabs[0];
 
   if (!activeTab) return null;
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLButtonElement>, tabId: string) {
+    const currentIndex = tabs.findIndex((tab) => tab.id === tabId);
+    if (currentIndex === -1) {
+      return;
+    }
+
+    let nextIndex: number | null = null;
+    if (event.key === 'ArrowRight') {
+      nextIndex = (currentIndex + 1) % tabs.length;
+    } else if (event.key === 'ArrowLeft') {
+      nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    } else if (event.key === 'Home') {
+      nextIndex = 0;
+    } else if (event.key === 'End') {
+      nextIndex = tabs.length - 1;
+    }
+
+    if (nextIndex === null) {
+      return;
+    }
+
+    event.preventDefault();
+    const nextTab = tabs[nextIndex];
+    setActiveId(nextTab.id);
+    tabRefs.current[nextTab.id]?.focus();
+  }
 
   return (
     <div className="docs-tabs">
@@ -170,15 +199,27 @@ export function SnippetTabs({ tabs, initialId }: { tabs: SnippetTab[]; initialId
             key={tab.id}
             type="button"
             role="tab"
+            id={`${baseId}-tab-${tab.id}`}
+            tabIndex={tab.id === activeTab.id ? 0 : -1}
             aria-selected={tab.id === activeTab.id}
+            aria-controls={`${baseId}-panel-${tab.id}`}
             onClick={() => setActiveId(tab.id)}
+            onKeyDown={(event) => handleKeyDown(event, tab.id)}
+            ref={(node) => {
+              tabRefs.current[tab.id] = node;
+            }}
             className={tab.id === activeTab.id ? 'is-active' : ''}
           >
             {tab.label}
           </button>
         ))}
       </div>
-      <div className="docs-tab-panel">
+      <div
+        id={`${baseId}-panel-${activeTab.id}`}
+        className="docs-tab-panel"
+        role="tabpanel"
+        aria-labelledby={`${baseId}-tab-${activeTab.id}`}
+      >
         <div className="docs-tab-copy">
           <h3>{activeTab.title}</h3>
           <p>{activeTab.description}</p>
@@ -186,6 +227,132 @@ export function SnippetTabs({ tabs, initialId }: { tabs: SnippetTab[]; initialId
         <CodeBlock title={activeTab.title} code={activeTab.code} />
       </div>
     </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Shadcn example cards                                                       */
+/* -------------------------------------------------------------------------- */
+
+const previewPopoverStyle = {
+  '--transform-origin': '1rem top',
+} as CSSProperties;
+
+function renderShadcnPreview(example: ShadcnExample, pulse: number) {
+  switch (example.id) {
+    case 'dialog':
+      return (
+        <div key={pulse} className="docs-shadcn-preview-stack">
+          <div className="docs-recipe-overlay animix-overlay-in" />
+          <div className="docs-recipe-panel docs-shadcn-dialog animix-modal-in">
+            <strong>Invite teammate</strong>
+            <p>Pick a role before sending the invite.</p>
+            <button type="button" tabIndex={-1} className="docs-shadcn-inline-btn">
+              Send invite
+            </button>
+          </div>
+        </div>
+      );
+    case 'sheet':
+      return (
+        <div key={pulse} className="docs-shadcn-preview-stack docs-shadcn-preview-end">
+          <div className="docs-recipe-overlay animix-overlay-in" />
+          <aside className="docs-shadcn-sheet animix-drawer-in-right">
+            <strong>Filters</strong>
+            <span>Status, owner, and billing state</span>
+            <div className="docs-shadcn-chip-row">
+              <span>Active</span>
+              <span>Owner</span>
+              <span>Overdue</span>
+            </div>
+          </aside>
+        </div>
+      );
+    case 'popover':
+      return (
+        <div key={pulse} className="docs-shadcn-preview-stack docs-shadcn-preview-start">
+          <div className="docs-anchor-demo">
+            <button type="button" tabIndex={-1}>
+              Role
+            </button>
+            <div className="docs-anchor-popover animix-tooltip-in" style={previewPopoverStyle}>
+              Viewer, editor, and admin access
+            </div>
+          </div>
+        </div>
+      );
+    case 'toast':
+      return (
+        <div key={pulse} className="docs-shadcn-preview-stack docs-shadcn-preview-end">
+          <div className="docs-shadcn-toast-column">
+            <div className="docs-toast-demo animix-toast-in-right">Changes synced</div>
+            <div className="docs-toast-demo animix-toast-in-right">Billing owner invited</div>
+          </div>
+        </div>
+      );
+    case 'command':
+      return (
+        <div key={pulse} className="docs-shadcn-preview-stack">
+          <div className="docs-recipe-overlay animix-overlay-in" />
+          <div className="docs-recipe-panel docs-shadcn-command animix-scale-up-in">
+            <input aria-label="Search commands" defaultValue="inv" readOnly tabIndex={-1} />
+            <div className="docs-recipe-list">
+              <button type="button" tabIndex={-1} className="animix-in-slide-up">
+                Invite teammate
+              </button>
+              <button type="button" tabIndex={-1} className="animix-in-slide-up">
+                Invoices
+              </button>
+              <button type="button" tabIndex={-1} className="animix-in-slide-up">
+                Integrations
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+  }
+}
+
+export function ShadcnExampleCard({ example }: { example: ShadcnExample }) {
+  const [pulse, setPulse] = useState(0);
+
+  return (
+    <article className="docs-shadcn-card">
+      <div className="docs-shadcn-card-head">
+        <div className="docs-shadcn-card-copy">
+          <p className="docs-shadcn-card-kicker">shadcn/ui recipe</p>
+          <h3>{example.name}</h3>
+          <p>{example.summary}</p>
+        </div>
+
+        <button
+          type="button"
+          className="docs-shadcn-replay"
+          onClick={() => setPulse((value) => value + 1)}
+          aria-label={`Replay ${example.name} preview`}
+        >
+          <Icon name="play" size={11} />
+          Replay
+        </button>
+      </div>
+
+      <div className={`docs-shadcn-stage docs-shadcn-stage-${example.id}`} aria-hidden="true">
+        {renderShadcnPreview(example, pulse)}
+      </div>
+
+      <dl className="docs-shadcn-lifecycle">
+        <div>
+          <dt>Open</dt>
+          <dd>{example.open}</dd>
+        </div>
+        <div>
+          <dt>Close</dt>
+          <dd>{example.close}</dd>
+        </div>
+      </dl>
+
+      <SnippetTabs tabs={example.tabs} initialId="css" />
+    </article>
   );
 }
 
