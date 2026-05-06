@@ -2,6 +2,7 @@
    so the rebuild changes only the visual layer, not the documented surface. */
 
 export type InstallMode = 'npm' | 'pnpm' | 'yarn';
+export type HeroMode = 'css' | 'tailwind' | 'react';
 export type ReactMode = 'animate' | 'exit' | 'server' | 'stagger' | 'hooks';
 export type MigrationMode = 'animate-css' | 'tailwindcss-animate' | 'motion' | 'gsap';
 export type RecipeMode = 'dialog' | 'popover' | 'toast' | 'command' | 'list' | 'route';
@@ -27,6 +28,14 @@ export type CatalogItem = {
   blurb: string;
 };
 
+export type PathwayCard = {
+  title: string;
+  href: string;
+  body: string;
+  snippet: string;
+  stats: string[];
+};
+
 export const repoLinks = {
   github: 'https://github.com/pras75299/animix',
   issues: 'https://github.com/pras75299/animix/issues',
@@ -45,8 +54,62 @@ export const fallbackMetrics: RepoMetrics = {
   stars: '—',
   forks: '—',
   issues: '—',
-  version: 'v0.2.1',
+  version: 'v0.2.2',
   downloads: 'live',
+};
+
+export const heroValuePoints = [
+  'Zero-runtime motion for CSS and Tailwind by default.',
+  'Optional React helpers for exits, stagger, and view triggers.',
+  'Reduced-motion safe from the first import.',
+] as const;
+
+export const heroTabs: Record<HeroMode, SnippetTab> = {
+  css: {
+    id: 'css',
+    label: 'CSS',
+    title: 'Start with pure CSS in one import',
+    description:
+      'Fastest adoption path: import the stylesheet and use the same classes shown in the live demo.',
+    code: `import '@pras75299/animix/css';
+
+<div class="animix-in-slide-up">Settings synced</div>
+<div class="animix-toast-in-bottom">Profile updated</div>
+<button class="animix-press-in animix-focus-soft">Open command menu</button>`,
+  },
+  tailwind: {
+    id: 'tailwind',
+    label: 'Tailwind',
+    title: 'Keep authoring in utility classes',
+    description:
+      'Register the plugin once, then use named animix aliases for mount, exit, and component motion.',
+    code: `import animix from '@pras75299/animix/tailwind';
+
+export default {
+  content: ['./src/**/*.{ts,tsx,js,jsx}'],
+  plugins: [animix()],
+};
+
+<div class="animate-animix-slide-up">Settings synced</div>
+<div class="animate-animix-toast-in-bottom">Profile updated</div>`,
+  },
+  react: {
+    id: 'react',
+    label: 'React',
+    title: 'Add orchestration without adding a new motion system',
+    description:
+      'Use the React helpers when your UI already needs mount, exit, or stagger control in component code.',
+    code: `import '@pras75299/animix/css';
+import { Animate, AnimateStagger } from '@pras75299/animix/react';
+
+<Animate animation="slide-up">
+  <div>Settings synced</div>
+</Animate>
+
+<AnimateStagger animation="slide-up" delay={70}>
+  {items.map((item) => <li key={item.id}>{item.label}</li>)}
+</AnimateStagger>`,
+  },
 };
 
 export const navItems = [
@@ -198,28 +261,67 @@ export const installTabs: Record<InstallMode, SnippetTab> = {
     id: 'npm',
     label: 'npm',
     title: 'Install with npm',
-    description: 'Start with the package, then add the optional integrations you actually use.',
+    description: 'Install the package first, then add only the peer for the mode you actually use.',
     code: `npm install @pras75299/animix
-npm install tailwindcss react react-dom`,
+
+# Tailwind mode only
+npm install tailwindcss
+
+# React mode only
+npm install react react-dom`,
   },
   pnpm: {
     id: 'pnpm',
     label: 'pnpm',
     title: 'Install with pnpm',
-    description:
-      'The docs app itself uses pnpm-style workspace wiring, but the package works the same either way.',
+    description: 'Same package and same optional-by-mode peer setup, with pnpm commands instead.',
     code: `pnpm add @pras75299/animix
-pnpm add tailwindcss react react-dom`,
+
+# Tailwind mode only
+pnpm add tailwindcss
+
+# React mode only
+pnpm add react react-dom`,
   },
   yarn: {
     id: 'yarn',
     label: 'yarn',
     title: 'Install with yarn',
-    description: 'Use this when your app already ships through a Yarn workflow.',
+    description:
+      'Use this when your app already ships through a Yarn workflow, with the same mode-specific peers.',
     code: `yarn add @pras75299/animix
-yarn add tailwindcss react react-dom`,
+
+# Tailwind mode only
+yarn add tailwindcss
+
+# React mode only
+yarn add react react-dom`,
   },
 };
+
+export const pathwayCards: PathwayCard[] = [
+  {
+    title: 'Pure CSS',
+    href: '#css',
+    body: 'Import the stylesheet, add classes, and ship mount, exit, and feedback motion immediately.',
+    snippet: "import '@pras75299/animix/css'",
+    stats: ['zero runtime', 'css-first', 'fastest start'],
+  },
+  {
+    title: 'Tailwind plugin',
+    href: '#tailwind',
+    body: 'Stay inside utilities with animate-animix-* aliases powered by the same underlying tokens.',
+    snippet: 'plugins: [animix()]',
+    stats: ['zero runtime', 'build-time only', 'utility-first'],
+  },
+  {
+    title: 'React bindings',
+    href: '#react',
+    body: 'Use Animate and AnimateStagger when component state needs mount, exit, or stagger control.',
+    snippet: "<Animate animation='slide-up' />",
+    stats: ['optional helper runtime', 'react peer only', 'exit + stagger'],
+  },
+];
 
 export const cssTabs: SnippetTab[] = [
   {
@@ -1183,22 +1285,22 @@ export const changelogHighlights = [
 export const proofItems = [
   {
     num: '01',
-    title: 'Zero runtime by default',
-    body: 'Base motion ships as CSS keyframes and token overrides — no JS for the common cases.',
+    title: '0 kB runtime for CSS + Tailwind',
+    body: 'The base library is CSS-first, so common product motion stays off the main thread.',
   },
   {
     num: '02',
-    title: 'Three integration paths',
-    body: 'Pure CSS, Tailwind plugin, and React bindings stay aligned to one source of truth.',
+    title: 'One install, three usage modes',
+    body: 'Start with npm, then choose pure CSS, Tailwind aliases, or React helpers as needed.',
   },
   {
     num: '03',
-    title: 'Reduced motion respected',
-    body: 'Durations zero out without losing keyframe end-state, so layout never jumps.',
+    title: 'Live docs use the shipped package',
+    body: 'The hero demo and motion examples on this page run on the same classes and bindings you install.',
   },
   {
     num: '04',
-    title: 'Component presets ready',
-    body: 'shadcn/ui and Radix data-state hooks are already mapped to the right motion families.',
+    title: 'shadcn/ui and reduced motion ready',
+    body: 'Radix data-state presets and motion-safe defaults are already part of the package story.',
   },
 ];

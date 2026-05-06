@@ -672,7 +672,7 @@ kbd {
 }
 
 /* ===========================================================================
-   HERO — display + token playground
+   HERO — value, install speed, live proof
    ======================================================================== */
 
 .docs-hero {
@@ -724,6 +724,73 @@ kbd {
   color: var(--c-ink-3);
 }
 
+.docs-hero-points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  margin: var(--sp-4) 0 0;
+  padding: 0;
+}
+
+.docs-hero-points li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--c-rule);
+  background: var(--c-surface);
+  font-size: var(--fs-sm);
+  color: var(--c-ink-2);
+}
+
+.docs-hero-points li::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  flex-shrink: 0;
+}
+
+.docs-hero-install {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: var(--sp-5);
+  padding: 10px 14px;
+  border-radius: var(--r-lg);
+  background: color-mix(in oklab, var(--c-paper) 84%, transparent);
+  border: 1px solid var(--c-rule);
+  box-shadow: var(--sh-1);
+  max-width: 100%;
+  min-width: 0;
+}
+
+.docs-hero-install-label {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.docs-hero-install code {
+  font-size: var(--fs-sm);
+  color: var(--c-ink);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.docs-hero-install-note {
+  margin: 12px 0 0;
+  max-width: 58ch;
+  font-size: var(--fs-sm);
+  color: var(--c-ink-3);
+}
+
 .docs-hero-actions {
   display: inline-flex;
   flex-wrap: wrap;
@@ -770,6 +837,15 @@ kbd {
 
 .docs-btn:active {
   transform: translateY(1px);
+}
+
+.docs-hero-proof-label {
+  margin: var(--sp-5) 0 0;
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-muted);
 }
 
 /* Hero metrics rail */
@@ -830,7 +906,7 @@ kbd {
   color: var(--c-ink);
 }
 
-/* ---- Token playground panel ---------------------------------------------- */
+/* ---- Live demo panel ----------------------------------------------------- */
 
 .docs-hero-grid {
   display: grid;
@@ -863,6 +939,45 @@ kbd {
   background: var(--c-paper);
 }
 
+.docs-playground-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.docs-hero-demo-note {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-3);
+  max-width: 32ch;
+}
+
+.docs-playground-modes {
+  display: inline-flex;
+  flex-wrap: wrap;
+  padding: 4px;
+  border-radius: var(--r-md);
+  background: var(--c-canvas);
+  border: 1px solid var(--c-rule);
+}
+
+.docs-playground-modes button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: var(--fs-xs);
+  font-family: var(--f-mono);
+  color: var(--c-ink-3);
+  transition:
+    background var(--t-fast) var(--e-out),
+    color var(--t-fast) var(--e-out);
+}
+
+.docs-playground-modes button.is-active {
+  background: var(--c-ink);
+  color: var(--c-canvas);
+}
+
 .docs-playground-head {
   display: flex;
   align-items: center;
@@ -889,13 +1004,12 @@ kbd {
 
 .docs-playground-stage {
   flex: 1;
-  display: grid;
-  place-items: center;
-  padding: var(--sp-5);
+  display: block;
+  padding: var(--sp-4);
   border-radius: var(--r-lg);
   background: linear-gradient(180deg, var(--c-canvas-2), var(--c-canvas));
   border: 1px solid var(--c-rule);
-  min-height: 220px;
+  min-height: 320px;
   position: relative;
   overflow: hidden;
 }
@@ -909,6 +1023,111 @@ kbd {
   background-size: 24px 24px;
   opacity: 0.5;
   pointer-events: none;
+}
+
+.docs-hero-demo-shell {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--sp-3);
+  align-content: start;
+}
+
+.docs-hero-demo-command {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--r-md);
+  background: color-mix(in oklab, var(--c-paper) 88%, transparent);
+  border: 1px solid var(--c-rule);
+  font-size: var(--fs-xs);
+  color: var(--c-ink-2);
+  box-shadow: var(--sh-1);
+}
+
+.docs-hero-demo-command-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 24px;
+  padding-inline: 8px;
+  border-radius: 999px;
+  border: 1px solid var(--c-rule);
+  background: var(--c-canvas);
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  color: var(--c-muted);
+}
+
+.docs-hero-demo-surface {
+  display: grid;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: calc(var(--r-xl) - 4px);
+  border: 1px solid var(--c-rule-strong);
+  background:
+    linear-gradient(140deg, rgba(91, 91, 255, 0.08), transparent 52%),
+    color-mix(in oklab, var(--c-paper) 94%, transparent);
+  box-shadow: var(--sh-2);
+}
+
+.docs-hero-demo-surface-head {
+  display: grid;
+  gap: 6px;
+}
+
+.docs-hero-demo-surface-head strong {
+  font-size: var(--fs-lg);
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+}
+
+.docs-hero-demo-surface-head span {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-3);
+}
+
+.docs-hero-demo-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.docs-hero-demo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 10px 14px;
+  border-radius: var(--r-md);
+  background: var(--c-ink);
+  color: var(--c-canvas);
+  border: 1px solid var(--c-ink);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+}
+
+.docs-hero-demo-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 12px;
+  border-radius: var(--r-pill);
+  background: var(--c-paper);
+  border: 1px solid var(--c-rule);
+  color: var(--c-ink-2);
+  font-size: var(--fs-xs);
+  box-shadow: var(--sh-1);
+}
+
+.docs-hero-demo-list {
+  display: grid;
+  gap: var(--sp-2);
 }
 
 .docs-playground-stack {
@@ -1047,6 +1266,51 @@ kbd {
   background: var(--c-ink);
   color: var(--c-canvas);
   border-color: var(--c-ink);
+}
+
+.docs-hero-code {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.docs-hero-code-label {
+  margin: 0;
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.docs-hero-code-title {
+  margin: 0;
+  font-weight: 600;
+  font-size: var(--fs-xl);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+}
+
+.docs-hero-code-body {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.65;
+  color: var(--c-ink-3);
+}
+
+.docs-hero-note {
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--c-rule);
+  background: var(--c-surface);
+}
+
+.docs-hero-note p {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--c-ink-3);
+  line-height: 1.6;
 }
 
 /* ===========================================================================
@@ -1227,6 +1491,21 @@ kbd {
   }
 }
 
+.docs-install-quick {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-4);
+  align-items: stretch;
+  margin-top: var(--sp-4);
+}
+
+@media (min-width: 900px) {
+  .docs-install-quick {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: var(--sp-5);
+  }
+}
+
 .docs-install-copy {
   display: flex;
   flex-direction: column;
@@ -1235,6 +1514,15 @@ kbd {
   border-radius: var(--r-lg);
   background: var(--c-surface);
   border: 1px solid var(--c-rule);
+}
+
+.docs-install-kicker {
+  margin: 0 0 4px;
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-muted);
 }
 
 .docs-install-copy h3 {
@@ -1258,6 +1546,28 @@ kbd {
   border-top: 1px dashed var(--c-rule);
   font-size: var(--fs-xs) !important;
   color: var(--c-muted) !important;
+}
+
+.docs-install-alt {
+  margin-top: var(--sp-5);
+}
+
+.docs-install-alt-head {
+  display: grid;
+  gap: 6px;
+}
+
+.docs-install-alt-head h3 {
+  margin: 0;
+  font-size: var(--fs-lg);
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+}
+
+.docs-install-alt-head p {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--c-ink-3);
 }
 
 .docs-pathways {
