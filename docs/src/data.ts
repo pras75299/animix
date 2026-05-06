@@ -258,7 +258,7 @@ import '@pras75299/animix/css/utilities';
   <p>Scaled in with a longer entrance.</p>
 </article>
 
-<button class="animix-shake animix-on-hover animix-loop-1">
+<button class="animix-shake animix-on-hover animix-once">
   Retry sync
 </button>`,
   },
@@ -316,17 +316,16 @@ export default {
   {
     id: 'sequence',
     label: 'Sequencing',
-    title: 'Sequence utilities with duration, delay, easing, repeat, and direction',
+    title: 'Sequence timing with Tailwind modifiers and animix utility classes',
     description:
-      'Use Tailwind modifiers for timing and iteration; keep the animation utility focused on what moves, not on every timing tweak.',
+      'Use Tailwind modifiers for timing, then layer animix utility classes for iteration or direction without changing the base motion preset.',
     code: `<li
   class="
     animate-animix-slide-up
     duration-300
     delay-150
     ease-spring
-    repeat-1
-    fill-mode-both
+    animix-once
   "
 >
   First list item
@@ -337,8 +336,8 @@ export default {
     animate-animix-pulse
     duration-[420ms]
     ease-linear
-    repeat-infinite
-    direction-alternate
+    animix-loop
+    animix-alt
   "
 >
   Live
@@ -1043,7 +1042,7 @@ export const tailwindNotes = [
   },
   {
     title: 'Sequence with Tailwind, customize with tokens',
-    body: 'Use duration-*, delay-*, ease-*, repeat-*, and direction-* for timing, then scope token overrides when a component family needs a different feel.',
+    body: 'Use duration-*, delay-*, and ease-* for timing, then add animix utility classes such as animix-once, animix-loop, or animix-alt when a motion pattern needs explicit iteration or direction.',
   },
 ];
 

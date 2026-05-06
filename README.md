@@ -323,6 +323,13 @@ Chain any modifier after the animation class to override individual sub-properti
 <div class="animix-in-fade animix-fill-both">Both (default)</div>
 ```
 
+#### Direction
+
+```html
+<div class="animix-pulse animix-reverse">Reverse direction</div>
+<div class="animix-pulse animix-alt">Alternate direction</div>
+```
+
 #### Play State
 
 ```html
@@ -332,7 +339,7 @@ Chain any modifier after the animation class to override individual sub-properti
 
 #### Hover / Focus Triggers
 
-Apply to a wrapper — the animation plays only on interaction.
+Apply hover triggers to a wrapper. Use self-applied hover only for attention classes. Focus triggers can also be self-applied to the animated element.
 
 ```html
 <!-- Plays the child animation on hover only -->

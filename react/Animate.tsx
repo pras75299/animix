@@ -109,6 +109,11 @@ function getAnimationClass(
   name: AnimationName | ExitAnimation,
   type: 'in' | 'out' | 'attention' | 'transition',
 ): string {
+  const transitionAliases: Partial<Record<TransitionAnimation, string>> = {
+    'toast-in': 'animix-toast-in-right',
+    'toast-out': 'animix-toast-out-right',
+  };
+
   // Attention animations
   const attentionNames: AttentionAnimation[] = [
     'pulse',
@@ -136,6 +141,11 @@ function getAnimationClass(
 
   const transitionPrefixes = ['modal', 'drawer', 'toast', 'tooltip'];
   if (transitionPrefixes.some((p) => name.startsWith(p))) {
+    const aliasedTransition = transitionAliases[name as TransitionAnimation];
+    if (aliasedTransition) {
+      return aliasedTransition;
+    }
+
     return `animix-${name}`;
   }
 
