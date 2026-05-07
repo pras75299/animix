@@ -9,5 +9,14 @@
     "rootDir": "."
   },
   "files": ["index.ts", "classes.ts", "tailwind/plugin.ts", "react/index.ts"],
-  "exclude": ["node_modules", "dist", "docs", "playground"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "docs",
+    "playground",
+    "tests",
+    "react/__tests__",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ]
 }

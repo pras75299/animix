@@ -90,7 +90,8 @@
     "src",
     "shadcn-presets.css",
     "README.md",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "SECURITY.md"
   ],
   "scripts": {
     "build": "npm run build:js && npm run build:types",

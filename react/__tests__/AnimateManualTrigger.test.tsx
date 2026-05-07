@@ -11,6 +11,17 @@ import { Animate } from '../Animate';
 
 afterEach(cleanup);
 
+function getWrapper() {
+  const wrapper = screen.getByTestId('child').parentElement;
+  expect(wrapper).not.toBeNull();
+
+  if (!wrapper) {
+    throw new Error('Expected Animate to render a wrapper element.');
+  }
+
+  return wrapper;
+}
+
 describe('Animate manual trigger', () => {
   it('does not apply animation class when manualActive=false', () => {
     render(
@@ -18,7 +29,7 @@ describe('Animate manual trigger', () => {
         <div data-testid="child">Content</div>
       </Animate>,
     );
-    const wrapper = screen.getByTestId('child').parentElement!;
+    const wrapper = getWrapper();
     expect(wrapper.className).not.toContain('animix-in-fade');
   });
 
@@ -28,7 +39,7 @@ describe('Animate manual trigger', () => {
         <div data-testid="child">Content</div>
       </Animate>,
     );
-    const wrapper = screen.getByTestId('child').parentElement!;
+    const wrapper = getWrapper();
     expect(wrapper.className).toContain('animix-in-fade');
   });
 
@@ -48,7 +59,7 @@ describe('Animate manual trigger', () => {
     }
 
     render(<TestComponent />);
-    const wrapper = screen.getByTestId('child').parentElement!;
+    const wrapper = getWrapper();
 
     // Initially no animation
     expect(wrapper.className).not.toContain('animix-in-slide-up');
@@ -77,7 +88,7 @@ describe('Animate manual trigger', () => {
     }
 
     render(<TestComponent />);
-    const wrapper = screen.getByTestId('child').parentElement!;
+    const wrapper = getWrapper();
 
     expect(wrapper.className).toContain('animix-in-fade');
 
@@ -104,7 +115,7 @@ describe('Animate manual trigger', () => {
     }
 
     render(<TestComponent />);
-    const wrapper = screen.getByTestId('child').parentElement!;
+    const wrapper = getWrapper();
 
     expect(wrapper.className).not.toContain('animix-in-scale-up');
 
@@ -136,7 +147,7 @@ describe('Animate manual trigger', () => {
         <div data-testid="child">Content</div>
       </Animate>,
     );
-    const wrapper = screen.getByTestId('child').parentElement!;
+    const wrapper = getWrapper();
     expect(wrapper.className).toContain('animix-out-fade');
   });
 
@@ -154,7 +165,7 @@ describe('Animate manual trigger', () => {
 
     render(<TestComponent />);
     // The wrapper element should exist and have animation classes
-    const wrapper = screen.getByTestId('child').parentElement!;
+    const wrapper = getWrapper();
     expect(wrapper.className).toContain('animix-in-fade');
     // onEnd is wired through React's onAnimationEnd — verified by the component's
     // cloneElement or div rendering path

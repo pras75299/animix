@@ -273,7 +273,7 @@ function extractReadmeSection(title: string) {
   const sectionStart = sectionMatch.index ?? 0;
   const nextSectionMatch = readmeText.slice(sectionStart + sectionMatch[0].length).match(/\n##\s+/);
   const sectionEnd = nextSectionMatch
-    ? sectionStart + sectionMatch[0].length + nextSectionMatch.index!
+    ? sectionStart + sectionMatch[0].length + (nextSectionMatch.index ?? 0)
     : readmeText.length;
 
   return readmeText.slice(sectionStart, sectionEnd).trim();
