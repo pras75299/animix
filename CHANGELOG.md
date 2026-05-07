@@ -23,6 +23,11 @@ Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- Refreshed the README top section for npm consumers with a shorter install path, a trust table, and clearer fit guidance.
+- Tightened the snippet smoke tests so the README install surface stays aligned with package metadata.
+
 ### Added
 
 - Initial implementation of animix CSS animation library

@@ -1,7 +1,7 @@
 {
   "name": "@pras75299/animix",
   "version": "0.2.2",
-  "description": "Production-ready CSS animation library for Tailwind CSS v3/v4, React, and shadcn/ui — zero runtime by default, reduced-motion safe.",
+  "description": "CSS animation library for Tailwind CSS v3/v4, React, and shadcn/ui. Zero runtime by default, reduced-motion safe.",
   "author": "animix contributors",
   "license": "MIT",
   "keywords": [
