@@ -54,7 +54,7 @@ export const fallbackMetrics: RepoMetrics = {
   stars: '—',
   forks: '—',
   issues: '—',
-  version: 'v0.2.2',
+  version: 'v0.2.3',
   downloads: 'live',
 };
 
