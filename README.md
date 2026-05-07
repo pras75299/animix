@@ -1,6 +1,6 @@
 # animix
 
-> **Production-ready CSS animation library for Tailwind CSS v3/v4, React, and shadcn/ui — zero runtime by default, reduced-motion safe.**
+> **CSS animation library for Tailwind CSS v3/v4, React, and shadcn/ui. Zero runtime by default, reduced-motion safe.**
 
 <p>
   <a href="https://www.npmjs.com/package/@pras75299/animix"><img src="https://img.shields.io/npm/v/@pras75299%2Fanimix?style=flat-square&label=npm&color=5B5BFF" alt="npm version" /></a>
@@ -15,29 +15,24 @@
 
 ---
 
-## What you get
+## Why teams pick animix
 
-- **Zero runtime JS** for base animations — pure CSS keyframes, no main-thread cost.
-- **Three consumption modes** — drop-in CSS, Tailwind plugin, or React component API. One token system across all of them.
-- **shadcn/ui presets** — Radix UI `data-state` and `data-side` selectors mapped to motion families, no component rewrites.
-- **CSS custom property tokens** — override duration, easing, distance, scale start, hover lift, press scale, intensity per component.
-- **Accessibility first** — `prefers-reduced-motion` zeros durations without breaking final layout state.
-- **Compositor-friendly by default** — core entrance, exit, attention, and transition presets target `transform` and `opacity`. The blur presets (`animix-in-blur`, `animix-out-blur`) animate `filter` as the explicit exception — see [Blur presets and performance](#blur-presets-and-performance) for guidance.
-- **Fully typed** — TypeScript definitions for the React layer.
+- **One package, one motion system** across CSS, Tailwind, React, and shadcn/ui.
+- **Zero runtime for the default path** — pure CSS keyframes and token overrides handle the common cases.
+- **Reduced-motion safe** — `prefers-reduced-motion` zeros the motion tokens without breaking the end state.
+- **Built for product surfaces** — mounts, exits, overlays, loaders, drawers, toasts, and repeatable list motion.
 
-## Bundle size & latency
+## Trust surface
 
-Measured from the published tarball (run `npm pack --dry-run` to verify):
+Measured from the published tarball. Run `npm pack --dry-run` to verify the current release surface:
 
-| Path                     | Runtime JS      | CSS (gzip)    | First-frame latency | Notes                                                                 |
-| ------------------------ | --------------- | ------------- | ------------------- | --------------------------------------------------------------------- |
-| Pure CSS (full)          | **0 kB**        | **8.8 kB**    | 1 frame (~16 ms)    | composited on the GPU                                                 |
-| Pure CSS (cherry-picked) | 0 kB            | from **1 kB** | 1 frame             | per-category imports (`/css/entrance`, `/css/exit`, …)                |
-| Tailwind plugin          | 0 kB at runtime | 8.8 kB        | 1 frame             | plugin runs at build time only                                        |
-| React bindings           | **3.0 kB gzip** | 8.8 kB        | 1 frame             | uses `useLayoutEffect`, no `setTimeout` between mount and class apply |
-| Reduced motion           | 0 kB            | —             | instant             | tokens zero out, end-state still applies                              |
-
-Published tarball: **46 kB compressed / 264 kB unpacked / 32 files** — source maps are stripped for publish.
+| Trust signal  | Evidence                                                                                          |
+| ------------- | ------------------------------------------------------------------------------------------------- |
+| Package name  | Published as `@pras75299/animix` on npm.                                                          |
+| Runtime JS    | Pure CSS entry points ship with 0 runtime JS.                                                     |
+| Motion safety | Tokens honor `prefers-reduced-motion`, and `.animix-no-motion` is available for explicit opt-out. |
+| Entry points  | CSS, Tailwind, React, and shadcn/ui all share the same motion surface.                            |
+| Publish shape | Source maps stay out of the tarball, and the shipped files stay limited to the release surface.   |
 
 ---
 
@@ -88,24 +83,29 @@ npm install react react-dom # for React bindings
 
 ## Quick Start
 
-**Fastest path** — import the CSS and add a class:
+### 30-second install
 
-```html
-<link rel="stylesheet" href="node_modules/@pras75299/animix/src/index.css" />
-<div class="animix-in-slide-up">Hello world</div>
+```bash
+npm install @pras75299/animix
 ```
-
-Or with a bundler:
 
 ```js
 import '@pras75299/animix/css';
+
+<div class="animix-in-slide-up">Hello world</div>;
 ```
 
-```html
-<div class="animix-in-fade animix-slow">Fades in at 280ms</div>
-<div class="animix-in-slide-up animix-delay-300">Slides up after 300ms</div>
-<button class="animix-shake animix-on-hover">Shakes on hover</button>
-```
+Use the CSS entry point when you want the fastest path from npm install to motion on screen. The rest of the guide covers the Tailwind, React, and shadcn/ui entry points.
+
+### Where animix fits
+
+| Use animix for                                                                | Use Motion / GSAP when                                                       |
+| ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| mounts, exits, overlays, loaders, toasts, drawers, and repeatable list motion | layout animation, drag, shared elements, scroll scenes, or bespoke timelines |
+| CSS-first product surfaces that need consistent tokens                        | the motion itself is the product and needs runtime choreography              |
+| shared motion rules across CSS, Tailwind, React, and shadcn/ui                | the experience is better expressed as imperative orchestration               |
+
+animix is the default layer for repeatable lifecycle motion. Motion and GSAP remain the better fit when the work is layout-heavy, gesture-heavy, or timeline-driven.
 
 ---
 

@@ -18,6 +18,11 @@ type SnippetFixture = {
 
 const readmePath = resolve(process.cwd(), 'README.md');
 const readmeText = readFileSync(readmePath, 'utf8');
+const packageJsonPath = resolve(process.cwd(), 'package.json');
+const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as {
+  name: string;
+  description?: string;
+};
 const animixTokenPattern = /--animix-[a-z0-9-]+|animate-animix-[a-z0-9-]+|animix-[a-z0-9-]+/g;
 const animixCustomPropertyPattern = /--animix-[a-z0-9-]+/g;
 
@@ -253,7 +258,42 @@ function collectReadmeFences(): SnippetFixture[] {
   }));
 }
 
+function extractReadmeSection(title: string) {
+  const sectionPattern = new RegExp(
+    `^##\\s+${title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`,
+    'm',
+  );
+  const sectionMatch = readmeText.match(sectionPattern);
+
+  expect(sectionMatch, `README should include ## ${title}`).not.toBeNull();
+  if (!sectionMatch) {
+    return '';
+  }
+
+  const sectionStart = sectionMatch.index ?? 0;
+  const nextSectionMatch = readmeText.slice(sectionStart + sectionMatch[0].length).match(/\n##\s+/);
+  const sectionEnd = nextSectionMatch
+    ? sectionStart + sectionMatch[0].length + nextSectionMatch.index!
+    : readmeText.length;
+
+  return readmeText.slice(sectionStart, sectionEnd).trim();
+}
+
 describe('docs snippet smoke tests', () => {
+  it('keeps the npm-facing README surface focused on the 30-second install path', () => {
+    const installationSection = extractReadmeSection('Installation');
+    const quickStartSection = extractReadmeSection('Quick Start');
+
+    expect(readmeText).toContain(`npm install ${packageJson.name}`);
+    expect(installationSection).toContain(`npm install ${packageJson.name}`);
+    expect(readmeText).toContain('## Why teams pick animix');
+    expect(readmeText).toContain('## Trust surface');
+    expect(quickStartSection).toContain('### 30-second install');
+    expect(quickStartSection).toContain('### Where animix fits');
+    expect(quickStartSection).toMatch(/\|\s*Use animix for\s*\|\s*Use Motion \/ GSAP when\s*\|/);
+    expect(packageJson.description).toContain('reduced-motion safe');
+  });
+
   it('collects only published animix tokens from shipped surfaces', () => {
     const shippedTokens = collectShippedAnimixTokens();
 
