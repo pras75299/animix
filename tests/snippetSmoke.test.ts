@@ -290,7 +290,7 @@ describe('docs snippet smoke tests', () => {
     expect(readmeText).toContain('## Trust surface');
     expect(quickStartSection).toContain('### 30-second install');
     expect(quickStartSection).toContain('### Where animix fits');
-    expect(quickStartSection).toContain('| Use animix for | Use Motion / GSAP when |');
+    expect(quickStartSection).toMatch(/\|\s*Use animix for\s*\|\s*Use Motion \/ GSAP when\s*\|/);
     expect(packageJson.description).toContain('reduced-motion safe');
   });
 
