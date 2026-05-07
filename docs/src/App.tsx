@@ -6,6 +6,7 @@ import {
   Icon,
   ReducedMotionBadge,
   SectionHead,
+  ShadcnExampleCard,
   SnippetTabs,
   ThemeToggle,
 } from './components';
@@ -39,7 +40,7 @@ import {
   recipeTabs,
   repoLinks,
   searchItems,
-  shadcnRows,
+  shadcnExamples,
   tailwindNotes,
   tailwindTabs,
   tokenOverrideTabs,
@@ -805,7 +806,7 @@ export function App() {
           {/* 02 — Install */}
           <section id="install" className="docs-section">
             <SectionHead
-              num="02 / 14"
+              num="02 / 15"
               eyebrow="Getting Started"
               title={
                 <>
@@ -895,7 +896,7 @@ export function App() {
           {/* 03 — Pure CSS */}
           <section id="css" className="docs-section">
             <SectionHead
-              num="03 / 14"
+              num="03 / 15"
               eyebrow="Pure CSS"
               title={
                 <>
@@ -966,7 +967,7 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
           {/* 04 — Tailwind */}
           <section id="tailwind" className="docs-section">
             <SectionHead
-              num="04 / 14"
+              num="04 / 15"
               eyebrow="Tailwind Plugin"
               title={
                 <>
@@ -992,7 +993,7 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
           {/* 05 — React */}
           <section id="react" className="docs-section">
             <SectionHead
-              num="05 / 14"
+              num="05 / 15"
               eyebrow="React Bindings"
               title={
                 <>
@@ -1043,7 +1044,7 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
           {/* 06 — View Transitions */}
           <section id="view-transitions" className="docs-section">
             <SectionHead
-              num="06 / 14"
+              num="06 / 15"
               eyebrow="View Transitions"
               title={
                 <>
@@ -1079,56 +1080,65 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
           {/* 07 — shadcn */}
           <section id="shadcn" className="docs-section">
             <SectionHead
-              num="07 / 14"
+              num="07 / 15"
               eyebrow="shadcn/ui"
               title={
                 <>
-                  Radix lifecycle attributes, <em>wired to motion families.</em>
+                  Copy the surface recipe, <em>keep the lifecycle honest.</em>
                 </>
               }
-              body="Import the preset once and the data-state and data-side selectors drive component motion — without rewriting any component code."
+              body="These patterns are organized around the shadcn surfaces teams reach for first: dialog, sheet, popover, toast, and command. Import the preset once, then choose the CSS, Tailwind, or React path that matches your stack."
             />
 
-            <div className="docs-split">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
-                <CodeBlock
-                  title="globals.css"
-                  code={`@tailwind base;
+            <div className="docs-shadcn-intro">
+              <CodeBlock
+                title="globals.css"
+                code={`@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @import '@pras75299/animix/css';
 @import '@pras75299/animix/shadcn';`}
-                />
-                <div className="docs-card">
-                  <strong>Implementation note</strong>
-                  <p>
-                    Import <code>animix/shadcn</code> after your shadcn styles so the preset can
-                    attach the correct animation properties without fighting earlier rules.
-                  </p>
-                </div>
-              </div>
+              />
+            </div>
 
-              <div className="docs-table-wrap">
-                <table className="docs-table">
-                  <thead>
-                    <tr>
-                      <th>Component</th>
-                      <th>Open</th>
-                      <th>Close</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {shadcnRows.map(([component, open, close]) => (
-                      <tr key={component}>
-                        <td>{component}</td>
-                        <td>{open}</td>
-                        <td>{close}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+            <div className="docs-shadcn-principles docs-grid docs-grid-3 docs-mb-5">
+              <article className="docs-card">
+                <strong>Import order matters</strong>
+                <p>
+                  Import <code>animix/shadcn</code> after your shadcn styles so the preset can
+                  attach motion behavior without fighting earlier rules.
+                </p>
+              </article>
+              <article className="docs-card">
+                <strong>Open and close should rhyme</strong>
+                <p>
+                  Pick one directional or anchored motion family per surface and dismiss with the
+                  same spatial logic.
+                </p>
+              </article>
+              <article className="docs-card">
+                <strong>React is for orchestration, not the shell</strong>
+                <p>
+                  Keep overlay and panel motion in the preset first. Add React helpers only when
+                  list staging or controlled exit timing genuinely helps.
+                </p>
+              </article>
+            </div>
+
+            <AnimateStagger animation="slide-up" delay={70} inView className="docs-shadcn-grid">
+              {shadcnExamples.map((example) => (
+                <ShadcnExampleCard key={example.id} example={example} />
+              ))}
+            </AnimateStagger>
+
+            <div className="docs-card docs-shadcn-footer-note">
+              <strong>Why these five first?</strong>
+              <p>
+                They cover the surfaces where teams usually burn time wiring Radix lifecycle state
+                to motion by hand. Once these patterns are stable, the rest of the shadcn surface
+                area follows the same mental model.
+              </p>
             </div>
           </section>
 
