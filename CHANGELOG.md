@@ -7,6 +7,14 @@ Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.2.4] — 2026-05-07
+
+### Fixed
+
+- Excluded test declaration artifacts from the published tarball so `dist/react/__tests__/*` no longer leaks into npm.
+- Added the shipped `SECURITY.md` policy to the package contents and aligned the repo hook allowlist so the policy can be maintained normally.
+- Removed lint warnings from verification tests used to guard the npm-facing README and React manual trigger coverage.
+
 ## [0.2.1] — 2026-04-26
 
 ### Fixed
