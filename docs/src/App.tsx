@@ -806,7 +806,7 @@ export function App() {
           {/* 02 — Install */}
           <section id="install" className="docs-section">
             <SectionHead
-              num="02 / 14"
+              num="02 / 15"
               eyebrow="Getting Started"
               title={
                 <>
@@ -896,7 +896,7 @@ export function App() {
           {/* 03 — Pure CSS */}
           <section id="css" className="docs-section">
             <SectionHead
-              num="03 / 14"
+              num="03 / 15"
               eyebrow="Pure CSS"
               title={
                 <>
@@ -967,7 +967,7 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
           {/* 04 — Tailwind */}
           <section id="tailwind" className="docs-section">
             <SectionHead
-              num="04 / 14"
+              num="04 / 15"
               eyebrow="Tailwind Plugin"
               title={
                 <>
@@ -993,7 +993,7 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
           {/* 05 — React */}
           <section id="react" className="docs-section">
             <SectionHead
-              num="05 / 14"
+              num="05 / 15"
               eyebrow="React Bindings"
               title={
                 <>
@@ -1044,7 +1044,7 @@ const tailwindAlias = animateAnimix.transitions.modalIn;`}
           {/* 06 — View Transitions */}
           <section id="view-transitions" className="docs-section">
             <SectionHead
-              num="06 / 14"
+              num="06 / 15"
               eyebrow="View Transitions"
               title={
                 <>

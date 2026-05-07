@@ -310,6 +310,10 @@ function renderShadcnPreview(example: ShadcnExample, pulse: number) {
           </div>
         </div>
       );
+    default: {
+      const _exhaustive: never = example.id;
+      return _exhaustive;
+    }
   }
 }
 
