@@ -133,8 +133,8 @@
     }
   },
   "devDependencies": {
-    "@commitlint/cli": "^20.5.3",
-    "@commitlint/config-conventional": "^20.5.3",
+    "@commitlint/cli": "^21.0.0",
+    "@commitlint/config-conventional": "^21.0.0",
     "@tailwindcss/postcss": "^4.2.4",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -150,7 +150,7 @@
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.0.11",
     "jsdom": "^29.1.1",
-    "lint-staged": "^16.4.0",
+    "lint-staged": "^17.0.4",
     "postcss": "^8.5.13",
     "prettier": "^3.8.3",
     "react": "^19.2.5",
