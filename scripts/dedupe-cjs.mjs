@@ -1,10 +1,12 @@
 /**
- * Post-tsup step: replace dist/index.cjs with a thin re-export of
- * dist/tailwind/plugin.cjs so the bundled plugin code isn't duplicated
- * across both CJS entry points.
+ * Post-tsup step:
+ * 1. Replace dist/index.cjs with a thin re-export of dist/tailwind/plugin.cjs so
+ *    the bundled plugin code isn't duplicated across both CJS entry points.
+ * 2. Remove dist/**\/*.d.cts duplicates emitted by tsup. They are byte-identical
+ *    to the .d.ts files and aren't referenced by the exports map.
  */
 
-import { existsSync, writeFileSync } from 'node:fs';
+import { existsSync, readdirSync, statSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -26,4 +28,18 @@ module.exports.animixPlugin = module.exports;
 `;
 
 writeFileSync(stubPath, stub);
+
+function removeDtsCtsRecursively(dir) {
+  for (const entry of readdirSync(dir)) {
+    const full = join(dir, entry);
+    if (statSync(full).isDirectory()) {
+      removeDtsCtsRecursively(full);
+    } else if (entry.endsWith('.d.cts')) {
+      unlinkSync(full);
+    }
+  }
+}
+
+removeDtsCtsRecursively(distDir);
+
 console.log('dedupe-cjs: OK');

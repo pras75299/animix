@@ -7,6 +7,16 @@ Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.2.8] — 2026-05-13
+
+### Changed
+
+- Narrowed the `files` allowlist to ship only the CSS under `src/`. The source `.ts` files were never reachable through the `exports` map and only rode along because the directory was wholesale-included.
+- Switched type emission to tsup's bundled `dts`, dropping the parallel `tsc -p tsconfig.build.json` step and removing the `dist/src/` tree. `tsconfig.build.json` is no longer needed.
+- Post-build step now also strips duplicate `.d.cts` files (byte-identical to `.d.ts`; not referenced by the exports map).
+
+Tarball: 66.5 kB → 60.6 kB; unpacked: 347.6 kB → 308.2 kB; total files 43 → 33. No API or behaviour change.
+
 ## [0.2.7] — 2026-05-13
 
 ### Fixed

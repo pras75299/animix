@@ -1,6 +1,6 @@
 {
   "name": "@pras75299/animix",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "CSS animation library for Tailwind CSS v3/v4, React, and shadcn/ui. Zero runtime by default, reduced-motion safe.",
   "author": "animix contributors",
   "license": "MIT",
@@ -87,16 +87,14 @@
   },
   "files": [
     "dist",
-    "src",
+    "src/**/*.css",
     "shadcn-presets.css",
     "README.md",
     "CHANGELOG.md",
     "SECURITY.md"
   ],
   "scripts": {
-    "build": "npm run build:js && npm run build:types",
-    "build:js": "tsup && node scripts/dedupe-cjs.mjs",
-    "build:types": "tsc -p tsconfig.build.json",
+    "build": "tsup && node scripts/dedupe-cjs.mjs",
     "build:watch": "tsup --watch",
     "dev": "cd playground && vite",
     "build:playground": "cd playground && vite build",
@@ -188,6 +186,11 @@
     "clean": true,
     "treeshake": true,
     "minify": true,
+    "dts": {
+      "compilerOptions": {
+        "ignoreDeprecations": "6.0"
+      }
+    },
     "external": [
       "react",
       "react-dom",
