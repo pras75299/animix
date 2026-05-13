@@ -147,3 +147,15 @@ If you genuinely think a convention is harmful, surface it. Don't fork silently.
 "Completed" is wrong if anything was skipped silently.
 "Tests pass" is wrong if any were skipped.
 Default to surfacing uncertainty, not hiding it.
+
+# Commit Rules
+
+- Always use one liner commit message do not use any extra text and do not include words like claude or codex or cursor or windsurf or gemini or anthropic or openai or deepseek or etc.
+- Always use the correct commit message format feat(scope): message or fix(scope): message or chore(scope): message or ref(scope): message or docs(scope): message or test(scope): message or style(scope): message or perf(scope): message or revert(scope): message or ci(scope): message or build(scope): message or release(scope): message or hotfix(scope): message or revert(scope): message or docs(scope): message or test(scope): message or style(scope): message or perf(scope): message or revert(scope): message or ci(scope): message or build(scope): message or release(scope): message or hotfix(scope): message
+- Always run code review like code-rabbitmq to review the code before committing.
+- Always run lint before committing.
+- Always run tests before committing.
+- Always run build before committing.
+- Always run typecheck before committing.
+- Always run security scan before committing.
+- Always run ci before committing.
