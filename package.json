@@ -1,6 +1,6 @@
 {
   "name": "@pras75299/animix",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "CSS animation library for Tailwind CSS v3/v4, React, and shadcn/ui. Zero runtime by default, reduced-motion safe.",
   "author": "animix contributors",
   "license": "MIT",

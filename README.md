@@ -5,7 +5,7 @@
 <p>
   <a href="https://www.npmjs.com/package/@pras75299/animix"><img src="https://img.shields.io/npm/v/@pras75299%2Fanimix?style=flat-square&label=npm&color=5B5BFF" alt="npm version" /></a>
   <a href="https://www.npmjs.com/package/@pras75299/animix"><img src="https://img.shields.io/npm/dm/@pras75299%2Fanimix?style=flat-square&label=downloads&color=5B5BFF" alt="downloads" /></a>
-  <a href="https://bundlephobia.com/package/@pras75299/animix"><img src="https://img.shields.io/bundlephobia/minzip/@pras75299%2Fanimix?style=flat-square&label=gzip&color=5B5BFF" alt="bundle size" /></a>
+  <a href="https://bundlejs.com/?q=@pras75299/animix"><img src="https://img.shields.io/bundlejs/size/@pras75299%2Fanimix?style=flat-square&label=gzip&color=5B5BFF" alt="bundle size" /></a>
   <a href="https://github.com/pras75299/animix/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-5B5BFF?style=flat-square" alt="MIT license" /></a>
   <img src="https://img.shields.io/badge/types-included-5B5BFF?style=flat-square" alt="TypeScript" />
   <img src="https://img.shields.io/badge/tree--shaking-yes-5B5BFF?style=flat-square" alt="tree-shaking" />

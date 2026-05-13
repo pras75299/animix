@@ -7,6 +7,12 @@ Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.2.6] — 2026-05-13
+
+### Fixed
+
+- Swapped the README bundle-size badge from bundlephobia (rate-limited and broken on the npm registry page) to bundlejs.com so the size shows again.
+
 ## [0.2.5] — 2026-05-13
 
 ### Changed
