@@ -95,7 +95,7 @@
   ],
   "scripts": {
     "build": "npm run build:js && npm run build:types",
-    "build:js": "tsup",
+    "build:js": "tsup && node scripts/dedupe-cjs.mjs",
     "build:types": "tsc -p tsconfig.build.json",
     "build:watch": "tsup --watch",
     "dev": "cd playground && vite",
@@ -187,7 +187,7 @@
     "sourcemap": false,
     "clean": true,
     "treeshake": true,
-    "minify": false,
+    "minify": true,
     "external": [
       "react",
       "react-dom",
