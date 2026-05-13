@@ -7,6 +7,12 @@ Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.2.7] — 2026-05-13
+
+### Fixed
+
+- Replaced the dynamic bundle-size badge with a static `gzip-5.5 kB` shield. Both shields.io/bundlephobia and shields.io/bundlejs return cached errors via the npm image proxy when their upstream APIs throttle, so a static value is the only reliably-rendering option. The bundlejs.com click-through link is preserved for live numbers.
+
 ## [0.2.6] — 2026-05-13
 
 ### Fixed
