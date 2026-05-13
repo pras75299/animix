@@ -7,6 +7,16 @@ Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.2.5] — 2026-05-13
+
+### Changed
+
+- Enabled tsup minification on the published JS bundles, halving the React bindings and shaving ~20% off the Tailwind plugin output.
+- Replaced `dist/index.cjs` with a thin re-export of `dist/tailwind/plugin.cjs` (via `scripts/dedupe-cjs.mjs`) so the bundled plugin code is no longer duplicated in CJS.
+- Dropped declaration maps from the published types; consumers don't read them and they only bloated the tarball.
+
+Tarball: 79.0 kB → 66.1 kB; unpacked: 447.3 kB → 346.5 kB; no API or behaviour change.
+
 ## [0.2.4] — 2026-05-07
 
 ### Fixed
